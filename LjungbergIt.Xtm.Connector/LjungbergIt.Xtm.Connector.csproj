@@ -48,6 +48,14 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Sitecore.Client, Version=8.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>ReferencedAssemblies\Sitecore.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Sitecore.Kernel, Version=8.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>ReferencedAssemblies\Sitecore.Kernel.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -90,10 +98,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
+    <Content Include="ReferencedAssemblies\Sitecore.Client.dll" />
+    <Content Include="ReferencedAssemblies\Sitecore.Kernel.dll" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Buttons\StartTranslation.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -102,6 +113,7 @@
   <ItemGroup>
     <Content Include="Views\web.config" />
     <Content Include="packages.config" />
+    <Content Include="App_Config\Commands.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -110,9 +122,11 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App_Config\Include\" />
     <Folder Include="App_Data\" />
     <Folder Include="Controllers\" />
     <Folder Include="Models\" />
+    <Folder Include="Serialization\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -148,7 +162,7 @@
   </Target>
   <PropertyGroup>
     <PostBuildEvent>xcopy "$(ProjectDir)\bin\$(TargetFileName)" "C:\inetpub\wwwroot\Sitecore81Update1\Website\bin" /Y /I /D
-xcopy "$(ProjectDir)\App_Config\Include" "C:\inetpub\wwwroot\Sitecore81Update1\Website\App_Config\Include" /Y /I /S /D
+xcopy "$(ProjectDir)\App_Config" "C:\inetpub\wwwroot\Sitecore81Update1\Website\App_Config" /Y /I /S /D
 </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
