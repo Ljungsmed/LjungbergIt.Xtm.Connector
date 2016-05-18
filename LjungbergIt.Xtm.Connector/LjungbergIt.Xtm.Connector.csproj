@@ -76,6 +76,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>ReferencedAssemblies\Sitecore.Kernel.dll</HintPath>
     </Reference>
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -124,22 +126,48 @@
     <Content Include="Global.asax" />
     <Content Include="ReferencedAssemblies\Sitecore.Client.dll" />
     <Content Include="ReferencedAssemblies\Sitecore.Kernel.dll" />
+    <Content Include="Test\test.aspx" />
     <Content Include="Web.config" />
+    <Content Include="XtmFiles\ViewTranslationProgress.aspx" />
+    <Content Include="XtmFiles\XtmStyles\HeadingBg.png" />
+    <Content Include="XtmFiles\XtmStyles\Xtm.css" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Buttons\StartTranslation.cs" />
+    <Compile Include="Buttons\AddItemForTranslation.cs" />
+    <Compile Include="Buttons\ViewTranslationProgress.cs" />
+    <Compile Include="Commands\XtmStartTranslation.cs" />
+    <Compile Include="Export\Project.cs" />
+    <Compile Include="Export\StartTranslation.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\ScConstants.cs" />
     <Compile Include="Helpers\Utils.cs" />
+    <Compile Include="Import\GetLanguageQueueFolder.cs" />
+    <Compile Include="Import\GetXtmTemplates.cs" />
+    <Compile Include="Import\ImportFromXml.cs" />
+    <Compile Include="Import\FieldObject.cs" />
     <Compile Include="Pipelines\XtmPipelineArgs.cs" />
     <Compile Include="Pipelines\XtmProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Test\test.aspx.cs">
+      <DependentUpon>test.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Test\test.aspx.designer.cs">
+      <DependentUpon>test.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Export\ConvertToXml.cs" />
+    <Compile Include="XtmFiles\ViewTranslationProgress.aspx.cs">
+      <DependentUpon>ViewTranslationProgress.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="XtmFiles\ViewTranslationProgress.aspx.designer.cs">
+      <DependentUpon>ViewTranslationProgress.aspx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\web.config" />
     <Content Include="packages.config" />
     <Content Include="App_Config\Include\XtmConnector.config">
       <SubType>Designer</SubType>
@@ -153,9 +181,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Controllers\" />
-    <Folder Include="Models\" />
-    <Folder Include="Serialization\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LjungbergIt.Xtm.Webservice\LjungbergIt.Xtm.Webservice.csproj">
+      <Project>{d4bc6560-801f-4aec-a859-9e8d9814ec65}</Project>
+      <Name>LjungbergIt.Xtm.Webservice</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -192,6 +223,8 @@
   <PropertyGroup>
     <PostBuildEvent>xcopy "$(ProjectDir)\bin\$(TargetFileName)" "C:\inetpub\wwwroot\Sitecore81Update1\Website\bin" /Y /I /D
 xcopy "$(ProjectDir)\App_Config" "C:\inetpub\wwwroot\Sitecore81Update1\Website\App_Config" /Y /I /S /D
+xcopy "$(ProjectDir)\Test" "C:\inetpub\wwwroot\Sitecore81Update1\Website\Test" /Y /I /S /D
+xcopy "$(ProjectDir)\XtmFiles" "C:\inetpub\wwwroot\Sitecore81Update1\Website\XtmFiles" /Y /I /S /D
 </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

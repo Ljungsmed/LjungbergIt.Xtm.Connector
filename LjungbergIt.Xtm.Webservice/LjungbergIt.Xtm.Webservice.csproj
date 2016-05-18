@@ -1,0 +1,585 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D4BC6560-801F-4AEC-A859-9E8D9814EC65}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>LjungbergIt.Xtm.Webservice</RootNamespace>
+    <AssemblyName>LjungbergIt.Xtm.Webservice</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service References\XtmServiceReference\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="XtmHandleTranslatedContent.cs" />
+    <Compile Include="XtmCreateProject.cs" />
+    <Compile Include="XtmProject.cs" />
+    <Compile Include="XtmWebserviceAccess.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.assignLinguistToJobResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.assignLinguistToProjectResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.checkJobAnalysisCompletionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.checkJobCompletionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.checkJobFileCompletionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.checkProjectAnalysisCompletionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.checkProjectCompletionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.checkProjectFileCompletionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.checkTMCompletionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.checkUploadXliffCompletionResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.checkUserLoginResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.createCustomerPMResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.createCustomerResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.createProjectForPMMTOMResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.createProjectForPMURLResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.createProjectMTOMResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.createProjectURLResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.createTemplateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.createUserResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.downloadJobFileMTOMResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.downloadJobFileURLResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.downloadJobMTOMResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.downloadJobURLResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.downloadProjectFileMTOMResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.downloadProjectFileURLResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.downloadProjectMetricsMTOMResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.downloadProjectMetricsURLResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.downloadProjectMTOMResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.downloadProjectURLResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.downloadReferenceMaterialsMTOMResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.downloadReferenceMaterialsURLResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.downloadTMMTOMResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.downloadTMURLResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.exportTMResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.findCustomerResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.findProjectResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.findTemplateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.findUserResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.generateCostResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.generateJobFileResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.generateProjectFileResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.generateProjectsSimilarityResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.getEditorURLResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.getSupportedFilesInfoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.getXTMInfoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.importTMMTOMResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.importTMURLResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.moveJobWorkflowResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.moveProjectWorkflowResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.obtainCostResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.obtainJobExtraInfoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.obtainJobMetricsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.obtainPMProjectEditorLinkResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.obtainPMTemplateEditorLinkResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.obtainPMTranslationPropsLinkResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.obtainProjectAllStatisticsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.obtainProjectEstimatesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.obtainProjectExtraInfoResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.obtainProjectMetricsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.obtainProjectsSimilarityResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.obtainProjectStatisticsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.obtainXTMEditorLinkResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.obtainXTMProjectManagerLinkResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.obtainXTMTermManagerLinkResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.obtainXTMTmManagerLinkResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.startProjectResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.updateCustomerActivityResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.updateJobStepPropertyResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.updateJobWorkflowActivityResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.updateProjectActivityResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.updateProjectEstimatesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.updateProjectResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.updateProjectStepPropertyResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.updateProjectWorkflowActivityResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.updateProjectWorkflowResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.updateReferenceFilesMTOMResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.updateReferenceFilesURLResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.updateTargetLanguagesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.updateTranslationFilesMTOMResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.updateTranslationFilesURLResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.updateUserActivityResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.uploadProjectFileMTOMResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.uploadProjectFileURLResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.uploadXliffMTOMResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.uploadXliffURLResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmAssignLinguistToProjectResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmCheckProjectAnalysisCompletionResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmCheckProjectCompletionResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmCostDescriptorAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmCostResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmCreateCustomerPMResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmCreateCustomerResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmCreateProjectForPMMTOMResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmCreateProjectForPMURLResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmCreateProjectMTOMResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmCreateProjectURLResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmCreateTemplateResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmCreateUserResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmCustomerActivityResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmCustomerDetailsResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmDownloadProjectMetricsMTOMResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmDownloadProjectMetricsURLResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmDownloadProjectMTOMResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmDownloadProjectURLResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmGenerateProjectFileResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmGetEditorURLResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmGetSupportedFilesInfoResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmGetXTMInfoResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmJobExtraInfoResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmJobFileBaseResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmJobFileMTOMResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmJobFileStatusResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmJobFileURLResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmJobLinguistAssignmentResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmJobMetricsResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmJobStatusResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmJobWorkflowActivityResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmMoveJobWorkflowResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmMoveProjectWorkflowResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmObtainPMProjectEditorLinkResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmObtainPMTemplateEditorLinkResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmObtainPMTranslationPropsLinkResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmObtainProjectAllStatisticsResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmObtainProjectEstimatesResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmObtainProjectExtraInfoResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmObtainXTMEditorLinkResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmObtainXTMTermManagerLinkResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmObtainXTMTmManagerLinkResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmProjectActivityResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmProjectDetailsResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmProjectFileMTOMAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmProjectFileStatusResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmProjectFileURLAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmProjectManagerLinkResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmProjectMetricsResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmProjectsSimilarityDescriptorAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmProjectsSimilarityResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmProjectStartResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmProjectStatisticsResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmProjectUpdateResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmProjectWorkflowActivityResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmReferenceMaterialsMTOMResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmReferenceMaterialsURLResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmTemplateDetailsResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmtmFileDescriptorAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmtmmtomResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmtmStatusResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmtmurlResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmUpdateJobStepPropertyResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmUpdateProjectEstimatesResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmUpdateProjectStepPropertyResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmUpdateProjectWorkflowResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmUpdateReferenceFilesMTOMResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmUpdateReferenceFilesURLResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmUpdateTargetLanguagesResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmUpdateTranslationFilesMTOMResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmUpdateTranslationFilesURLResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmUploadProjectFileMTOMResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmUploadProjectFileURLResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmUploadXliffStatusResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmUserActivityResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmUserDetailsResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmUserLoginResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\LjungbergIt.Xtm.Webservice.XtmServiceReference.xtmXliffFileResponseAPI.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\XtmServiceReference\XTMWebService.wsdl" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\XtmServiceReference\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\XtmServiceReference\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\XtmServiceReference\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\XtmServiceReference\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy "$(TargetPath)" "C:\inetpub\wwwroot\Sitecore81Update1\Website\bin" /Y /I /D</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

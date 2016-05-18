@@ -1,0 +1,16 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace LjungbergIt.Xtm.Connector.Import
+{
+    class GetXtmTemplates
+    {
+        public void TemplatesFromXtm()
+        {
+
+        }
+    }
+}
