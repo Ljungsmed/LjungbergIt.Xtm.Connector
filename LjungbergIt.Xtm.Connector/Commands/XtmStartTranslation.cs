@@ -13,14 +13,10 @@ namespace LjungbergIt.Xtm.Connector.Commands
 {
     public class XtmStartTranslation
     {
-        public string start()
+        public void start()
         {
             ConvertToXml convert = new ConvertToXml();
             convert.Transform();
-            
-            StartTranslation startTranslation = new StartTranslation();
-
-            return startTranslation.SendFilesToXtm();
         }
     }
 }

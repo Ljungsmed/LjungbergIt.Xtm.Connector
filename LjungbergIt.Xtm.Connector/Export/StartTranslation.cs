@@ -1,5 +1,7 @@
-﻿using LjungbergIt.Xtm.Connector.Helpers;
+﻿using LjungbergIt.Xtm.Connector.AddForTranslation;
+using LjungbergIt.Xtm.Connector.Helpers;
 using LjungbergIt.Xtm.Webservice;
+using Sitecore.Data.Items;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,37 +14,34 @@ namespace LjungbergIt.Xtm.Connector.Export
 {
     public class StartTranslation
     {
-        public string SendFilesToXtm()
+        public string SendFilesToXtm(string filePath, string fileName, TranslationProperties translationProperties)
         {
             XtmCreateProject create = new XtmCreateProject();
             Project project = new Project();
-            StringBuilder info = new StringBuilder();
-            string translationFolderName = ScConstants.Misc.translationFolderName;
-            string filesForTranslationFolder = ScConstants.Misc.filesFortranslationFolderName;
-            string translationFolder = HttpContext.Current.Server.MapPath("~\\" + translationFolderName + "\\" + filesForTranslationFolder + "\\");
-            string[] FilesToTranslate = Directory.GetFiles(translationFolder);
-            int count = 0;
+            LoginProperties login = new LoginProperties();
+            string returnResult = "";
+                  
+            List<string> result = create.Create(filePath, fileName, translationProperties.SourceLanguage, translationProperties.TargetLanguage, translationProperties.XtmTemplate, login.ScClient, login.ScUserId, login.ScPassword, login.ScCustomer );
 
-            foreach (string file in FilesToTranslate)
+            if (result[0].Equals("True"))
             {
-                int index = file.IndexOf(filesForTranslationFolder) + filesForTranslationFolder.Count() + 1;
-                string targetLanguage = file.Remove(0, index);
-                targetLanguage = targetLanguage.Replace(".xml", "");
-                count++;
-                info.Append("File ");
-                info.Append(count);
-                info.Append(" : Message from Webservice: ");
-                string result = create.Create(file, targetLanguage);
+                project.CreateProgressItem(result[1]);
+                //List<UpdateItem> updateList = new List<UpdateItem>();
+                //UpdateItem updateItem = new UpdateItem();
+                //updateList.Add(new UpdateItem() { FieldIdOrName = ScConstants.SitecoreFieldIds.XtmBaseTemplateInTranslation, FieldValue = "1" });
 
-                //TODO if result is not project id, handle it!
-                project.CreateProgressItem(result);
-
-                info.Append(result);
-                info.Append(" END ");
-                //File.Delete(file);
+                //bool updateSuccess = updateItem.Update(translationProperties.ItemId, updateList);
+            }
+            else
+            {
+                returnResult = result[1];
             }
 
-            return info.ToString();
+            //TODO if result is not project id, handle it!            
+            
+            File.Delete(filePath);            
+
+            return returnResult;
         }
     }
 }

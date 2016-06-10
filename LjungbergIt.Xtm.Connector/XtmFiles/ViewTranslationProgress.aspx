@@ -21,6 +21,7 @@
                 <LayoutTemplate>
                     <table class="tablestyle">
                         <tr class="greybc whitetext">
+                            
                             <th class="whitetext">
                                 Project Name
                             </th>
@@ -56,32 +57,33 @@
                 <ItemTemplate>
                 
                     <tr>
+                        
                         <td>
-                            <%# Item.projectName %>
+                            <%# Item.ProjectName %>
                         </td>
                         <td>
-                            <%# Item.projectId %>
+                            <%# Item.ProjectId %>
                         </td>
                         <td>
-                            <%# Item.customer %>
+                            <%# Item.Customer %>
                         </td>
                         <td>
-                            <%# Item.sourceLanguage %>
+                            <%# Item.SourceLanguage %>
                         </td>
                         <td>
-                            <%# Item.targetLanguage %>
+                            <%# Item.TargetLanguage %>
                         </td>
                         <td>
-                            <%# Item.createdDate.ToString("dd-MM-yyyy HH:mm") %>
+                            <%# Item.CreatedDate.ToString("dd-MM-yyyy HH:mm") %>
                         </td>
                         <td>
-                            <%# Item.dueDate.ToString("dd-MM-yyyy HH:mm") %>
+                            <%# Item.DueDate.ToString("dd-MM-yyyy HH:mm") %>
                         </td>
                         <td>
-                            <%# Item.workflowStatus %>
+                            <%# Item.WorkflowStatus %>
                         </td>
                         <td>                                                        
-                            <asp:Button runat="server" Visible='<%# RenderImportButton(Item.workflowStatus) %>' Text="Import now" CommandArgument='<%# Item.projectId %>' /><br />                             
+                            <asp:Button runat="server" Visible='<%# RenderImportButton(Item.WorkflowStatus) %>' Text="Import now" CommandArgument='<%# Item.ProjectId %>' />                             
                         </td>
                     </tr>
                 </ItemTemplate>

@@ -128,13 +128,18 @@
     <Content Include="ReferencedAssemblies\Sitecore.Kernel.dll" />
     <Content Include="Test\test.aspx" />
     <Content Include="Web.config" />
+    <Content Include="XtmFiles\AddItemForTranslation.aspx" />
+    <Content Include="XtmFiles\TranslationDetailedView.aspx" />
     <Content Include="XtmFiles\ViewTranslationProgress.aspx" />
     <Content Include="XtmFiles\XtmStyles\HeadingBg.png" />
     <Content Include="XtmFiles\XtmStyles\Xtm.css" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddForTranslation\TranslationProperties.cs" />
+    <Compile Include="AddForTranslation\TranslationQueue.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Buttons\AddItemForTranslation.cs" />
+    <Compile Include="Buttons\StartTranslation.cs" />
     <Compile Include="Buttons\ViewTranslationProgress.cs" />
     <Compile Include="Commands\XtmStartTranslation.cs" />
     <Compile Include="Export\Project.cs" />
@@ -142,9 +147,12 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\LoginProperties.cs" />
     <Compile Include="Helpers\ScConstants.cs" />
+    <Compile Include="Helpers\UpdateItem.cs" />
     <Compile Include="Helpers\Utils.cs" />
-    <Compile Include="Import\GetLanguageQueueFolder.cs" />
+    <Compile Include="AddForTranslation\GetLanguageQueueFolder.cs" />
+    <Compile Include="Helpers\XtmBaseTemplateProperties.cs" />
     <Compile Include="Import\GetXtmTemplates.cs" />
     <Compile Include="Import\ImportFromXml.cs" />
     <Compile Include="Import\FieldObject.cs" />
@@ -159,6 +167,20 @@
       <DependentUpon>test.aspx</DependentUpon>
     </Compile>
     <Compile Include="Export\ConvertToXml.cs" />
+    <Compile Include="XtmFiles\AddItemForTranslation.aspx.cs">
+      <DependentUpon>AddItemForTranslation.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="XtmFiles\AddItemForTranslation.aspx.designer.cs">
+      <DependentUpon>AddItemForTranslation.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="XtmFiles\TranslationDetailedView.aspx.cs">
+      <DependentUpon>TranslationDetailedView.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="XtmFiles\TranslationDetailedView.aspx.designer.cs">
+      <DependentUpon>TranslationDetailedView.aspx</DependentUpon>
+    </Compile>
     <Compile Include="XtmFiles\ViewTranslationProgress.aspx.cs">
       <DependentUpon>ViewTranslationProgress.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

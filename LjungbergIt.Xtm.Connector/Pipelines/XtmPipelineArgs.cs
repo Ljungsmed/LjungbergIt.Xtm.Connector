@@ -6,5 +6,6 @@ namespace LjungbergIt.Xtm.Connector.Pipelines
         public string ItemId { get; set; }
         public string ItemVersion { get; set; }
         public string ItemLanguage { get; set; }
+        public bool XtmBaseTemplate { get; set; }
     }
 }

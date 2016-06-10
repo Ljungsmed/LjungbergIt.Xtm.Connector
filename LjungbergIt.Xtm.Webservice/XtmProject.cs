@@ -9,33 +9,38 @@ namespace LjungbergIt.Xtm.Webservice
 {
     public class XtmProject
     {
-        public long projectId { get; set; }
-        public string projectName { get; set; }
-        public string customer { get; set; }
-        public string sourceLanguage { get; set; }
-        public string targetLanguage { get; set; }
-        public DateTime createdDate { get; set; }
-        public DateTime dueDate { get; set; }
-        public string workflowStatus { get; set; }
+        public long ProjectId { get; set; }
+        public string ProjectName { get; set; }
+        public long Customer { get; set; }
+        public string SourceLanguage { get; set; }
+        public string TargetLanguage { get; set; }
+        public string Template { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public DateTime DueDate { get; set; }
+        public string WorkflowStatus { get; set; }
+        public string Client { get; set; }
+        public long UserId { get; set; }
+        public string Password { get; set; }
 
-        public List<XtmProject> GetProjectProperties(List<long> projectIds)
+        public List<XtmProject> GetProjectProperties(List<long> projectIds, string client, long userId, string password)
         {
             List<XtmProject> xtmProjects = new List<XtmProject>();
+            XtmProject loginProject = new XtmProject { Client = client, UserId = userId, Password = password };
 
             foreach (long id in projectIds)
             {
-                xtmProjectDetailsResponseAPI project = GetXtmProject(id);
+                xtmProjectDetailsResponseAPI project = GetXtmProject(id, loginProject);
 
                 XtmProject xtmProject = new XtmProject();
                 
-                xtmProject.projectId = id;
-                xtmProject.projectName = project.name;
-                xtmProject.customer = project.customer.name;
-                xtmProject.sourceLanguage = project.sourceLanguage.ToString();
-                xtmProject.targetLanguage = project.targetLanguages[0].ToString();
-                xtmProject.createdDate = project.createDate;
-                xtmProject.dueDate = project.dueDate;
-                xtmProject.workflowStatus = project.status.ToString();
+                xtmProject.ProjectId = id;
+                xtmProject.ProjectName = project.name;
+                xtmProject.Customer = project.customer.id;
+                xtmProject.SourceLanguage = project.sourceLanguage.ToString();
+                xtmProject.TargetLanguage = project.targetLanguages[0].ToString();
+                xtmProject.CreatedDate = project.createDate;
+                xtmProject.DueDate = project.dueDate;
+                xtmProject.WorkflowStatus = project.status.ToString();
 
                 xtmProjects.Add(xtmProject);
             }
@@ -43,10 +48,10 @@ namespace LjungbergIt.Xtm.Webservice
             return xtmProjects;
         }
 
-        public xtmProjectDetailsResponseAPI GetXtmProject(long projectId)
+        public xtmProjectDetailsResponseAPI GetXtmProject(long projectId, XtmProject loginProject)
         {
             XtmWebserviceAccess xtmAccess = new XtmWebserviceAccess();
-            loginAPI login = xtmAccess.Login();
+            loginAPI login = xtmAccess.Login(loginProject);
 
             xtmProjectDescriptorAPI projectDescriptor = new xtmProjectDescriptorAPI();
             projectDescriptor.id = projectId;
@@ -62,11 +67,12 @@ namespace LjungbergIt.Xtm.Webservice
             return projectResponses[0]; //Assuming there is always only one project in the response
         }
 
-        public bool IsTranslationFinished(long projectId)
+        public bool IsTranslationFinished(long projectId, string client, long userId, string password)
         {
             bool result = false;
-   
-            xtmProjectDetailsResponseAPI project = GetXtmProject(projectId);
+            XtmProject loginProject = new XtmProject { Client = client, UserId = userId, Password = password };
+
+            xtmProjectDetailsResponseAPI project = GetXtmProject(projectId, loginProject);
             if (project.status.Equals(xtmProjectStatusEnum.FINISHED))
             {
                 result = true;

@@ -2,6 +2,7 @@
 using LjungbergIt.Xtm.Connector.Import;
 using LjungbergIt.Xtm.Webservice;
 using Sitecore.Data.Items;
+using Sitecore.Web.UI.Sheer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,7 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
 
         void lwProgress_ItemCommand(object sender, ListViewCommandEventArgs e)
         {
+
             litTest.Text = "You clicked the " + (String)e.CommandArgument + " button";
 
             string projectIdString = (String)e.CommandArgument;
@@ -28,7 +30,7 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
             bool projectIdOk = long.TryParse(projectIdString, out projectId);
             if (projectIdOk)
             {
-                ImportFromXml import = new ImportFromXml();              
+                ImportFromXml import = new ImportFromXml();
                 import.CreateTranslatedContent(projectId);
             }
 
@@ -56,7 +58,8 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
                 }
 
                 XtmProject xtmProject = new XtmProject();
-                List<XtmProject> projects = xtmProject.GetProjectProperties(xtmProjectIds);
+                LoginProperties login = new LoginProperties();
+                List<XtmProject> projects = xtmProject.GetProjectProperties(xtmProjectIds, login.ScClient, login.ScUserId, login.ScPassword);
 
                 lwProgress.DataSource = projects;
                 lwProgress.DataBind();
@@ -74,5 +77,19 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
 
             return status;
         }
+
+        //protected void btnDetailedView_Click(object sender, EventArgs e)
+        //{
+        //    litTest.Text = e.ToString();
+
+        //}
+
+        //protected void lwProgress_SelectedIndexChanged(object sender, EventArgs e)
+        //{
+        //    Sitecore.Text.UrlString buttonUrl = new Sitecore.Text.UrlString("/XtmFiles/TranslationDetailedView.aspx");
+        //    buttonUrl.Append("id", "itemId");
+
+        //    SheerResponse.ShowModalDialog(buttonUrl.ToString(), "800", "600", "testing message", false);
+        //}
     }
 }

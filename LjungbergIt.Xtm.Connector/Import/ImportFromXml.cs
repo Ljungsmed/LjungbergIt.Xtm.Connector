@@ -1,5 +1,6 @@
 ﻿using LjungbergIt.Xtm.Connector.Helpers;
 using LjungbergIt.Xtm.Webservice;
+using Sitecore.Data;
 using Sitecore.Data.Items;
 using Sitecore.Globalization;
 using Sitecore.SecurityModel;
@@ -16,9 +17,11 @@ namespace LjungbergIt.Xtm.Connector.Import
 {
     class ImportFromXml
     {
+        Database masterDb = ScConstants.SitecoreDatabases.MasterDb;
+
         public void CreateTranslatedContentFromProgressFolder()
         {
-            Item inProgressFolder = ScConstants.SitecoreDatabases.MasterDb.GetItem(ScConstants.SitecoreIDs.TranslationInProgressFolder);
+            Item inProgressFolder = masterDb.GetItem(ScConstants.SitecoreIDs.TranslationInProgressFolder);
             foreach (Item progressItem in inProgressFolder.GetChildren())
             {
                 long projectId;
@@ -33,11 +36,16 @@ namespace LjungbergIt.Xtm.Connector.Import
         public void CreateTranslatedContent(long projectId)
         {
             XtmProject xtmProject = new XtmProject();
-            bool finished = xtmProject.IsTranslationFinished(projectId);
+            LoginProperties login = new LoginProperties();
+            string client = login.ScClient;
+            long userId = login.ScUserId;
+            string password = login.ScPassword;
+
+            bool finished = xtmProject.IsTranslationFinished(projectId, client, userId, password);
             if (finished)
             {
                 XtmHandleTranslatedContent Xtm = new XtmHandleTranslatedContent();
-                List<byte[]> bytesList = Xtm.GetFileInBytes(projectId);
+                List<byte[]> bytesList = Xtm.GetFileInBytes(projectId, client, userId, password);
                 if (bytesList.Count != 0)
                 {
                     XmlDocument translatedXmlDoc = ConvertTranslatedBytesToXML(projectId, bytesList);
@@ -47,7 +55,13 @@ namespace LjungbergIt.Xtm.Connector.Import
                     {
                         using (new SecurityDisabler())
                         {
-                            //progressItem.Delete();
+                            foreach (Item progressItem in masterDb.GetItem(ScConstants.SitecoreIDs.TranslationInProgressFolder).GetChildren())
+                            {
+                                if (progressItem.Name.Equals(projectId.ToString()))
+                                {
+                                    progressItem.Delete();
+                                }
+                            }
                         }
                     }
                 }
@@ -116,6 +130,9 @@ namespace LjungbergIt.Xtm.Connector.Import
             using (new SecurityDisabler())
             {
                 newVersion = translationItem.Versions.AddVersion();
+                newVersion.Editing.BeginEdit();
+                newVersion[ScConstants.SitecoreStandardFieldNames.Workflow] = ScConstants.SitecoreWorkflowIDs.XtmWorkflow;
+                newVersion[ScConstants.SitecoreStandardFieldNames.WorkflowState] = ScConstants.SitecoreWorkflowIDs.XtmWorkflowStateAwaiting;
             }
 
             List<FieldObject> fieldObjects = new List<FieldObject>();
@@ -128,11 +145,18 @@ namespace LjungbergIt.Xtm.Connector.Import
                 fieldObjects.Add(field);
             }
 
+            //TODO call UpdateItem instead
             UpdateFields(newVersion, fieldObjects);
+
+            UpdateItem updateItem = new UpdateItem();
+            List<UpdateItem> updateList = new List<UpdateItem>();
+            updateList.Add(new UpdateItem() { FieldIdOrName = ScConstants.SitecoreFieldIds.XtmBaseTemplateInTranslation, FieldValue = "0" });
+            updateItem.Update(translationItem.ID.ToString(), updateList);
 
             return (translationItem);
         }
 
+        //TODO use the UpdateItem class instead
         private void UpdateFields(Item translationItem, List<FieldObject> fieldObjects)
         {
             using (new SecurityDisabler())

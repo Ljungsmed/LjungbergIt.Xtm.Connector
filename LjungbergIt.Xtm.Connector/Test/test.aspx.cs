@@ -32,11 +32,8 @@ namespace LjungbergIt.Xtm.Connector.Test
 
         protected void Button2_Click(object sender, EventArgs e)
         {
-            //XmlDocument doc = new XmlDocument();
-            //doc.Load(HttpContext.Current.Server.MapPath("~/translate.xml"));
-            //ImportFromXml import = new ImportFromXml();
-            //import.ReadFromXml(doc);
-            //Literal1.Text = "done";
+            GetXtmTemplates getTemplates = new GetXtmTemplates();
+            getTemplates.TemplatesFromXtm();
         }
 
         protected void Button3_Click(object sender, EventArgs e)
@@ -44,8 +41,8 @@ namespace LjungbergIt.Xtm.Connector.Test
 
             //XtmWebserviceAccess xtm = new XtmWebserviceAccess();
             XtmStartTranslation start = new XtmStartTranslation();
-            string result = start.start();
-            litInfo.Text = result;
+            start.start();
+            litInfo.Text = "DONE";
         }
     }
 }
