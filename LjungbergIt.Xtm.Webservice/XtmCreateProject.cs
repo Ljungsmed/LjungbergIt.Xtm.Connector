@@ -8,12 +8,11 @@ namespace LjungbergIt.Xtm.Webservice
 {
     public class XtmCreateProject
     {
-        public List<string> Create(string filePath, string fileName, string sourceLanguage, string translationLanguage, string xtmTemplate, string xtmClient, long userId, string password, long customer) //TODO how to map Sitecore languages to XTM languageCODE.language ???
+        public List<string> Create(string filePath, string fileName, string sourceLanguage, string translationLanguage, string xtmTemplate, string xtmClient, long userId, string password, long customer)
         {
             List<string> resultList = new List<string>();
             bool success = false;
             StringBuilder info = new StringBuilder();
-            //info.Append("ERROR");
             XtmWebserviceAccess access = new XtmWebserviceAccess();
 
             XtmProject project = new XtmProject();
@@ -25,7 +24,6 @@ namespace LjungbergIt.Xtm.Webservice
             project.SourceLanguage = sourceLanguage;
             project.Template = xtmTemplate;
 
-            //TODO error handling if file not found
             byte[] fileInBytes = File.ReadAllBytes(filePath);
             xtmFileMTOMAPI fileToTranslate = new xtmFileMTOMAPI();
             StringBuilder projectName = new StringBuilder();
@@ -34,7 +32,7 @@ namespace LjungbergIt.Xtm.Webservice
 
             loginAPI login = access.Login(project);
 
-            xtmCustomerDescriptorAPI xtmCustomer = access.XtmCustomer(2473);
+            xtmCustomerDescriptorAPI xtmCustomer = access.XtmCustomer(customer);
 
             xtmWorkflowDescriptorAPI workflow = new xtmWorkflowDescriptorAPI();
             workflow.workflow = xtmWORKFLOWS.TRANSLATE;
@@ -42,10 +40,17 @@ namespace LjungbergIt.Xtm.Webservice
 
             string targetLanguage = translationLanguage.Replace("-", "_");
             languageCODE parsedLanguage = new languageCODE();
-
             bool languageCodeParsed = languageCODE.TryParse(targetLanguage, true, out parsedLanguage);
 
-            if (languageCodeParsed)
+            string sitecoreSourceLanguage = sourceLanguage.Replace("-", "_");
+            if (sitecoreSourceLanguage == "en")
+            {
+                sitecoreSourceLanguage = "en_GB";
+            }
+            languageCODE parsedSourceLanguage = new languageCODE();
+            bool sourceLanguageCodeParsed = languageCODE.TryParse(sitecoreSourceLanguage, true, out parsedSourceLanguage); 
+
+            if (languageCodeParsed && sourceLanguageCodeParsed)
             {
                 languageCODE?[] targetLang = new languageCODE?[] { parsedLanguage };
                 fileToTranslate.fileName = "translate.xml";
@@ -54,7 +59,7 @@ namespace LjungbergIt.Xtm.Webservice
 
                 xtmProjectMTOMAPI projectMTOM = new xtmProjectMTOMAPI();
                 projectMTOM.name = projectName.ToString();
-                projectMTOM.sourceLanguage = languageCODE.en_GB;
+                projectMTOM.sourceLanguage = parsedSourceLanguage;
                 projectMTOM.sourceLanguageSpecified = true;
                 projectMTOM.targetLanguages = targetLang;
                 projectMTOM.customer = xtmCustomer;
@@ -67,7 +72,7 @@ namespace LjungbergIt.Xtm.Webservice
                 {
                     xtmTemplateExtendedDescriptorAPI xtmTemplateDescriptor = new xtmTemplateExtendedDescriptorAPI();
                     //xtmTemplateDescriptor.name = project.Template;
-                    xtmTemplateDescriptor.id = 3514;
+                    xtmTemplateDescriptor.id = long.Parse(project.Template); //3514;
                     xtmTemplateDescriptor.idSpecified = true;
                     projectMTOM.template = xtmTemplateDescriptor;
                 }
