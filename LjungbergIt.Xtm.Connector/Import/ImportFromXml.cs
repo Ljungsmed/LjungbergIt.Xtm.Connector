@@ -8,9 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 
 namespace LjungbergIt.Xtm.Connector.Import
@@ -88,7 +85,10 @@ namespace LjungbergIt.Xtm.Connector.Import
                 }
 
             }
+            File.Delete(filePath + ".xml");
+            File.Delete(filePath + ".zip");
             return xmlDocument;
+
         }
 
         public bool ReadFromXml(XmlDocument xmlDocument)
@@ -113,61 +113,69 @@ namespace LjungbergIt.Xtm.Connector.Import
             }
             catch (Exception ex)
             {
-                //TODO write ex to log
+                ScLogging scLogging = new ScLogging();
+                scLogging.WriteError(ex.Message);
                 return false;
-            }
-            
+            }            
         }
 
         private Item CreateNewTranslatedVersion(XmlNode node)
         {
             string sitecoreItemId = node.Attributes[ScConstants.XmlNodes.XmlAttributeId].Value;
             string language = node.Attributes[ScConstants.XmlNodes.XmlAttributeLanguage].Value;
+            string sourceLanguage = node.Attributes[ScConstants.XmlNodes.XmlAttributeSourceLanguage].Value;
+
+            language = TransformLangauge(language);
+
+            language = language.Replace("_", "-");
+
             Language SitecoreLanguage = Language.Parse(language);
 
             Item translationItem = ScConstants.SitecoreDatabases.MasterDb.GetItem(sitecoreItemId, SitecoreLanguage);
             Item newVersion;
+
             using (new SecurityDisabler())
             {
                 newVersion = translationItem.Versions.AddVersion();
-                newVersion.Editing.BeginEdit();
-                newVersion[ScConstants.SitecoreStandardFieldNames.Workflow] = ScConstants.SitecoreWorkflowIDs.XtmWorkflow;
-                newVersion[ScConstants.SitecoreStandardFieldNames.WorkflowState] = ScConstants.SitecoreWorkflowIDs.XtmWorkflowStateAwaiting;
             }
 
-            List<FieldObject> fieldObjects = new List<FieldObject>();
+            List<UpdateItem> fieldObjects = new List<UpdateItem>();
+
+            string dateNow = DateTime.Now.ToString("yyyyMMddTHHmmssZ");
+
+            fieldObjects.Add(new UpdateItem { FieldIdOrName = ScConstants.SitecoreStandardFieldNames.Workflow, FieldValue = ScConstants.SitecoreWorkflowIDs.XtmWorkflow });
+            fieldObjects.Add(new UpdateItem { FieldIdOrName = ScConstants.SitecoreStandardFieldNames.WorkflowState, FieldValue = ScConstants.SitecoreWorkflowIDs.XtmWorkflowStateAwaiting });
+            fieldObjects.Add(new UpdateItem { FieldIdOrName = ScConstants.SitecoreXtmTemplateFieldIDs.Translated, FieldValue = "1"});
+            fieldObjects.Add(new UpdateItem { FieldIdOrName = ScConstants.SitecoreXtmTemplateFieldIDs.TranslatedDate, FieldValue = DateTime.Now.ToString("yyyyMMddTHHmmssZ")});
+            fieldObjects.Add(new UpdateItem { FieldIdOrName = ScConstants.SitecoreXtmTemplateFieldIDs.TranslatedFrom, FieldValue = sourceLanguage });
+            fieldObjects.Add(new UpdateItem { FieldIdOrName = ScConstants.SitecoreXtmTemplateFieldIDs.InTranslation, FieldValue = "0" });
 
             foreach (XmlNode fieldNode in node)
             {
-                FieldObject field = new FieldObject();
-                field.fieldName = fieldNode.Attributes[ScConstants.XmlNodes.XmlAttributeFieldName].Value;
-                field.fieldValue = fieldNode.InnerText;
+                UpdateItem field = new UpdateItem();
+                field.FieldIdOrName = fieldNode.Attributes[ScConstants.XmlNodes.XmlAttributeFieldName].Value;
+                field.FieldValue = fieldNode.InnerText;
                 fieldObjects.Add(field);
             }
 
-            //TODO call UpdateItem instead
-            UpdateFields(newVersion, fieldObjects);
-
-            UpdateItem updateItem = new UpdateItem();
-            List<UpdateItem> updateList = new List<UpdateItem>();
-            updateList.Add(new UpdateItem() { FieldIdOrName = ScConstants.SitecoreFieldIds.XtmBaseTemplateInTranslation, FieldValue = "0" });
-            updateItem.Update(translationItem.ID.ToString(), updateList);
+            UpdateItem updateItem = new UpdateItem();            
+            updateItem.Update(newVersion, fieldObjects);
 
             return (translationItem);
         }
 
-        //TODO use the UpdateItem class instead
-        private void UpdateFields(Item translationItem, List<FieldObject> fieldObjects)
+        private string TransformLangauge(string languageToTransform)
         {
-            using (new SecurityDisabler())
+            Item languageMappingFolder = masterDb.GetItem(ScConstants.SitecoreIDs.XtmSettingsLanguageMappingFolder);
+
+            foreach (Item langMapping in languageMappingFolder.GetChildren())
             {
-                translationItem.Editing.BeginEdit();
-                foreach (FieldObject field in fieldObjects)
+                if (langMapping[ScConstants.SitecoreFieldIds.XtmLanguageName].Equals(languageToTransform))
                 {
-                    translationItem[field.fieldName] = field.fieldValue;
-                }                
-                translationItem.Editing.EndEdit();
+                    languageToTransform = langMapping[ScConstants.SitecoreFieldIds.SitecoreLanguageName];
+                }
             }
+            return languageToTransform;
         }
     }
 }

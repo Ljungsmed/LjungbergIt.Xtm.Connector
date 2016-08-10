@@ -40,11 +40,17 @@ namespace LjungbergIt.Xtm.Connector.Export
                 foreach (Item translationFolderItem in queuedItemsFolder.GetChildren())
                 {
                     string fileName = translationFolderItem.Name;
+                    string xtmTemplateId = string.Empty;
+                    string xtmTemplateItemId = translationFolderItem[ScConstants.SitecoreFieldIds.QueuFolderXtmTemplate];
+                    if (xtmTemplateItemId != "")
+                    {
+                        xtmTemplateId = masterDb.GetItem(xtmTemplateItemId)[ScConstants.SitecoreFieldIds.XtmTemplateId];
+                    }                   
 
                     TranslationProperties translationProperties = new TranslationProperties();
                     translationProperties.SourceLanguage = translationFolderItem[ScConstants.SitecoreFieldIds.QueuFolderSourceLanguage];
                     translationProperties.TargetLanguage = translationFolderItem[ScConstants.SitecoreFieldIds.QueuFolderTranslateTo];
-                    translationProperties.XtmTemplate = translationFolderItem[ScConstants.SitecoreFieldIds.QueuFolderXtmTemplate];
+                    translationProperties.XtmTemplate = xtmTemplateId;
                     translationProperties.ItemId = translationFolderItem.ID.ToString();
 
                     ItemList queuedItemList = buildQueuedItemList(translationFolderItem, translationProperties.SourceLanguage);
@@ -62,14 +68,14 @@ namespace LjungbergIt.Xtm.Connector.Export
                             XmlWriter xw = XmlWriter.Create(fs, settings);
                             UpdateItem updateItem = new UpdateItem();
                             List<UpdateItem> updateList = new List<UpdateItem>();
-                            updateList.Add(new UpdateItem() { FieldIdOrName = ScConstants.SitecoreFieldIds.XtmBaseTemplateInTranslation, FieldValue = "1" });
+                            updateList.Add(new UpdateItem() { FieldIdOrName = ScConstants.SitecoreXtmTemplateFieldIDs.InTranslation, FieldValue = "1" });
                             //xw.WriteStartDocument();
                             xw.WriteStartElement(ScConstants.XmlNodes.XmlRoot);
                             foreach (Item queuedItem in queuedItemList)
                             {
                                 Item itemInTranslation = masterDb.GetItem(queuedItem[ScConstants.SitecoreFieldNames.TranslationQueueItem_ItemId]);
                                 AddElement(xw, queuedItem);
-                                updateItem.Update(masterDb.GetItem(itemInTranslation.ID).ID.ToString(), updateList);
+                                updateItem.Update(masterDb.GetItem(itemInTranslation.ID), updateList);
                             }
                             //xw.WriteEndDocument();
                             xw.WriteEndElement();
@@ -77,13 +83,19 @@ namespace LjungbergIt.Xtm.Connector.Export
                             xw.Close();
                         }
 
-                        //TODO get something back about success
                         //When translation file in XML have been created, a project on XTM gets created with the XML file as the translation file
-                        startTranslation.SendFilesToXtm(fullFilePath, fileName, translationProperties);
-
-                        using (new SecurityDisabler())
+                        string resultOfCreatingXtmProject = startTranslation.SendFilesToXtm(fullFilePath, fileName, translationProperties);
+                        //returnString = resultOfCreatingXtmProject;
+                        if (resultOfCreatingXtmProject.Equals("success"))
                         {
-                            translationFolderItem.MoveTo(archive);
+                            using (new SecurityDisabler())
+                            {
+                                translationFolderItem.MoveTo(archive);
+                            }
+                        }
+                        else
+                        {
+                            returnString = resultOfCreatingXtmProject;
                         }
                     }
                 }
@@ -129,8 +141,9 @@ namespace LjungbergIt.Xtm.Connector.Export
 
             xw.WriteStartElement(ScConstants.XmlNodes.XmlRootElement);
             xw.WriteAttributeString(ScConstants.XmlNodes.XmlAttributeId, ItemToAdd[ScConstants.SitecoreFieldNames.TranslationQueueItem_ItemId]);
-            xw.WriteAttributeString(ScConstants.XmlNodes.XmlAttributeLanguage, ItemToAdd[ScConstants.SitecoreFieldNames.TranslationQueueItem_TranslateTo]); //is this needed?
+            xw.WriteAttributeString(ScConstants.XmlNodes.XmlAttributeLanguage, ItemToAdd[ScConstants.SitecoreFieldNames.TranslationQueueItem_TranslateTo]);
             xw.WriteAttributeString(ScConstants.XmlNodes.XmlAttributeVersion, ItemToAdd[ScConstants.SitecoreFieldNames.TranslationQueueItem_Version]);
+            xw.WriteAttributeString(ScConstants.XmlNodes.XmlAttributeSourceLanguage, ItemToAdd[ScConstants.SitecoreFieldNames.TranslationQueueItem_MasterLanguage]);
 
             //one for each field
 

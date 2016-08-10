@@ -11,12 +11,8 @@ namespace LjungbergIt.Xtm.Connector.Helpers
         public string FieldIdOrName { get; set; }
         public string FieldValue { get; set; }
 
-
-        //TODO change to get Item instead of ItemID!
-        public bool Update(string itemId, List<UpdateItem> updateProps)
+        public bool Update(Item itemToUpdate, List<UpdateItem> updateProps)
         {
-            Item itemToUpdate = ScConstants.SitecoreDatabases.MasterDb.GetItem(itemId);
-
             if (itemToUpdate != null)
             {
                 using (new SecurityDisabler())
@@ -33,7 +29,6 @@ namespace LjungbergIt.Xtm.Connector.Helpers
             {
                 return false;
             }
-
             return true;
         }
 
@@ -44,7 +39,7 @@ namespace LjungbergIt.Xtm.Connector.Helpers
                 Item createdItem = parentItem.Add(itemName, templateId);
                 if (createdItem != null)
                 {
-                    Update(createdItem.ID.ToString(), updateProps);
+                    Update(createdItem, updateProps);
                 }
             }
             return true;

@@ -1,5 +1,6 @@
 ﻿using LjungbergIt.Xtm.Connector.Helpers;
 using Sitecore.Data.Items;
+using Sitecore.Security.Accounts;
 using Sitecore.SecurityModel;
 
 namespace LjungbergIt.Xtm.Connector.AddForTranslation
@@ -9,18 +10,24 @@ namespace LjungbergIt.Xtm.Connector.AddForTranslation
         public Item GetFolder(string folderName, TranslationProperties translationProperties)
         {
             Item returnItem = null;
-            Item queueFolder = ScConstants.SitecoreDatabases.MasterDb.GetItem(ScConstants.SitecoreIDs.TranslationQueueFolder);
-            foreach (Item folderItem in queueFolder.GetChildren())
-            {
-                if (folderItem.Name.Equals(folderName))
-                {
-                    returnItem = folderItem;
-                }
-            }
 
-            if (returnItem == null)
+            ScUser scUser = new ScUser();
+            User user = scUser.GetUser();
+            using (new UserSwitcher(user))
             {
-                returnItem = CreateFolder(queueFolder, folderName, translationProperties);
+                Item queueFolder = ScConstants.SitecoreDatabases.MasterDb.GetItem(ScConstants.SitecoreIDs.TranslationQueueFolder);
+                foreach (Item folderItem in queueFolder.GetChildren())
+                {
+                    if (folderItem.Name.Equals(folderName))
+                    {
+                        returnItem = folderItem;
+                    }
+                }
+
+                if (returnItem == null)
+                {
+                    returnItem = CreateFolder(queueFolder, folderName, translationProperties);
+                }
             }
 
             return returnItem;
@@ -32,7 +39,10 @@ namespace LjungbergIt.Xtm.Connector.AddForTranslation
             {
                 translationProperties.XtmTemplate = string.Empty;
             }
-            using (new SecurityDisabler())
+
+            ScUser scUser = new ScUser();
+            User user = scUser.GetUser();
+            using (new UserSwitcher(user))
             {
                 langFolderItem = queueFolderItem.Add(folderName, ScConstants.SitecoreTemplates.TranslationQueueLanguageFolderTemplate);
                 langFolderItem.Editing.BeginEdit();

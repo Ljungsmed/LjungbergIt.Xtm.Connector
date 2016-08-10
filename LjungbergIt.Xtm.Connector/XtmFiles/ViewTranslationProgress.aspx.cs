@@ -21,8 +21,7 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
 
         void lwProgress_ItemCommand(object sender, ListViewCommandEventArgs e)
         {
-
-            litTest.Text = "You clicked the " + (String)e.CommandArgument + " button";
+            
 
             string projectIdString = (String)e.CommandArgument;
 
@@ -32,7 +31,10 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
             {
                 ImportFromXml import = new ImportFromXml();
                 import.CreateTranslatedContent(projectId);
+                lwProgress.DataSource = BuildProjectlist();
+                lwProgress.DataBind();
             }
+            litTest.Text = "You succesfully imported the translated content. See your workbox for further details";
 
         }
 
@@ -40,30 +42,33 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
         {
             if (!IsPostBack)
             {
-                Item progressFolder = ScConstants.SitecoreDatabases.MasterDb.GetItem(ScConstants.SitecoreIDs.TranslationInProgressFolder);
-                List<long> xtmProjectIds = new List<long>();
-                foreach (Item progressItem in progressFolder.GetChildren())
-                {
-                    try
-                    {
-                        long xtmId = long.Parse(progressItem[ScConstants.SitecoreFieldIds.XtmProjectId]);
-                        xtmProjectIds.Add(xtmId);
-                    }
-                    catch (Exception ex)
-                    {
-                        litInfo.Text = ex.Message.ToString();
-                    }
-
-
-                }
-
-                XtmProject xtmProject = new XtmProject();
-                LoginProperties login = new LoginProperties();
-                List<XtmProject> projects = xtmProject.GetProjectProperties(xtmProjectIds, login.ScClient, login.ScUserId, login.ScPassword);
-
-                lwProgress.DataSource = projects;
+                lwProgress.DataSource = BuildProjectlist();
                 lwProgress.DataBind();
             }
+        }
+
+        protected List<XtmProject> BuildProjectlist()
+        {
+            Item progressFolder = ScConstants.SitecoreDatabases.MasterDb.GetItem(ScConstants.SitecoreIDs.TranslationInProgressFolder);
+            List<long> xtmProjectIds = new List<long>();
+            foreach (Item progressItem in progressFolder.GetChildren())
+            {
+                try
+                {
+                    long xtmId = long.Parse(progressItem[ScConstants.SitecoreFieldIds.XtmProjectId]);
+                    xtmProjectIds.Add(xtmId);
+                }
+                catch (Exception ex)
+                {
+                    litInfo.Text = ex.Message.ToString();
+                }
+            }
+
+            XtmProject xtmProject = new XtmProject();
+            LoginProperties login = new LoginProperties();
+            List<XtmProject> projects = xtmProject.GetProjectProperties(xtmProjectIds, login.ScClient, login.ScUserId, login.ScPassword);
+
+            return projects;
         }
 
         protected bool RenderImportButton(string stringStatus)
@@ -77,19 +82,5 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
 
             return status;
         }
-
-        //protected void btnDetailedView_Click(object sender, EventArgs e)
-        //{
-        //    litTest.Text = e.ToString();
-
-        //}
-
-        //protected void lwProgress_SelectedIndexChanged(object sender, EventArgs e)
-        //{
-        //    Sitecore.Text.UrlString buttonUrl = new Sitecore.Text.UrlString("/XtmFiles/TranslationDetailedView.aspx");
-        //    buttonUrl.Append("id", "itemId");
-
-        //    SheerResponse.ShowModalDialog(buttonUrl.ToString(), "800", "600", "testing message", false);
-        //}
     }
 }

@@ -13,9 +13,9 @@
             <h1>View Translation Progress
             </h1>
         </div>
-
-        <asp:Literal ID="litTest" runat="server" />
-
+        <div>
+            <asp:Literal ID="litTest" runat="server" Text="" />
+        </div>
         <div>
             <asp:ListView ID="lwProgress" runat="server" ItemType="LjungbergIt.Xtm.Webservice.XtmProject">
                 <LayoutTemplate>

@@ -126,8 +126,11 @@
     <Content Include="Global.asax" />
     <Content Include="ReferencedAssemblies\Sitecore.Client.dll" />
     <Content Include="ReferencedAssemblies\Sitecore.Kernel.dll" />
+    <Content Include="TestSecurity.aspx" />
     <Content Include="Test\test.aspx" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="XtmFiles\AddItemForTranslation.aspx" />
     <Content Include="XtmFiles\TranslationDetailedView.aspx" />
     <Content Include="XtmFiles\ViewTranslationProgress.aspx" />
@@ -139,7 +142,9 @@
     <Compile Include="AddForTranslation\TranslationQueue.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Buttons\AddItemForTranslation.cs" />
+    <Compile Include="Buttons\GetXtmTemplates.cs" />
     <Compile Include="Buttons\StartTranslation.cs" />
+    <Compile Include="Buttons\TestSecurity.cs" />
     <Compile Include="Buttons\ViewTranslationProgress.cs" />
     <Compile Include="Commands\XtmStartTranslation.cs" />
     <Compile Include="Export\Project.cs" />
@@ -147,18 +152,27 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\ScUser.cs" />
+    <Compile Include="Helpers\LanguageMapping.cs" />
     <Compile Include="Helpers\LoginProperties.cs" />
     <Compile Include="Helpers\ScConstants.cs" />
+    <Compile Include="Helpers\ScLogging.cs" />
     <Compile Include="Helpers\UpdateItem.cs" />
     <Compile Include="Helpers\Utils.cs" />
     <Compile Include="AddForTranslation\GetLanguageQueueFolder.cs" />
     <Compile Include="Helpers\XtmBaseTemplateProperties.cs" />
     <Compile Include="Import\GetXtmTemplates.cs" />
     <Compile Include="Import\ImportFromXml.cs" />
-    <Compile Include="Import\FieldObject.cs" />
     <Compile Include="Pipelines\XtmPipelineArgs.cs" />
     <Compile Include="Pipelines\XtmProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestSecurity.aspx.cs">
+      <DependentUpon>TestSecurity.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TestSecurity.aspx.designer.cs">
+      <DependentUpon>TestSecurity.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Test\test.aspx.cs">
       <DependentUpon>test.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

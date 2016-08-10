@@ -8,13 +8,15 @@ using LjungbergIt.Xtm.Connector.Helpers;
 using Sitecore.Data.Items;
 using Sitecore.Data;
 using Sitecore.Collections;
+using Sitecore.SecurityModel;
 
 namespace LjungbergIt.Xtm.Connector.Import
 {
     class GetXtmTemplates
     {
-        public void TemplatesFromXtm()
+        public string TemplatesFromXtm()
         {
+            string returnString = "No new templates added";
             XtmTemplate xtmGetTemplates = new XtmTemplate();
 
             LoginProperties login = new LoginProperties();
@@ -33,14 +35,29 @@ namespace LjungbergIt.Xtm.Connector.Import
 
                 foreach (Item template in xtmTemplateFolder.GetChildren())
                 {
-                    existingTemplates.Add(template.Name);
+                    existingTemplates.Add(template[ScConstants.SitecoreFieldIds.XtmTemplateId]);
+                    bool delete = true;
+                    foreach (XtmTemplate xtmTemplate in templateList)
+                    {
+                        if (template[ScConstants.SitecoreFieldIds.XtmTemplateId].Equals(xtmTemplate.XtmTemplateId.ToString()))
+                        {
+                            delete = false;
+                        }
+                    }
+                    if (delete)
+                    {
+                        using (new SecurityDisabler())
+                        {
+                            template.Delete();
+                        }                            
+                    }
                 }
 
                 foreach (XtmTemplate xtmTemplate in templateList)
                 {
                     if (existingTemplates.Count != 0)
                     {
-                        if (existingTemplates.Contains(xtmTemplate.XtmTemplateName))
+                        if (existingTemplates.Contains(xtmTemplate.XtmTemplateId.ToString()))
                         {
                             newTemplate = false;
                         }
@@ -53,13 +70,25 @@ namespace LjungbergIt.Xtm.Connector.Import
                         updateList.Add(new UpdateItem { FieldIdOrName = ScConstants.SitecoreFieldIds.XtmTemplateName, FieldValue = xtmTemplate.XtmTemplateName });
                         updateList.Add(new UpdateItem { FieldIdOrName = ScConstants.SitecoreFieldIds.XtmTemplateId, FieldValue = xtmTemplate.XtmTemplateId.ToString() });
                         updateItem.CreateItem(xtmTemplate.XtmTemplateName, xtmTemplateFolder, ScConstants.SitecoreTemplates.XtmTemplate, updateList);
+                        returnString = "There are new XTM templates imported for use";
                     }
-                   
 
+                    //bool xtmTemplateDeleted = true;
+                    //foreach (Item template in xtmTemplateFolder.GetChildren())
+                    //{
+                    //    if (template[ScConstants.SitecoreFieldIds.XtmTemplateId].Equals(xtmTemplate.XtmTemplateId.ToString()))
+                    //    {
+                    //        xtmTemplateDeleted = false;
+                    //    }
+                    //}
+
+                    //if (xtmTemplateDeleted)
+                    //{
+
+                    //}
                 }
             }
-            
-
+            return returnString;
         }
     }
 }

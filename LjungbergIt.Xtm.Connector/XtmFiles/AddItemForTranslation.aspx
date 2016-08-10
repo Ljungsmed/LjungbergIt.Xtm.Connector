@@ -20,7 +20,7 @@
             </div>
             <br />
             <div>
-                <asp:DropDownList ID="ddSourceLanguage" runat="server" />
+                <asp:DropDownList ID="ddSourceLanguage" runat="server" OnSelectedIndexChanged="ddSourceLanguage_SelectedIndexChanged" AutoPostBack="true" />
             </div>
             <br />
             <div>
@@ -40,10 +40,17 @@
             </div>
             <br />
             <div>
+               Add all sub-items also? <asp:CheckBox runat="server" ID="cbAllSubItems"></asp:CheckBox>
+            </div>
+            <br />
+            <div>
                 <asp:Button runat="server" ID="btnAddForTranslation" Text="Add" OnClick="btnAddForTranslation_Click" />
             </div>            
         </div>
-        <asp:Literal ID="litResult" runat="server" />
+        <br />
+        <div>
+            <asp:Literal ID="litResult" runat="server" />
+        </div>        
     </form>
 </body>
 </html>

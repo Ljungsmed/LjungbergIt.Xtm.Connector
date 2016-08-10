@@ -16,12 +16,22 @@ namespace LjungbergIt.Xtm.Connector.Helpers
             public static readonly string TranslationInProgressFolder = "{D400D345-F302-4EAD-8B16-673094960139}";
             public static readonly string XtmSettingsItem = "{16952019-98B9-43EB-B1AB-18CD6663BE28}";
             public static readonly string XtmSettingsXtmTemplateFolder = "{7EA4644E-4AE7-4D7F-B807-5D3E51444FAD}";
+            public static readonly string XtmSettingsLanguageMappingFolder = "{7D96664A-4CB2-4847-9C41-479DF9AD43F5}";
         }
 
         public struct SitecoreWorkflowIDs
         {
             public static readonly string XtmWorkflow = "{115CBA9C-D124-49D5-B9D1-314B32155AAB}";
             public static readonly string XtmWorkflowStateAwaiting = "{C8CB5D17-7F02-4A34-B2AE-36D1DB4A7089}";
+        }
+
+        public struct SitecoreXtmTemplateFieldIDs
+        {
+            public static readonly string Translated = "{0A60DBA6-38D2-4EAE-8A26-85A3D85BC0FF}";
+            public static readonly string TranslatedDate = "{F6276376-28A9-4BE4-AAEA-C20DBC4A4F0C}";
+            public static readonly string AddedToTranslateionBy = "{974F434B-6C07-4E62-9350-719D65BABFFA}";
+            public static readonly string TranslatedFrom = "{257532BF-69D3-4A18-9F3E-8443BA5A0993}";
+            public static readonly string InTranslation = "{C33EEDFF-6244-4453-8C99-F5DCC7AF3E9D}";
         }
 
         public struct SitecoreDatabases
@@ -72,12 +82,14 @@ namespace LjungbergIt.Xtm.Connector.Helpers
             public static readonly string QueuFolderSourceLanguage = "{49BB7FBD-0C7E-41BA-8E0B-0FCA7F8BB538}";
             public static readonly string QueuFolderTranslateTo = "{D61CDBB9-1056-440B-B02B-38AEAB882AB0}";
             public static readonly string QueuFolderXtmTemplate = "{00C42DB8-293A-41A2-9ED9-12244523EA9C}";
-            public static readonly string XtmBaseTemplateTranslated = "{0A60DBA6-38D2-4EAE-8A26-85A3D85BC0FF}";
-            public static readonly string XtmBaseTemplateInTranslation = "{C33EEDFF-6244-4453-8C99-F5DCC7AF3E9D}";
-            public static readonly string XtmBaseTemplateTranslatedDate = "{F6276376-28A9-4BE4-AAEA-C20DBC4A4F0C}";
-            public static readonly string XtmBaseTemplateAddedToTranslationBy = "{974F434B-6C07-4E62-9350-719D65BABFFA}";
+            //public static readonly string XtmBaseTemplateTranslated = "{0A60DBA6-38D2-4EAE-8A26-85A3D85BC0FF}";
+            //public static readonly string XtmBaseTemplateInTranslation = "{C33EEDFF-6244-4453-8C99-F5DCC7AF3E9D}";
+            //public static readonly string XtmBaseTemplateTranslatedDate = "{F6276376-28A9-4BE4-AAEA-C20DBC4A4F0C}";
+            //public static readonly string XtmBaseTemplateAddedToTranslationBy = "{974F434B-6C07-4E62-9350-719D65BABFFA}";
             public static readonly string XtmTemplateName = "{6B857053-5045-4C75-BFE2-E2D0FDD88B7E}";
             public static readonly string XtmTemplateId = "{D2B211E6-414F-48FB-836E-67A8A97B5B3C}";
+            public static readonly string SitecoreLanguageName = "{471FDD58-5685-4BD4-934C-D82D6D37FDF8}";
+            public static readonly string XtmLanguageName = "{C300CF84-9D5F-4E5C-9EFD-82812B15713F}";
 
         }    
 
@@ -91,12 +103,13 @@ namespace LjungbergIt.Xtm.Connector.Helpers
         public struct XmlNodes
         {
             //public static readonly TemplateID TemplateName = new TemplateID(new ID("Id of the template"));
-            public static readonly string XmlRoot = "XtmTranslation";
+            public static readonly string XmlRoot = "XtmSitecoreTranslation";
             public static readonly string XmlRootElement = "SitecoreItem";
             public static readonly string XmlElementField = "field";
             public static readonly string XmlAttributeId = "id";
             public static readonly string XmlAttributeLanguage = "language";
             public static readonly string XmlAttributeVersion = "version";
+            public static readonly string XmlAttributeSourceLanguage = "sourcelangauge";
             public static readonly string XmlAttributeFieldName = "fieldName";
             public static readonly string XmlAttributeFieldType = "fieldType";
 
