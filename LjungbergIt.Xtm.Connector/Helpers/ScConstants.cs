@@ -90,6 +90,7 @@ namespace LjungbergIt.Xtm.Connector.Helpers
             public static readonly string XtmTemplateId = "{D2B211E6-414F-48FB-836E-67A8A97B5B3C}";
             public static readonly string SitecoreLanguageName = "{471FDD58-5685-4BD4-934C-D82D6D37FDF8}";
             public static readonly string XtmLanguageName = "{C300CF84-9D5F-4E5C-9EFD-82812B15713F}";
+            public static readonly string TranslationQueueItem_AddedBy = "{5676881D-A27B-4536-8C53-A7C90E76AC26}";
 
         }    
 
@@ -112,6 +113,7 @@ namespace LjungbergIt.Xtm.Connector.Helpers
             public static readonly string XmlAttributeSourceLanguage = "sourcelangauge";
             public static readonly string XmlAttributeFieldName = "fieldName";
             public static readonly string XmlAttributeFieldType = "fieldType";
+            public static readonly string XmlAttributeAddedBy = "addedBy";
 
         }
     }

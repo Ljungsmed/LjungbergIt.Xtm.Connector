@@ -74,7 +74,7 @@ namespace LjungbergIt.Xtm.Connector.Export
                             foreach (Item queuedItem in queuedItemList)
                             {
                                 Item itemInTranslation = masterDb.GetItem(queuedItem[ScConstants.SitecoreFieldNames.TranslationQueueItem_ItemId]);
-                                AddElement(xw, queuedItem);
+                                AddElement(xw, queuedItem, translationProperties.SourceLanguage);
                                 updateItem.Update(masterDb.GetItem(itemInTranslation.ID), updateList);
                             }
                             //xw.WriteEndDocument();
@@ -84,8 +84,9 @@ namespace LjungbergIt.Xtm.Connector.Export
                         }
 
                         //When translation file in XML have been created, a project on XTM gets created with the XML file as the translation file
+
                         string resultOfCreatingXtmProject = startTranslation.SendFilesToXtm(fullFilePath, fileName, translationProperties);
-                        //returnString = resultOfCreatingXtmProject;
+
                         if (resultOfCreatingXtmProject.Equals("success"))
                         {
                             using (new SecurityDisabler())
@@ -131,19 +132,20 @@ namespace LjungbergIt.Xtm.Connector.Export
             }
         } 
 
-        private XmlWriter AddElement(XmlWriter xw, Item ItemToAdd)
+        private XmlWriter AddElement(XmlWriter xw, Item ItemToAdd, string language)
         {
-            Language lang = Language.Parse(ItemToAdd[ScConstants.SitecoreFieldNames.TranslationQueueItem_MasterLanguage]);
+            Language SourceLanguage = Language.Parse(language);
             //Sitecore.Data.Version version = Sitecore.Data.Version.Parse(ItemToAdd[ScConstants.SitecoreFieldNames.TranslationQueueItem_Version]);
             Sitecore.Data.ID ItemId = new Sitecore.Data.ID(ItemToAdd[ScConstants.SitecoreFieldNames.TranslationQueueItem_ItemId]);
 
-            Item ItemToTranslate = ScConstants.SitecoreDatabases.MasterDb.GetItem(ItemId, lang); 
+            Item ItemToTranslate = ScConstants.SitecoreDatabases.MasterDb.GetItem(ItemId, SourceLanguage); 
 
             xw.WriteStartElement(ScConstants.XmlNodes.XmlRootElement);
             xw.WriteAttributeString(ScConstants.XmlNodes.XmlAttributeId, ItemToAdd[ScConstants.SitecoreFieldNames.TranslationQueueItem_ItemId]);
             xw.WriteAttributeString(ScConstants.XmlNodes.XmlAttributeLanguage, ItemToAdd[ScConstants.SitecoreFieldNames.TranslationQueueItem_TranslateTo]);
             xw.WriteAttributeString(ScConstants.XmlNodes.XmlAttributeVersion, ItemToAdd[ScConstants.SitecoreFieldNames.TranslationQueueItem_Version]);
-            xw.WriteAttributeString(ScConstants.XmlNodes.XmlAttributeSourceLanguage, ItemToAdd[ScConstants.SitecoreFieldNames.TranslationQueueItem_MasterLanguage]);
+            xw.WriteAttributeString(ScConstants.XmlNodes.XmlAttributeSourceLanguage, language);
+            xw.WriteAttributeString(ScConstants.XmlNodes.XmlAttributeAddedBy, ItemToAdd[ScConstants.SitecoreFieldIds.TranslationQueueItem_AddedBy]);
 
             //one for each field
 

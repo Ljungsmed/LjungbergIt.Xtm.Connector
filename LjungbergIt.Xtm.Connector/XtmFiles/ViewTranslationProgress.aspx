@@ -28,9 +28,9 @@
                             <th>
                                 Project ID
                             </th>
-                            <th>
+                            <%--<th>
                                 Customer
-                            </th>
+                            </th>--%>
                             <th>
                                 Source Language
                             </th>
@@ -40,9 +40,9 @@
                             <th>
                                 Created
                             </th>
-                            <th>
+                            <%--<th>
                                 Due Date
-                            </th>
+                            </th>--%>
                             <th>
                                 Status
                             </th>
@@ -64,9 +64,9 @@
                         <td>
                             <%# Item.ProjectId %>
                         </td>
-                        <td>
+                        <%--<td>
                             <%# Item.Customer %>
-                        </td>
+                        </td>--%>
                         <td>
                             <%# Item.SourceLanguage %>
                         </td>
@@ -76,9 +76,9 @@
                         <td>
                             <%# Item.CreatedDate.ToString("dd-MM-yyyy HH:mm") %>
                         </td>
-                        <td>
+                       <%-- <td>
                             <%# Item.DueDate.ToString("dd-MM-yyyy HH:mm") %>
-                        </td>
+                        </td>--%>
                         <td>
                             <%# Item.WorkflowStatus %>
                         </td>

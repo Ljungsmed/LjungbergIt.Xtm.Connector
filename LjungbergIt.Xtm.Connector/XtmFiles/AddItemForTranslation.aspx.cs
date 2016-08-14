@@ -114,6 +114,7 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
                 {
                     sourceLanguage = GetDefaultSourceLanguage().CultureInfo.Name;
                 }
+                string addedBy = Sitecore.Context.User.Name;
                 StringBuilder info = new StringBuilder();
                 LanguageMapping languageMapping = new LanguageMapping();
                 List<LanguageMapping> languageMappingList = languageMapping.LanguageList();
@@ -133,7 +134,7 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
 
                         foreach (Item itemToTranslate in ItemsToTranslate)
                         {
-                            string result = translationQueue.AddToQueue(itemToTranslate, sourceLanguage, targetLanguage, xtmTemplate);
+                            string result = translationQueue.AddToQueue(itemToTranslate, sourceLanguage, targetLanguage, xtmTemplate, addedBy);
                             info.Append(result);
                             info.Append("<br //>");
                         }                        
@@ -142,7 +143,7 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
 
                 if (cbTargetLanguages.SelectedItem == null)
                 {
-                    string result = translationQueue.AddToQueue(contextItem, sourceLanguage, "NONE", xtmTemplate);
+                    string result = translationQueue.AddToQueue(contextItem, sourceLanguage, "NONE", xtmTemplate, addedBy);
                     info.Append(result);
                     info.Append(", the XTM Template defines the target language");
                     info.Append("<br //>");

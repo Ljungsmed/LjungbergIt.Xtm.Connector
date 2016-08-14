@@ -40,7 +40,7 @@
             </div>
             <br />
             <div>
-               Add all sub-items also? <asp:CheckBox runat="server" ID="cbAllSubItems"></asp:CheckBox>
+               Include all sub-items: <asp:CheckBox runat="server" ID="cbAllSubItems"></asp:CheckBox>
             </div>
             <br />
             <div>
