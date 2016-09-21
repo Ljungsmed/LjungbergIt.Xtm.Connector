@@ -16,18 +16,21 @@ namespace LjungbergIt.Xtm.Connector.Test
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            XtmLanguages lang = new XtmLanguages();
+            lang.CreateAllXtmLanguages();
         }
 
         protected void Button1_Click(Object sender, EventArgs e)
         {
             //XtmHandleTranslatedContent translation = new XtmHandleTranslatedContent();
-            ImportFromXml import = new ImportFromXml();
+            //ImportFromXml import = new ImportFromXml();
 
-            import.CreateTranslatedContentFromProgressFolder();
+            //import.CreateTranslatedContentFromProgressFolder();
             //ConvertToXml convert = new ConvertToXml();
             //convert.Transform();
             //litInfo.Text = translation.GetFileInBytes(3832);
+
+            
         }
 
         protected void Button2_Click(object sender, EventArgs e)

@@ -9,18 +9,28 @@
 </head>
 <body>
     <form id="form1" runat="server">
-        <div runat="server" id="divChooseTranslationOptions">
+        <div class="blueline"></div>
+        <div class="identity">
+            <div class="heading">
+                <h1>Add to Queue</h1>
+            </div>
+            <div class="logo">
+                <img src="/XtmFiles/XtmStyles/xtmlogo.png" alt="xtm logo" height="40" />
+            </div>
+        </div>
+        <div style="clear: both;"></div>
+        <div runat="server" id="divChooseTranslationOptions" class="container">
             <div class="headingarea">
-                <h1>
+                <h2>
                     <asp:Literal runat="server" ID="litHeading" />
-                </h1>
+                </h2>
             </div>
             <div>
                 <asp:Literal runat="server" ID="litSourceLanguage" />
             </div>
             <br />
             <div>
-                <asp:DropDownList ID="ddSourceLanguage" runat="server" OnSelectedIndexChanged="ddSourceLanguage_SelectedIndexChanged" AutoPostBack="true" />
+                <asp:DropDownList ID="ddSourceLanguage" runat="server" OnSelectedIndexChanged="ddSourceLanguage_SelectedIndexChanged" AutoPostBack="true" CssClass="dropdown" />
             </div>
             <br />
             <div>
@@ -36,21 +46,22 @@
             </div>
             <br />
             <div>
-                <asp:DropDownList ID="ddXtmTemplate" runat="server" />
+                <asp:DropDownList ID="ddXtmTemplate" runat="server" CssClass="dropdown" />
             </div>
             <br />
             <div>
-               Include all sub-items: <asp:CheckBox runat="server" ID="cbAllSubItems"></asp:CheckBox>
+                Include all sub-items:
+                <asp:CheckBox runat="server" ID="cbAllSubItems" CssClass="checkbox"></asp:CheckBox>
             </div>
             <br />
             <div>
-                <asp:Button runat="server" ID="btnAddForTranslation" Text="Add" OnClick="btnAddForTranslation_Click" />
-            </div>            
+                <asp:Button runat="server" ID="btnAddForTranslation" Text="Add" OnClick="btnAddForTranslation_Click" CssClass="button" />
+            </div>
         </div>
         <br />
         <div>
             <asp:Literal ID="litResult" runat="server" />
-        </div>        
+        </div>
     </form>
 </body>
 </html>

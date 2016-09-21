@@ -1,12 +1,20 @@
 ﻿body {
         font-family: Arial, Helvetica, sans-serif;
         margin: 0;
-        padding: 5px 0 0 15px;
+        background-color: #EAEAEA;
+        
+}
+
+.container {
+    padding: 5px 0 0 15px;
 }
 
 h1 {
     color: #474747;
     font-weight: normal;
+    font-size: 24px;
+    margin:0;
+    padding:0;
 }
 
 th, td {
@@ -37,4 +45,46 @@ th, td {
 
 .tablestyle {
     border-spacing: 0px;
+}
+
+.identity {
+    background-color: white;
+    height: 50px;
+}
+
+.blueline {
+    background-color: #00ADEE;
+    height: 10px;
+}
+
+.heading {
+    padding: 10px 0 10px 15px;
+    float: left;
+}
+
+.logo {
+    float: right;
+    padding: 5px 15px 5px 0;
+}
+
+.dropdown {
+    border: none;
+    height: 29px;
+    padding: 5px;
+    min-width: 250px;
+}
+
+.checkbox {
+    /*outline: 1px solid white;*/
+    
+}
+
+.button {
+     padding: 0 10px 0 10px;
+     min-width: 70px;
+     height: 30px;
+     text-align: center;
+     background-color: #00ADEE;
+     color: white;
+     border: none;
 }

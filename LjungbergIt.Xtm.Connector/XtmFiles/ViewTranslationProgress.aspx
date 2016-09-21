@@ -9,10 +9,19 @@
 </head>
 <body>
     <form id="form1" runat="server">
-        <div class="headingarea">
-            <h1>View Translation Progress
-            </h1>
+        <div class="blueline"></div>
+        <div class="identity">
+            <div class="heading">
+                <h1>Translation Progress</h1>
+            </div>
+            <div class="logo">
+                <img src="/XtmFiles/XtmStyles/xtmlogo.png" alt="xtm logo" height="40" />
+            </div>
         </div>
+        <div style="clear: both;"></div>
+        <%--<div class="headingarea">
+            <h2>View Translation Progress</h2>
+        </div>--%>
         <div>
             <asp:Literal ID="litTest" runat="server" Text="" />
         </div>

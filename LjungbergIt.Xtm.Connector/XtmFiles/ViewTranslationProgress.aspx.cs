@@ -2,12 +2,8 @@
 using LjungbergIt.Xtm.Connector.Import;
 using LjungbergIt.Xtm.Webservice;
 using Sitecore.Data.Items;
-using Sitecore.Web.UI.Sheer;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
 using System.Web.UI.WebControls;
 
 namespace LjungbergIt.Xtm.Connector.XtmFiles
@@ -21,8 +17,7 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
 
         void lwProgress_ItemCommand(object sender, ListViewCommandEventArgs e)
         {
-            
-
+            string info = "General error";
             string projectIdString = (String)e.CommandArgument;
 
             long projectId;
@@ -30,11 +25,24 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
             if (projectIdOk)
             {
                 ImportFromXml import = new ImportFromXml();
-                import.CreateTranslatedContent(projectId);
+                bool success = import.CreateTranslatedContent(projectId);
                 lwProgress.DataSource = BuildProjectlist();
                 lwProgress.DataBind();
+                if (success)
+                {
+                    info = "You succesfully imported the translated content. See your workbox for further details";
+                }
+                else
+                {
+                    info = "There was a problem with the translated project in XTM, please contact your XTM admin";
+                }
             }
-            litTest.Text = "You succesfully imported the translated content. See your workbox for further details";
+            else
+            {
+                info = "There is something wrong with the project id";
+            }
+
+            litTest.Text = info;
 
         }
 
@@ -64,9 +72,12 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
                 }
             }
 
+            Item settingsItem = ScConstants.SitecoreDatabases.MasterDb.GetItem(ScConstants.SitecoreIDs.XtmSettingsItem);
+            string webServiceEndPoint = settingsItem[ScConstants.SitecoreFieldIds.XtmSettingsEndpoint];
+
             XtmProject xtmProject = new XtmProject();
             LoginProperties login = new LoginProperties();
-            List<XtmProject> projects = xtmProject.GetProjectProperties(xtmProjectIds, login.ScClient, login.ScUserId, login.ScPassword);
+            List<XtmProject> projects = xtmProject.GetProjectProperties(xtmProjectIds, login.ScClient, login.ScUserId, login.ScPassword, webServiceEndPoint);
 
             return projects;
         }

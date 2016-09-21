@@ -9,6 +9,16 @@
 </head>
 <body>
     <form id="form1" runat="server">
+        <div class="blueline"></div>
+        <div class="identity">
+            <div class="heading">
+                <h1>Content ready for translation</h1>
+            </div>
+            <div class="logo">
+                <img src="/XtmFiles/XtmStyles/xtmlogo.png" alt="xtm logo" height="40" />
+            </div>
+        </div>
+        <div style="clear: both;"></div>
     <div>
     test
     </div>

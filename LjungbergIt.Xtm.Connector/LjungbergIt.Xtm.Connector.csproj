@@ -136,12 +136,14 @@
     <Content Include="XtmFiles\ViewTranslationProgress.aspx" />
     <Content Include="XtmFiles\XtmStyles\HeadingBg.png" />
     <Content Include="XtmFiles\XtmStyles\Xtm.css" />
+    <Content Include="XtmFiles\XtmStyles\xtmlogo.png" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddForTranslation\TranslationProperties.cs" />
     <Compile Include="AddForTranslation\TranslationQueue.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Buttons\AddItemForTranslation.cs" />
+    <Compile Include="Buttons\GetXtmLanguages.cs" />
     <Compile Include="Buttons\GetXtmTemplates.cs" />
     <Compile Include="Buttons\StartTranslation.cs" />
     <Compile Include="Buttons\TestSecurity.cs" />
@@ -163,6 +165,7 @@
     <Compile Include="Helpers\XtmBaseTemplateProperties.cs" />
     <Compile Include="Import\GetXtmTemplates.cs" />
     <Compile Include="Import\ImportFromXml.cs" />
+    <Compile Include="Import\XtmLanguages.cs" />
     <Compile Include="Pipelines\XtmPipelineArgs.cs" />
     <Compile Include="Pipelines\XtmProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

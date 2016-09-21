@@ -25,24 +25,29 @@ namespace LjungbergIt.Xtm.Connector.Import
                 bool projectIdOk = long.TryParse(progressItem[ScConstants.SitecoreFieldIds.XtmProjectId], out projectId);
                 if (projectIdOk)
                 {
-                    CreateTranslatedContent(projectId);
+                    bool success = CreateTranslatedContent(projectId);
                 }
             }
         }
 
-        public void CreateTranslatedContent(long projectId)
+        public bool CreateTranslatedContent(long projectId)
         {
             XtmProject xtmProject = new XtmProject();
             LoginProperties login = new LoginProperties();
             string client = login.ScClient;
             long userId = login.ScUserId;
             string password = login.ScPassword;
+            bool success = new bool();
 
-            bool finished = xtmProject.IsTranslationFinished(projectId, client, userId, password);
+            Item settingsItem = ScConstants.SitecoreDatabases.MasterDb.GetItem(ScConstants.SitecoreIDs.XtmSettingsItem);
+            string webServiceEndPoint = settingsItem[ScConstants.SitecoreFieldIds.XtmSettingsEndpoint];
+
+            bool finished = xtmProject.IsTranslationFinished(projectId, client, userId, password, webServiceEndPoint);
             if (finished)
             {
                 XtmHandleTranslatedContent Xtm = new XtmHandleTranslatedContent();
-                List<byte[]> bytesList = Xtm.GetFileInBytes(projectId, client, userId, password);
+                List<byte[]> bytesList = Xtm.GetFileInBytes(projectId, client, userId, password, webServiceEndPoint);
+                
                 if (bytesList.Count != 0)
                 {
                     XmlDocument translatedXmlDoc = ConvertTranslatedBytesToXML(projectId, bytesList);
@@ -61,8 +66,14 @@ namespace LjungbergIt.Xtm.Connector.Import
                             }
                         }
                     }
-                }
+                    success = true;
+                }               
+                else
+                {
+                    success = false;
+                }                
             }
+            return success;
         }
 
         public XmlDocument ConvertTranslatedBytesToXML(long projectId, List<byte[]> bytesList)
@@ -151,6 +162,7 @@ namespace LjungbergIt.Xtm.Connector.Import
             fieldObjects.Add(new UpdateItem { FieldIdOrName = ScConstants.SitecoreXtmTemplateFieldIDs.TranslatedFrom, FieldValue = sourceLanguage });
             fieldObjects.Add(new UpdateItem { FieldIdOrName = ScConstants.SitecoreXtmTemplateFieldIDs.InTranslation, FieldValue = "0" });
             fieldObjects.Add(new UpdateItem { FieldIdOrName = ScConstants.SitecoreXtmTemplateFieldIDs.AddedToTranslateionBy, FieldValue = addedBy });
+            fieldObjects.Add(new UpdateItem { FieldIdOrName = ScConstants.SitecoreStandardFieldNames.CreatedBy, FieldValue = "XTM" });
 
             foreach (XmlNode fieldNode in node)
             {

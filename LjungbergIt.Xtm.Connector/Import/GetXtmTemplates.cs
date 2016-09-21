@@ -24,13 +24,16 @@ namespace LjungbergIt.Xtm.Connector.Import
             long userId = login.ScUserId;
             string password = login.ScPassword;
 
-            List<XtmTemplate> templateList = xtmGetTemplates.GetTemplates(login.ScClient, login.ScUserId, login.ScPassword, login.ScCustomer);
+            Item settingsItem = ScConstants.SitecoreDatabases.MasterDb.GetItem(ScConstants.SitecoreIDs.XtmSettingsItem);
+            string webServiceEndPoint = settingsItem[ScConstants.SitecoreFieldIds.XtmSettingsEndpoint];
+
+            List<XtmTemplate> templateList = xtmGetTemplates.GetTemplates(login.ScClient, login.ScUserId, login.ScPassword, login.ScCustomer, webServiceEndPoint);
             if (templateList.Count != 0)
             {
                 Database masterDb = ScConstants.SitecoreDatabases.MasterDb;
                 Item xtmTemplateFolder = masterDb.GetItem(ScConstants.SitecoreIDs.XtmSettingsXtmTemplateFolder);
                 List<string> existingTemplates = new List<string>();
-                bool newTemplate = true;
+                
                 //bool deletedTemplate = false;
 
                 foreach (Item template in xtmTemplateFolder.GetChildren())
@@ -42,6 +45,7 @@ namespace LjungbergIt.Xtm.Connector.Import
                         if (template[ScConstants.SitecoreFieldIds.XtmTemplateId].Equals(xtmTemplate.XtmTemplateId.ToString()))
                         {
                             delete = false;
+                            
                         }
                     }
                     if (delete)
@@ -49,12 +53,14 @@ namespace LjungbergIt.Xtm.Connector.Import
                         using (new SecurityDisabler())
                         {
                             template.Delete();
+                            existingTemplates.Remove(template[ScConstants.SitecoreFieldIds.XtmTemplateId]);
                         }                            
                     }
-                }
+                }                
 
                 foreach (XtmTemplate xtmTemplate in templateList)
                 {
+                    bool newTemplate = true;
                     if (existingTemplates.Count != 0)
                     {
                         if (existingTemplates.Contains(xtmTemplate.XtmTemplateId.ToString()))
@@ -67,7 +73,9 @@ namespace LjungbergIt.Xtm.Connector.Import
                     {
                         UpdateItem updateItem = new UpdateItem();
                         List<UpdateItem> updateList = new List<UpdateItem>();
-                        updateList.Add(new UpdateItem { FieldIdOrName = ScConstants.SitecoreFieldIds.XtmTemplateName, FieldValue = xtmTemplate.XtmTemplateName });
+                        Utils util = new Utils();
+                        string itemName = util.FormatItemName(xtmTemplate.XtmTemplateName);
+                        updateList.Add(new UpdateItem { FieldIdOrName = ScConstants.SitecoreFieldIds.XtmTemplateName, FieldValue = itemName });
                         updateList.Add(new UpdateItem { FieldIdOrName = ScConstants.SitecoreFieldIds.XtmTemplateId, FieldValue = xtmTemplate.XtmTemplateId.ToString() });
                         updateItem.CreateItem(xtmTemplate.XtmTemplateName, xtmTemplateFolder, ScConstants.SitecoreTemplates.XtmTemplate, updateList);
                         returnString = "There are new XTM templates imported for use";

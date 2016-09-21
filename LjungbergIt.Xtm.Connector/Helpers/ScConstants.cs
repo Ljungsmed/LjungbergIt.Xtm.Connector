@@ -17,6 +17,7 @@ namespace LjungbergIt.Xtm.Connector.Helpers
             public static readonly string XtmSettingsItem = "{16952019-98B9-43EB-B1AB-18CD6663BE28}";
             public static readonly string XtmSettingsXtmTemplateFolder = "{7EA4644E-4AE7-4D7F-B807-5D3E51444FAD}";
             public static readonly string XtmSettingsLanguageMappingFolder = "{7D96664A-4CB2-4847-9C41-479DF9AD43F5}";
+            public static readonly string XtmSettingsLanguageFolder = "{D3B57D66-1FE4-43C6-8EC5-2D93A21E0471}";
         }
 
         public struct SitecoreWorkflowIDs
@@ -45,6 +46,7 @@ namespace LjungbergIt.Xtm.Connector.Helpers
         {
             public static readonly string Workflow = "__workflow";
             public static readonly string WorkflowState = "__workflow state";
+            public static readonly string CreatedBy = "__created by";
 
         }
 
@@ -55,7 +57,8 @@ namespace LjungbergIt.Xtm.Connector.Helpers
             public static readonly TemplateID TranslationQueueLanguageFolderTemplate = new TemplateID(new ID("{83825651-C491-4B03-9229-27A4954B38A9}"));
             public static readonly TemplateID TranslationInProgressTemplate = new TemplateID(new ID("{2D0F6780-6E62-428D-A52B-B560BDE0C8DC}"));
             public static readonly TemplateID XtmBaseTemplate = new TemplateID(new ID("{62378E9D-DEA1-4DED-8FFE-A944002ABC87}"));
-            public static readonly TemplateID XtmTemplate = new TemplateID(new ID("{417CBA9B-9A28-4BF5-A1E0-1D5C1B513DB0}"));            
+            public static readonly TemplateID XtmTemplate = new TemplateID(new ID("{417CBA9B-9A28-4BF5-A1E0-1D5C1B513DB0}"));
+            public static readonly TemplateID XtmLanguage = new TemplateID(new ID("{3F8ECEFB-B8AB-424E-9FD5-9ED3EE2624B6}"));
         }
 
         public struct SitecoreFieldNames
@@ -79,6 +82,7 @@ namespace LjungbergIt.Xtm.Connector.Helpers
             public static readonly string XtmSettingsUserId = "{4040E782-75B1-47E7-BF16-BA78792FE90F}";
             public static readonly string XtmSettingsPasword = "{C04387E1-8073-438E-875E-597810C776B3}";
             public static readonly string XtmSettingsCustomer = "{E2286B50-BC26-42F3-B17F-DB280E62E42B}";
+            public static readonly string XtmSettingsEndpoint = "{4F43B55C-813D-4FCB-AEFE-8A45A441EEDD}";
             public static readonly string QueuFolderSourceLanguage = "{49BB7FBD-0C7E-41BA-8E0B-0FCA7F8BB538}";
             public static readonly string QueuFolderTranslateTo = "{D61CDBB9-1056-440B-B02B-38AEAB882AB0}";
             public static readonly string QueuFolderXtmTemplate = "{00C42DB8-293A-41A2-9ED9-12244523EA9C}";
@@ -91,7 +95,11 @@ namespace LjungbergIt.Xtm.Connector.Helpers
             public static readonly string SitecoreLanguageName = "{471FDD58-5685-4BD4-934C-D82D6D37FDF8}";
             public static readonly string XtmLanguageName = "{C300CF84-9D5F-4E5C-9EFD-82812B15713F}";
             public static readonly string TranslationQueueItem_AddedBy = "{5676881D-A27B-4536-8C53-A7C90E76AC26}";
+        }
 
+        public struct XtmLanguageTemplate
+        {
+            public static readonly string LanguageName = "{E8A5EADE-877A-4F22-A92C-1BDE0E52C234}";
         }    
 
         public struct Misc

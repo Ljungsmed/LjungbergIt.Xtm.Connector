@@ -12,6 +12,7 @@ namespace LjungbergIt.Xtm.Connector.Helpers
         {
             itemName = itemName.Replace("{", "");
             itemName = itemName.Replace("}", "");
+            itemName = itemName.Replace(",", "");
             return itemName;
         }
     }
