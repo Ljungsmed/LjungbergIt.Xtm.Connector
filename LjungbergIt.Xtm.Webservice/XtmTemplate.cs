@@ -1,9 +1,8 @@
 ﻿using LjungbergIt.Xtm.Webservice.XtmServiceReference;
-using System;
+
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+using System.ServiceModel;
 
 namespace LjungbergIt.Xtm.Webservice
 {
@@ -12,7 +11,7 @@ namespace LjungbergIt.Xtm.Webservice
         public string XtmTemplateName { get; set; }
         public long XtmTemplateId { get; set; }
 
-        public List<XtmTemplate> GetTemplates(string xtmClient, long userId, string password, long CustomerId)
+        public List<XtmTemplate> GetTemplates(string xtmClient, long userId, string password, long CustomerId, string webServiceEndPoint)
         {
             List<XtmTemplate> templateList = new List<XtmTemplate>();
             XtmProject project = new XtmProject { Client = xtmClient, UserId = userId, Password = password };
@@ -27,7 +26,7 @@ namespace LjungbergIt.Xtm.Webservice
             //xtmFindTemplate.customers = customerDescriptorList;
             xtmFindTemplate.scope = xtmTEMPLATESCOPEAPI.ALL;
 
-            ProjectManagerMTOMWebServiceClient client = new ProjectManagerMTOMWebServiceClient();
+            ProjectManagerMTOMWebServiceClient client = xtmAccess.GetServiceClient(webServiceEndPoint);
             xtmTemplateDetailsResponseAPI[] templateResponses = client.findTemplate(login, xtmFindTemplate, null);
 
             foreach (xtmTemplateDetailsResponseAPI templateResponse in templateResponses)

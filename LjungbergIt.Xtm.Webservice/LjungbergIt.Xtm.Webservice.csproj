@@ -50,6 +50,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="XtmLanguage.cs" />
     <Compile Include="XtmTemplate.cs" />
     <Compile Include="XtmHandleTranslatedContent.cs" />
     <Compile Include="XtmCreateProject.cs" />

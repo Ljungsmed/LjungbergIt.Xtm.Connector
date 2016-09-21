@@ -8,7 +8,7 @@ namespace LjungbergIt.Xtm.Webservice
 {
     public class XtmCreateProject
     {
-        public List<string> Create(string filePath, string fileName, string sourceLanguage, string translationLanguage, string xtmTemplate, string xtmClient, long userId, string password, long customer)
+        public List<string> Create(string filePath, string fileName, string sourceLanguage, string translationLanguage, string xtmTemplate, string xtmClient, long userId, string password, long customer, string webServiceEndPoint)
         {
             List<string> resultList = new List<string>();
             bool success = false;
@@ -32,11 +32,7 @@ namespace LjungbergIt.Xtm.Webservice
 
             loginAPI login = access.Login(project);
 
-            xtmCustomerDescriptorAPI xtmCustomer = access.XtmCustomer(customer);
-
-            xtmWorkflowDescriptorAPI workflow = new xtmWorkflowDescriptorAPI();
-            workflow.workflow = xtmWORKFLOWS.TRANSLATE;
-            workflow.workflowSpecified = true;
+            xtmCustomerDescriptorAPI xtmCustomer = access.XtmCustomer(customer);            
 
             string targetLanguage = translationLanguage.Replace("-", "_");
             languageCODE parsedLanguage = new languageCODE();
@@ -64,32 +60,36 @@ namespace LjungbergIt.Xtm.Webservice
                 projectMTOM.targetLanguages = targetLang;
                 projectMTOM.customer = xtmCustomer;
                 //projectMTOM.dueDate //Optional
-                //projectMTOM.domain //Optional
-                projectMTOM.workflow = workflow;
+                //projectMTOM.domain //Optional                
                 //projectMTOM.workflowForNonAnalyzableFiles //Optional
                 //projectMTOM.externalDescriptor //Optional
                 if (!project.Template.Equals(""))
                 {
                     xtmTemplateExtendedDescriptorAPI xtmTemplateDescriptor = new xtmTemplateExtendedDescriptorAPI();
                     //xtmTemplateDescriptor.name = project.Template;
-                    xtmTemplateDescriptor.id = long.Parse(project.Template); //3514;
+                    xtmTemplateDescriptor.id = long.Parse(project.Template);
                     xtmTemplateDescriptor.idSpecified = true;
                     projectMTOM.template = xtmTemplateDescriptor;
                 }
-                //projectMTOM.template //Optional
+                else
+                {
+                    xtmWorkflowDescriptorAPI workflow = new xtmWorkflowDescriptorAPI();
+                    workflow.workflowSpecified = true;
+                    workflow.workflow = xtmWORKFLOWS.TRANSLATE;
+                    projectMTOM.workflow = workflow;
+                }
+                
                 projectMTOM.translationFiles = filesToTranslate;
 
                 xtmCreateProjectMTOMOptionsAPI projectOptions = new xtmCreateProjectMTOMOptionsAPI();
-
                 
                 try
                 {
-                    ProjectManagerMTOMWebServiceClient client = new ProjectManagerMTOMWebServiceClient();
+                    ProjectManagerMTOMWebServiceClient client = access.GetServiceClient(webServiceEndPoint);
                     xtmCreateProjectMTOMResponseAPI response = client.createProjectMTOM(login, projectMTOM, null);// projectOptions);
                     info.Clear();
                     success = true;
-                    info.Append(response.project.projectDescriptor.id.ToString());
-                    //info.Append(success.ToString());                    
+                    info.Append(response.project.projectDescriptor.id.ToString());                   
                 }
                 catch (Exception e)
                 {

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.ServiceModel;
 using System.Text;
 
 namespace LjungbergIt.Xtm.Webservice
@@ -25,6 +26,16 @@ namespace LjungbergIt.Xtm.Webservice
             customer.id = customerId; // 2462;
             customer.idSpecified = true;
             return customer;
+        }
+
+        public ProjectManagerMTOMWebServiceClient GetServiceClient(string endPointUrl)
+        {
+            BasicHttpBinding binding = new BasicHttpBinding();
+            EndpointAddress endPoint = new EndpointAddress(endPointUrl);
+
+            binding.Name = "XTMWebServiceSoapBinding";
+
+            return new ProjectManagerMTOMWebServiceClient(binding, endPoint);
         }
     }
 }

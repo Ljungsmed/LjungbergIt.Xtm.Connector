@@ -15,7 +15,7 @@ namespace LjungbergIt.Xtm.Webservice
 
         XtmWebserviceAccess xtmAccess = new XtmWebserviceAccess();
 
-        public List<byte[]> GetFileInBytes(long projectID, string xtmClient, long userId, string password)
+        public List<byte[]> GetFileInBytes(long projectID, string xtmClient, long userId, string password, string webServiceEndPoint)
         {
             XtmProject project = new XtmProject { Client = xtmClient, UserId = userId, Password = password };
             StringBuilder result = new StringBuilder();
@@ -25,7 +25,7 @@ namespace LjungbergIt.Xtm.Webservice
             projectDescriptor.id = projectID;
             projectDescriptor.idSpecified = true;
 
-            ProjectManagerMTOMWebServiceClient client = new ProjectManagerMTOMWebServiceClient();
+            ProjectManagerMTOMWebServiceClient client = xtmAccess.GetServiceClient(webServiceEndPoint);
 
             xtmDownloadProjectMTOMResponseAPI downloadProject = client.downloadProjectMTOM(login, projectDescriptor, null);
 
@@ -33,9 +33,12 @@ namespace LjungbergIt.Xtm.Webservice
 
             List<byte[]> byteList = new List<byte[]>();
 
-            foreach (xtmJobFileMTOMResponseAPI job in jobs)
+            if (jobs != null)
             {
-                byteList.Add(job.fileMTOM);
+                foreach (xtmJobFileMTOMResponseAPI job in jobs)
+                {
+                    byteList.Add(job.fileMTOM);
+                }
             }
 
             return byteList;
