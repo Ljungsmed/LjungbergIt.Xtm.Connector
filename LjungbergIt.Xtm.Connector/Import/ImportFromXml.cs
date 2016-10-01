@@ -39,14 +39,15 @@ namespace LjungbergIt.Xtm.Connector.Import
             string password = login.ScPassword;
             bool success = new bool();
 
-            Item settingsItem = ScConstants.SitecoreDatabases.MasterDb.GetItem(ScConstants.SitecoreIDs.XtmSettingsItem);
-            string webServiceEndPoint = settingsItem[ScConstants.SitecoreFieldIds.XtmSettingsEndpoint];
+            //Item settingsItem = ScConstants.SitecoreDatabases.MasterDb.GetItem(ScConstants.SitecoreIDs.XtmSettingsItem);
+            //string webServiceEndPoint = settingsItem[ScConstants.SitecoreFieldIds.XtmSettingsEndpoint];
+            XtmWebserviceProperties xtmWebserviceProperties = new XtmWebserviceProperties();
 
-            bool finished = xtmProject.IsTranslationFinished(projectId, client, userId, password, webServiceEndPoint);
+            bool finished = xtmProject.IsTranslationFinished(projectId, client, userId, password, xtmWebserviceProperties.WebserviceEndpoint, xtmWebserviceProperties.IsHttps);
             if (finished)
             {
                 XtmHandleTranslatedContent Xtm = new XtmHandleTranslatedContent();
-                List<byte[]> bytesList = Xtm.GetFileInBytes(projectId, client, userId, password, webServiceEndPoint);
+                List<byte[]> bytesList = Xtm.GetFileInBytes(projectId, client, userId, password, xtmWebserviceProperties.WebserviceEndpoint, xtmWebserviceProperties.IsHttps);
                 
                 if (bytesList.Count != 0)
                 {

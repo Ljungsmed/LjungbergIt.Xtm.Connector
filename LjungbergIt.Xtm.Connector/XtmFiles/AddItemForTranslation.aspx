@@ -59,8 +59,8 @@
             </div>
         </div>
         <br />
-        <div>
-            <asp:Literal ID="litResult" runat="server" />
+        <div class="container">
+            <asp:Label ID="labelResult" runat="server" />
         </div>
     </form>
 </body>

@@ -19,8 +19,18 @@
             </div>
         </div>
         <div style="clear: both;"></div>
-    <div>
-    test
+    <div class="container">
+        <asp:Repeater runat="server" ID="repTranslationQueue" ItemType="LjungbergIt.Xtm.Connector.Helpers.ScQueueItem">
+            <HeaderTemplate>
+
+            </HeaderTemplate>
+            <ItemTemplate>
+
+            </ItemTemplate>
+            <FooterTemplate>
+
+            </FooterTemplate>
+        </asp:Repeater>
     </div>
     </form>
 </body>

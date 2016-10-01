@@ -11,9 +11,7 @@ namespace LjungbergIt.Xtm.Connector.AddForTranslation
         {
             Item returnItem = null;
 
-            ScUser scUser = new ScUser();
-            User user = scUser.GetUser();
-            using (new UserSwitcher(user))
+            using (new SecurityDisabler())
             {
                 Item queueFolder = ScConstants.SitecoreDatabases.MasterDb.GetItem(ScConstants.SitecoreIDs.TranslationQueueFolder);
                 foreach (Item folderItem in queueFolder.GetChildren())
@@ -40,10 +38,10 @@ namespace LjungbergIt.Xtm.Connector.AddForTranslation
                 translationProperties.XtmTemplate = string.Empty;
             }
 
-            ScUser scUser = new ScUser();
-            User user = scUser.GetUser();
-            using (new UserSwitcher(user))
+            //TODO use the UpdateItem helper instead
+            using (new SecurityDisabler())
             {
+                Sitecore.Diagnostics.Log.Info("XtmConnector: creating folder with name " + folderName, this);
                 langFolderItem = queueFolderItem.Add(folderName, ScConstants.SitecoreTemplates.TranslationQueueLanguageFolderTemplate);
                 langFolderItem.Editing.BeginEdit();
                 langFolderItem[ScConstants.SitecoreFieldIds.QueuFolderSourceLanguage] = translationProperties.SourceLanguage;

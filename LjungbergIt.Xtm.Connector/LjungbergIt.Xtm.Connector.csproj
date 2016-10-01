@@ -147,6 +147,7 @@
     <Compile Include="Buttons\GetXtmTemplates.cs" />
     <Compile Include="Buttons\StartTranslation.cs" />
     <Compile Include="Buttons\TestSecurity.cs" />
+    <Compile Include="Buttons\TranslationDetailedView.cs" />
     <Compile Include="Buttons\ViewTranslationProgress.cs" />
     <Compile Include="Commands\XtmStartTranslation.cs" />
     <Compile Include="Export\Project.cs" />
@@ -154,6 +155,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\ScQueueItem.cs" />
     <Compile Include="Helpers\ScUser.cs" />
     <Compile Include="Helpers\LanguageMapping.cs" />
     <Compile Include="Helpers\LoginProperties.cs" />
@@ -163,6 +165,7 @@
     <Compile Include="Helpers\Utils.cs" />
     <Compile Include="AddForTranslation\GetLanguageQueueFolder.cs" />
     <Compile Include="Helpers\XtmBaseTemplateProperties.cs" />
+    <Compile Include="Helpers\XtmWebserviceProperties.cs" />
     <Compile Include="Import\GetXtmTemplates.cs" />
     <Compile Include="Import\ImportFromXml.cs" />
     <Compile Include="Import\XtmLanguages.cs" />

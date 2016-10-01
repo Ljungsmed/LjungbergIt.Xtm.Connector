@@ -72,12 +72,14 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
                 }
             }
 
-            Item settingsItem = ScConstants.SitecoreDatabases.MasterDb.GetItem(ScConstants.SitecoreIDs.XtmSettingsItem);
-            string webServiceEndPoint = settingsItem[ScConstants.SitecoreFieldIds.XtmSettingsEndpoint];
+            //Item settingsItem = ScConstants.SitecoreDatabases.MasterDb.GetItem(ScConstants.SitecoreIDs.XtmSettingsItem);
+            //string webServiceEndPoint = settingsItem[ScConstants.SitecoreFieldIds.XtmSettingsEndpoint];
+            XtmWebserviceProperties xtmWebserviceProperties = new XtmWebserviceProperties();
+
 
             XtmProject xtmProject = new XtmProject();
             LoginProperties login = new LoginProperties();
-            List<XtmProject> projects = xtmProject.GetProjectProperties(xtmProjectIds, login.ScClient, login.ScUserId, login.ScPassword, webServiceEndPoint);
+            List<XtmProject> projects = xtmProject.GetProjectProperties(xtmProjectIds, login.ScClient, login.ScUserId, login.ScPassword, xtmWebserviceProperties.WebserviceEndpoint, xtmWebserviceProperties.IsHttps);
 
             return projects;
         }

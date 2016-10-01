@@ -34,6 +34,7 @@ namespace LjungbergIt.Xtm.Connector.Helpers
 
         public bool CreateItem(string itemName, Item parentItem, TemplateID templateId, List<UpdateItem> updateProps)
         {
+            Sitecore.Diagnostics.Log.Info("XTMConnector: Trying to add item with name: " + itemName, this);
             using (new SecurityDisabler())
             {
                 Item createdItem = parentItem.Add(itemName, templateId);
@@ -43,6 +44,14 @@ namespace LjungbergIt.Xtm.Connector.Helpers
                 }
             }
             return true;
+        }
+
+        public string CheckItemName(string itemName)
+        {
+            itemName.Replace("{", "");
+            itemName.Replace("}", "");
+
+            return itemName;
         }
     }
 

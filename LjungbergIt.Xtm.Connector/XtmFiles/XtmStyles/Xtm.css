@@ -88,3 +88,7 @@ th, td {
      color: white;
      border: none;
 }
+
+.warning {
+    color: red;
+}

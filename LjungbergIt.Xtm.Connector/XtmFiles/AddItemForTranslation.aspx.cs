@@ -28,22 +28,24 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
             {
                 Item contextItem = masterDb.GetItem(Request.QueryString["id"]); 
 
+                //Display the current item being added for translation
                 StringBuilder heading = new StringBuilder();
                 heading.Append("Add \"");
                 heading.Append(contextItem.Name);
                 heading.Append("\" for translation");
                 litHeading.Text = heading.ToString();
 
-                Language defaultSourceLanguage = GetDefaultSourceLanguage();
-
+                //Display the default langauge which is specified on the xtm settings item
+                Language defaultSourceLanguage = GetDefaultSourceLanguage();                
                 StringBuilder sbSourceLanguage = new StringBuilder();
                 sbSourceLanguage.Append("The defualt source language is: ");
                 sbSourceLanguage.Append(defaultSourceLanguage.CultureInfo.DisplayName);
                 sbSourceLanguage.Append(". Change below if custom source langauge is required for this content");
                 litSourceLanguage.Text = sbSourceLanguage.ToString();
 
+                //Build the drop down list with available Sitecore source languages to choose from if the default should be overwritten
+                //Build the check box list with available Sitecore target languages to choose from
                 ddSourceLanguage.Items.Add(new ListItem("", ""));
-
                 LanguageCollection languages = masterDb.GetLanguages();
                 foreach (Language language in languages)
                 {
@@ -59,9 +61,9 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
                     cbTargetLanguages.Items.Add(listItemTargetLanugage);
                 }
 
-                ScUser scUser = new ScUser();
-                User user = scUser.GetUser();
-                using (new UserSwitcher(user))
+                //Build the dropdown list with available xtm templates
+                
+                using (new SecurityDisabler())
                 {
                     Item xtmTemplatesFolder = masterDb.GetItem(ScConstants.SitecoreIDs.XtmSettingsXtmTemplateFolder);
                     Item xtmSettingsItem = masterDb.GetItem(ScConstants.SitecoreIDs.XtmSettingsItem);
@@ -84,40 +86,50 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
             }
         }
 
+        //Action when the "Add" button has been clicked
         protected void btnAddForTranslation_Click(object sender, EventArgs e)
         {
-
+            //Display error message if no target language has been chosen AND no template has been choosen
             if (cbTargetLanguages.SelectedItem == null && ddXtmTemplate.SelectedValue == "")
             {
-                litResult.Text = "No target language or template has been chosen";
+                labelResult.Style.Add("color", "red");
+                labelResult.Text = "No target language or template has been chosen";
             }
 
             else
             {
+                //Get the item id of the item that needs to be added for translation
                 Item contextItem = masterDb.GetItem(Request.QueryString["id"]);
+                //Create an item list of items to translate, if sub items needs to be added there will be more than one item
                 ItemList ItemsToTranslate = new ItemList();
+                //Add items that needs to be translated to the item list
                 ItemsToTranslate.Add(contextItem);
-
                 if (cbAllSubItems.Checked)
                 {
                     ItemsToTranslate = GetChildrenToTranslate(ItemsToTranslate, contextItem);
                 }
 
-                TranslationQueue translationQueue = new TranslationQueue();
+                //Set the xtm template, if none selected set the value to NONE
                 string xtmTemplate = ddXtmTemplate.SelectedValue;
                 if (xtmTemplate.Equals(""))
                 {
                     xtmTemplate = "NONE";
                 }
+
+                //Set the source language, if no source language chosen in the drop down, use the default source language
                 string sourceLanguage = ddSourceLanguage.SelectedValue;
                 if (sourceLanguage.Equals(""))
                 {
                     sourceLanguage = GetDefaultSourceLanguage().CultureInfo.Name;
                 }
+
+                //set variables and initialize classes used in the foreach loop that generates a translation item per target languages, per item that needs to be translated
                 string addedBy = Sitecore.Context.User.Name;
                 StringBuilder info = new StringBuilder();
                 LanguageMapping languageMapping = new LanguageMapping();
                 List<LanguageMapping> languageMappingList = languageMapping.LanguageList();
+                TranslationQueue translationQueue = new TranslationQueue();
+
                 foreach (ListItem listItem in cbTargetLanguages.Items)
                 {
                     if (listItem.Selected == true)
@@ -150,7 +162,7 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
                 }
 
                 divChooseTranslationOptions.Visible = false;
-                litResult.Text = info.ToString();
+                labelResult.Text = info.ToString();
             }
         }
 
@@ -201,9 +213,7 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
 
         private Language GetDefaultSourceLanguage()
         {
-            ScUser scUser = new ScUser();
-            User user = scUser.GetUser(); 
-            using (new UserSwitcher(user))
+            using (new SecurityDisabler())
             {
                 Item xtmSettingsItem = masterDb.GetItem(ScConstants.SitecoreIDs.XtmSettingsItem);
                 Item defaultSourceLanguageItem = masterDb.GetItem(xtmSettingsItem[ScConstants.SitecoreFieldIds.XtmSettingsDefaultSourceLanguage]);

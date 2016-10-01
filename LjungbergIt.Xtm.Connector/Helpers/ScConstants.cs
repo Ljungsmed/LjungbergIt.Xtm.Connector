@@ -44,9 +44,10 @@ namespace LjungbergIt.Xtm.Connector.Helpers
 
         public struct SitecoreStandardFieldNames
         {
-            public static readonly string Workflow = "__workflow";
-            public static readonly string WorkflowState = "__workflow state";
-            public static readonly string CreatedBy = "__created by";
+            public static readonly string Workflow = "__Workflow";
+            public static readonly string WorkflowState = "__Workflow state";
+            public static readonly string CreatedBy = "__Created by";
+            public static readonly string Revision = "__Revision";
 
         }
 
@@ -97,9 +98,21 @@ namespace LjungbergIt.Xtm.Connector.Helpers
             public static readonly string TranslationQueueItem_AddedBy = "{5676881D-A27B-4536-8C53-A7C90E76AC26}";
         }
 
+        //TODO move all XtmSettings from above
+        public struct XtmSettingsTemplate
+        {
+            public static readonly string https = "{D2079525-D82D-4C33-B2B3-B5FA1FACD890}";
+            public static readonly string Endpoint = "{4F43B55C-813D-4FCB-AEFE-8A45A441EEDD}";
+        }
+
         public struct XtmLanguageTemplate
         {
             public static readonly string LanguageName = "{E8A5EADE-877A-4F22-A92C-1BDE0E52C234}";
+        }
+
+        public struct XtmConnectorBaseTemplate
+        {
+            //public static readonly string TranslatedRevision = "{3D08F793-798D-4097-90BE-1311400A43E9}";
         }    
 
         public struct Misc

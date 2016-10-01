@@ -24,10 +24,12 @@ namespace LjungbergIt.Xtm.Connector.Import
             long userId = login.ScUserId;
             string password = login.ScPassword;
 
-            Item settingsItem = ScConstants.SitecoreDatabases.MasterDb.GetItem(ScConstants.SitecoreIDs.XtmSettingsItem);
-            string webServiceEndPoint = settingsItem[ScConstants.SitecoreFieldIds.XtmSettingsEndpoint];
+            //Item settingsItem = ScConstants.SitecoreDatabases.MasterDb.GetItem(ScConstants.SitecoreIDs.XtmSettingsItem);
+            //string webServiceEndPoint = settingsItem[ScConstants.SitecoreFieldIds.XtmSettingsEndpoint];
 
-            List<XtmTemplate> templateList = xtmGetTemplates.GetTemplates(login.ScClient, login.ScUserId, login.ScPassword, login.ScCustomer, webServiceEndPoint);
+            XtmWebserviceProperties xtmWebserviceProperties = new XtmWebserviceProperties();
+
+            List<XtmTemplate> templateList = xtmGetTemplates.GetTemplates(login.ScClient, login.ScUserId, login.ScPassword, login.ScCustomer, xtmWebserviceProperties.WebserviceEndpoint, xtmWebserviceProperties.IsHttps);
             if (templateList.Count != 0)
             {
                 Database masterDb = ScConstants.SitecoreDatabases.MasterDb;

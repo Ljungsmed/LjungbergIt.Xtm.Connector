@@ -60,5 +60,10 @@ namespace LjungbergIt.Xtm.Connector.Pipelines
         {
             SheerResponse.ShowModalDialog("/XtmFiles/ViewTranslationProgress.aspx", "1200", "800", "testing my message", false);
         }
+
+        public void TranslationDetailedView(XtmPipelineArgs args)
+        {
+            SheerResponse.ShowModalDialog("/XtmFiles/TranslationDetailedView.aspx", "1200", "800", "testing my message", false);
+        }
     }
 }
