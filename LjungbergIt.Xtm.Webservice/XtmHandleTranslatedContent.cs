@@ -15,7 +15,7 @@ namespace LjungbergIt.Xtm.Webservice
 
         XtmWebserviceAccess xtmAccess = new XtmWebserviceAccess();
 
-        public List<byte[]> GetFileInBytes(long projectID, string xtmClient, long userId, string password, string webServiceEndPoint)
+        public List<byte[]> GetFileInBytes(long projectID, string xtmClient, long userId, string password, string webServiceEndPoint, bool https)
         {
             XtmProject project = new XtmProject { Client = xtmClient, UserId = userId, Password = password };
             StringBuilder result = new StringBuilder();
@@ -25,7 +25,7 @@ namespace LjungbergIt.Xtm.Webservice
             projectDescriptor.id = projectID;
             projectDescriptor.idSpecified = true;
 
-            ProjectManagerMTOMWebServiceClient client = xtmAccess.GetServiceClient(webServiceEndPoint);
+            ProjectManagerMTOMWebServiceClient client = xtmAccess.GetServiceClient(webServiceEndPoint, https);
 
             xtmDownloadProjectMTOMResponseAPI downloadProject = client.downloadProjectMTOM(login, projectDescriptor, null);
 

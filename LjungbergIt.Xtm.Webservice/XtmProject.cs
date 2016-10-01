@@ -22,14 +22,14 @@ namespace LjungbergIt.Xtm.Webservice
         public long UserId { get; set; }
         public string Password { get; set; }
 
-        public List<XtmProject> GetProjectProperties(List<long> projectIds, string client, long userId, string password, string webServiceEndPoint)
+        public List<XtmProject> GetProjectProperties(List<long> projectIds, string client, long userId, string password, string webServiceEndPoint, bool https)
         {
             List<XtmProject> xtmProjects = new List<XtmProject>();
             XtmProject loginProject = new XtmProject { Client = client, UserId = userId, Password = password };
 
             foreach (long id in projectIds)
             {
-                xtmProjectDetailsResponseAPI project = GetXtmProject(id, loginProject, webServiceEndPoint);
+                xtmProjectDetailsResponseAPI project = GetXtmProject(id, loginProject, webServiceEndPoint, https);
 
                 XtmProject xtmProject = new XtmProject();
                 
@@ -48,7 +48,7 @@ namespace LjungbergIt.Xtm.Webservice
             return xtmProjects;
         }
 
-        public xtmProjectDetailsResponseAPI GetXtmProject(long projectId, XtmProject loginProject, string webServiceEndPoint)
+        public xtmProjectDetailsResponseAPI GetXtmProject(long projectId, XtmProject loginProject, string webServiceEndPoint, bool https)
         {
             XtmWebserviceAccess xtmAccess = new XtmWebserviceAccess();
             loginAPI login = xtmAccess.Login(loginProject);
@@ -62,19 +62,19 @@ namespace LjungbergIt.Xtm.Webservice
             filter.projects = projects;
 
             XtmWebserviceAccess access = new XtmWebserviceAccess();
-            ProjectManagerMTOMWebServiceClient client = access.GetServiceClient(webServiceEndPoint);
+            ProjectManagerMTOMWebServiceClient client = access.GetServiceClient(webServiceEndPoint, https);
             //ProjectManagerMTOMWebServiceClient client = new ProjectManagerMTOMWebServiceClient();
 
             xtmProjectDetailsResponseAPI[] projectResponses = client.findProject(login, filter, null);
             return projectResponses[0]; //Assuming there is always only one project in the response
         }
 
-        public bool IsTranslationFinished(long projectId, string client, long userId, string password, string webServiceEndPoint)
+        public bool IsTranslationFinished(long projectId, string client, long userId, string password, string webServiceEndPoint, bool https)
         {
             bool result = false;
             XtmProject loginProject = new XtmProject { Client = client, UserId = userId, Password = password };
 
-            xtmProjectDetailsResponseAPI project = GetXtmProject(projectId, loginProject, webServiceEndPoint);
+            xtmProjectDetailsResponseAPI project = GetXtmProject(projectId, loginProject, webServiceEndPoint, https);
             if (project.status.Equals(xtmProjectStatusEnum.FINISHED))
             {
                 result = true;

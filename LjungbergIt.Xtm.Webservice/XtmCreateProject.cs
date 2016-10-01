@@ -8,7 +8,7 @@ namespace LjungbergIt.Xtm.Webservice
 {
     public class XtmCreateProject
     {
-        public List<string> Create(string filePath, string fileName, string sourceLanguage, string translationLanguage, string xtmTemplate, string xtmClient, long userId, string password, long customer, string webServiceEndPoint)
+        public List<string> Create(string filePath, string fileName, string sourceLanguage, string translationLanguage, string xtmTemplate, string xtmClient, long userId, string password, long customer, string webServiceEndPoint, bool https)
         {
             List<string> resultList = new List<string>();
             bool success = false;
@@ -85,7 +85,7 @@ namespace LjungbergIt.Xtm.Webservice
                 
                 try
                 {
-                    ProjectManagerMTOMWebServiceClient client = access.GetServiceClient(webServiceEndPoint);
+                    ProjectManagerMTOMWebServiceClient client = access.GetServiceClient(webServiceEndPoint, https);
                     xtmCreateProjectMTOMResponseAPI response = client.createProjectMTOM(login, projectMTOM, null);// projectOptions);
                     info.Clear();
                     success = true;

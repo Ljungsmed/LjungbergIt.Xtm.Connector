@@ -11,7 +11,7 @@ namespace LjungbergIt.Xtm.Webservice
         public string XtmTemplateName { get; set; }
         public long XtmTemplateId { get; set; }
 
-        public List<XtmTemplate> GetTemplates(string xtmClient, long userId, string password, long CustomerId, string webServiceEndPoint)
+        public List<XtmTemplate> GetTemplates(string xtmClient, long userId, string password, long CustomerId, string webServiceEndPoint, bool https)
         {
             List<XtmTemplate> templateList = new List<XtmTemplate>();
             XtmProject project = new XtmProject { Client = xtmClient, UserId = userId, Password = password };
@@ -26,7 +26,7 @@ namespace LjungbergIt.Xtm.Webservice
             //xtmFindTemplate.customers = customerDescriptorList;
             xtmFindTemplate.scope = xtmTEMPLATESCOPEAPI.ALL;
 
-            ProjectManagerMTOMWebServiceClient client = xtmAccess.GetServiceClient(webServiceEndPoint);
+            ProjectManagerMTOMWebServiceClient client = xtmAccess.GetServiceClient(webServiceEndPoint, https);
             xtmTemplateDetailsResponseAPI[] templateResponses = client.findTemplate(login, xtmFindTemplate, null);
 
             foreach (xtmTemplateDetailsResponseAPI templateResponse in templateResponses)

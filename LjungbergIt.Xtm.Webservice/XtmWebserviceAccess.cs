@@ -28,12 +28,18 @@ namespace LjungbergIt.Xtm.Webservice
             return customer;
         }
 
-        public ProjectManagerMTOMWebServiceClient GetServiceClient(string endPointUrl)
+        public ProjectManagerMTOMWebServiceClient GetServiceClient(string endPointUrl, bool https)
         {
+            //BasicHttpsBinding binding = new BasicHttpsBinding();
             BasicHttpBinding binding = new BasicHttpBinding();
             EndpointAddress endPoint = new EndpointAddress(endPointUrl);
 
             binding.Name = "XTMWebServiceSoapBinding";
+            if (https)
+            {
+                binding.Security.Mode = BasicHttpSecurityMode.Transport;
+                binding.MessageEncoding = WSMessageEncoding.Mtom;
+            }            
 
             return new ProjectManagerMTOMWebServiceClient(binding, endPoint);
         }
