@@ -2963,6 +2963,9 @@ namespace LjungbergIt.Xtm.Webservice.XtmServiceReference {
         ca_AD,
         
         /// <remarks/>
+        dnj,
+        
+        /// <remarks/>
         da_DK,
         
         /// <remarks/>
@@ -3129,6 +3132,9 @@ namespace LjungbergIt.Xtm.Webservice.XtmServiceReference {
         
         /// <remarks/>
         ht_HT,
+        
+        /// <remarks/>
+        cnh,
         
         /// <remarks/>
         ha_NG,
@@ -3321,6 +3327,9 @@ namespace LjungbergIt.Xtm.Webservice.XtmServiceReference {
         
         /// <remarks/>
         nso_ZA,
+        
+        /// <remarks/>
+        nus,
         
         /// <remarks/>
         oc_FR,
@@ -3645,6 +3654,9 @@ namespace LjungbergIt.Xtm.Webservice.XtmServiceReference {
         
         /// <remarks/>
         yo_NG,
+        
+        /// <remarks/>
+        czt,
         
         /// <remarks/>
         zu_ZA,
@@ -5255,7 +5267,49 @@ namespace LjungbergIt.Xtm.Webservice.XtmServiceReference {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://pm.v2.webservice.projectmanagergui.xmlintl.com/")]
-    public partial class xtmGenerateCostOptionsAPI : object, System.ComponentModel.INotifyPropertyChanged {
+    public partial class xtmCostsAssignmentAPI : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private xtmCostsOverrideAssignmentEnum overrideAssignmentField;
+        
+        private bool overrideAssignmentFieldSpecified;
+        
+        private xtmUserDescriptorAPI userField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public xtmCostsOverrideAssignmentEnum overrideAssignment {
+            get {
+                return this.overrideAssignmentField;
+            }
+            set {
+                this.overrideAssignmentField = value;
+                this.RaisePropertyChanged("overrideAssignment");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool overrideAssignmentSpecified {
+            get {
+                return this.overrideAssignmentFieldSpecified;
+            }
+            set {
+                this.overrideAssignmentFieldSpecified = value;
+                this.RaisePropertyChanged("overrideAssignmentSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public xtmUserDescriptorAPI user {
+            get {
+                return this.userField;
+            }
+            set {
+                this.userField = value;
+                this.RaisePropertyChanged("user");
+            }
+        }
         
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
         
@@ -5265,6 +5319,823 @@ namespace LjungbergIt.Xtm.Webservice.XtmServiceReference {
                 propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
             }
         }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://pm.v2.webservice.projectmanagergui.xmlintl.com/")]
+    public enum xtmCostsOverrideAssignmentEnum {
+        
+        /// <remarks/>
+        OVERRIDE_MISSING,
+        
+        /// <remarks/>
+        OVERRIDE_ALL,
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(xtmUserExtDescriptorAPI))]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://pm.v2.webservice.projectmanagergui.xmlintl.com/")]
+    public partial class xtmUserDescriptorAPI : xtmUserBaseDescriptorAPI {
+        
+        private actorType typeField;
+        
+        private bool typeFieldSpecified;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public actorType type {
+            get {
+                return this.typeField;
+            }
+            set {
+                this.typeField = value;
+                this.RaisePropertyChanged("type");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool typeSpecified {
+            get {
+                return this.typeFieldSpecified;
+            }
+            set {
+                this.typeFieldSpecified = value;
+                this.RaisePropertyChanged("typeSpecified");
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://pm.v2.webservice.projectmanagergui.xmlintl.com/")]
+    public enum actorType {
+        
+        /// <remarks/>
+        INTERNALLINGUIST,
+        
+        /// <remarks/>
+        EXTERNALLINGUIST,
+        
+        /// <remarks/>
+        LSP,
+        
+        /// <remarks/>
+        USERGROUP,
+    }
+    
+    /// <remarks/>
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(xtmUserOuterDescriptorAPI))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(xtmUserDescriptorAPI))]
+    [System.Xml.Serialization.XmlIncludeAttribute(typeof(xtmUserExtDescriptorAPI))]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://pm.v2.webservice.projectmanagergui.xmlintl.com/")]
+    public partial class xtmUserBaseDescriptorAPI : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private long idField;
+        
+        private bool idFieldSpecified;
+        
+        private string nameField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public long id {
+            get {
+                return this.idField;
+            }
+            set {
+                this.idField = value;
+                this.RaisePropertyChanged("id");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool idSpecified {
+            get {
+                return this.idFieldSpecified;
+            }
+            set {
+                this.idFieldSpecified = value;
+                this.RaisePropertyChanged("idSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public string name {
+            get {
+                return this.nameField;
+            }
+            set {
+                this.nameField = value;
+                this.RaisePropertyChanged("name");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://pm.v2.webservice.projectmanagergui.xmlintl.com/")]
+    public partial class xtmUserOuterDescriptorAPI : xtmUserBaseDescriptorAPI {
+        
+        private pmDateFormat dateFormatField;
+        
+        private bool dateFormatFieldSpecified;
+        
+        private languageCODE preferredLanguageField;
+        
+        private bool preferredLanguageFieldSpecified;
+        
+        private pmTimeFormat timeFormatField;
+        
+        private bool timeFormatFieldSpecified;
+        
+        private timeZoneEnum timeZoneEnumField;
+        
+        private bool timeZoneEnumFieldSpecified;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public pmDateFormat dateFormat {
+            get {
+                return this.dateFormatField;
+            }
+            set {
+                this.dateFormatField = value;
+                this.RaisePropertyChanged("dateFormat");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool dateFormatSpecified {
+            get {
+                return this.dateFormatFieldSpecified;
+            }
+            set {
+                this.dateFormatFieldSpecified = value;
+                this.RaisePropertyChanged("dateFormatSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public languageCODE preferredLanguage {
+            get {
+                return this.preferredLanguageField;
+            }
+            set {
+                this.preferredLanguageField = value;
+                this.RaisePropertyChanged("preferredLanguage");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool preferredLanguageSpecified {
+            get {
+                return this.preferredLanguageFieldSpecified;
+            }
+            set {
+                this.preferredLanguageFieldSpecified = value;
+                this.RaisePropertyChanged("preferredLanguageSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public pmTimeFormat timeFormat {
+            get {
+                return this.timeFormatField;
+            }
+            set {
+                this.timeFormatField = value;
+                this.RaisePropertyChanged("timeFormat");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool timeFormatSpecified {
+            get {
+                return this.timeFormatFieldSpecified;
+            }
+            set {
+                this.timeFormatFieldSpecified = value;
+                this.RaisePropertyChanged("timeFormatSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
+        public timeZoneEnum timeZoneEnum {
+            get {
+                return this.timeZoneEnumField;
+            }
+            set {
+                this.timeZoneEnumField = value;
+                this.RaisePropertyChanged("timeZoneEnum");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool timeZoneEnumSpecified {
+            get {
+                return this.timeZoneEnumFieldSpecified;
+            }
+            set {
+                this.timeZoneEnumFieldSpecified = value;
+                this.RaisePropertyChanged("timeZoneEnumSpecified");
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://pm.v2.webservice.projectmanagergui.xmlintl.com/")]
+    public enum pmDateFormat {
+        
+        /// <remarks/>
+        DAY_MONTH_LONGYEAR,
+        
+        /// <remarks/>
+        MONTH_DAY_LONGYEAR,
+        
+        /// <remarks/>
+        LONGYEAR_MONTH_DAY,
+        
+        /// <remarks/>
+        SHORTYEAR_MONTH_DAY,
+        
+        /// <remarks/>
+        DAY_MONTH_SHORTYEAR,
+        
+        /// <remarks/>
+        MONTH_DAY_YEAR,
+        
+        /// <remarks/>
+        DAY_MONTH_LONGYEAR_SLASH,
+        
+        /// <remarks/>
+        MONTH_DAY_LONGYEAR_SLASH,
+        
+        /// <remarks/>
+        LONGYEAR_MONTH_DAY_SLASH,
+        
+        /// <remarks/>
+        SHORTYEAR_MONTH_DAY_SLASH,
+        
+        /// <remarks/>
+        DAY_MONTH_SHORTYEAR_SLASH,
+        
+        /// <remarks/>
+        MONTH_DAY_YEAR_SLASH,
+        
+        /// <remarks/>
+        DAY_MEDIUMMONTH_LONGYEAR,
+        
+        /// <remarks/>
+        MEDIUMMONTH_DAY_LONGYEAR,
+        
+        /// <remarks/>
+        LONGYEAR_MEDIUMMONTH_DAY,
+        
+        /// <remarks/>
+        SHORTYEAR_MEDIUMMONTH_DAY,
+        
+        /// <remarks/>
+        DAY_MEDIUMMONTH_SHORTYEAR,
+        
+        /// <remarks/>
+        MEDIUMMONTH_DAY_YEAR,
+        
+        /// <remarks/>
+        DAY_MEDIUMMONTH_LONGYEAR_SLASH,
+        
+        /// <remarks/>
+        MEDIUMMONTH_DAY_LONGYEAR_SLASH,
+        
+        /// <remarks/>
+        LONGYEAR_MEDIUMMONTH_DAY_SLASH,
+        
+        /// <remarks/>
+        SHORTYEAR_MEDIUMMONTH_DAY_SLASH,
+        
+        /// <remarks/>
+        DAY_MEDIUMMONTH_SHORTYEAR_SLASH,
+        
+        /// <remarks/>
+        MEDIUMMONTH_DAY_YEAR_SLASH,
+        
+        /// <remarks/>
+        UTC,
+        
+        /// <remarks/>
+        LONGYEAR_MONTH_DAY_TIME_UTC,
+        
+        /// <remarks/>
+        PROJECT_ACTIONS_HISTORY_LOG,
+        
+        /// <remarks/>
+        EDITOR_SIMPLE_DATE_FORMAT,
+        
+        /// <remarks/>
+        FORMAT_LONG_DATE_FILE_SYSTEM_WRITABLE,
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://pm.v2.webservice.projectmanagergui.xmlintl.com/")]
+    public enum pmTimeFormat {
+        
+        /// <remarks/>
+        SHORTHOUR_MINUTES,
+        
+        /// <remarks/>
+        LONGHOUR_MINUTES,
+        
+        /// <remarks/>
+        LONGHOUR_MINUTES_SECONDS,
+        
+        /// <remarks/>
+        SHORTHOUR_MINUTES_AM_PM,
+        
+        /// <remarks/>
+        LONGHOUR_MINUTES_AM_PM,
+        
+        /// <remarks/>
+        LONGHOUR_MINUTES_SECONDS_AM_PM,
+        
+        /// <remarks/>
+        UTC,
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://pm.v2.webservice.projectmanagergui.xmlintl.com/")]
+    public enum timeZoneEnum {
+        
+        /// <remarks/>
+        UTC_1200_INTERNATIONAL_DATE_LINE_WEST,
+        
+        /// <remarks/>
+        UTC_1100_COORDINATED_UNIVERSAL_TIME_11,
+        
+        /// <remarks/>
+        UTC_1000_HAWAII,
+        
+        /// <remarks/>
+        UTC_0900_ALASKA,
+        
+        /// <remarks/>
+        UTC_0800_BAJA_CALIFORNIA,
+        
+        /// <remarks/>
+        UTC_0800_PACIFIC_TIME_US_CANADA_,
+        
+        /// <remarks/>
+        UTC_0700_ARIZONA,
+        
+        /// <remarks/>
+        UTC_0700_CHIHUAHUA,
+        
+        /// <remarks/>
+        UTC_0700_MOUNTAIN_TIME_US_CANADA_,
+        
+        /// <remarks/>
+        UTC_0600_CENTRAL_AMERICA,
+        
+        /// <remarks/>
+        UTC_0600_CENTRAL_TIME_US_CANADA_,
+        
+        /// <remarks/>
+        UTC_0600_GUADALAJARA,
+        
+        /// <remarks/>
+        UTC_0600_SASKATCHEWAN,
+        
+        /// <remarks/>
+        UTC_0500_BOGOTA,
+        
+        /// <remarks/>
+        UTC_0500_EASTERN_TIME_US_CANADA_,
+        
+        /// <remarks/>
+        UTC_0500_INDIANA_EAST_,
+        
+        /// <remarks/>
+        UTC_0430_CARACAS,
+        
+        /// <remarks/>
+        UTC_0400_ASUNCION,
+        
+        /// <remarks/>
+        UTC_0400_ATLANTIC_TIME_CANADA_,
+        
+        /// <remarks/>
+        UTC_0400_CUIABA,
+        
+        /// <remarks/>
+        UTC_0400_GEORGETOWN,
+        
+        /// <remarks/>
+        UTC_0400_SANTIAGO,
+        
+        /// <remarks/>
+        UTC_0330_NEWFOUNDLAND,
+        
+        /// <remarks/>
+        UTC_0300_BRASILIA,
+        
+        /// <remarks/>
+        UTC_0300_BUENOS_AIRES,
+        
+        /// <remarks/>
+        UTC_0300_CAYENNE,
+        
+        /// <remarks/>
+        UTC_0300_GREENLAND,
+        
+        /// <remarks/>
+        UTC_0300_MONTEVIDEO,
+        
+        /// <remarks/>
+        UTC_0300_SALVADOR,
+        
+        /// <remarks/>
+        UTC_0200_COORDINATED_UNIVERSAL_TIME_02,
+        
+        /// <remarks/>
+        UTC_0200_MID_ATLANTIC,
+        
+        /// <remarks/>
+        UTC_0100_AZORES,
+        
+        /// <remarks/>
+        UTC_0100_CAPE_VERDE_IS_,
+        
+        /// <remarks/>
+        UTC_CASABLANCA,
+        
+        /// <remarks/>
+        UTC_COORDINATED_UNIVERSAL_TIME,
+        
+        /// <remarks/>
+        UTC_DUBLIN,
+        
+        /// <remarks/>
+        UTC_MONROVIA,
+        
+        /// <remarks/>
+        UTC0100_AMSTERDAM,
+        
+        /// <remarks/>
+        UTC0100_BELGRADE,
+        
+        /// <remarks/>
+        UTC0100_BRUSSELS,
+        
+        /// <remarks/>
+        UTC0100_SARAJEVO,
+        
+        /// <remarks/>
+        UTC0100_WEST_CENTRAL_AFRICA,
+        
+        /// <remarks/>
+        UTC0100_WINDHOEK,
+        
+        /// <remarks/>
+        UTC0200_AMMAN,
+        
+        /// <remarks/>
+        UTC0200_ATHENS,
+        
+        /// <remarks/>
+        UTC0200_BEIRUT,
+        
+        /// <remarks/>
+        UTC0200_CAIRO,
+        
+        /// <remarks/>
+        UTC0200_DAMASCUS,
+        
+        /// <remarks/>
+        UTC0200_HARARE,
+        
+        /// <remarks/>
+        UTC0200_HELSINKI,
+        
+        /// <remarks/>
+        UTC0200_ISTANBUL,
+        
+        /// <remarks/>
+        UTC0200_JERUSALEM,
+        
+        /// <remarks/>
+        UTC0200_NICOSIA,
+        
+        /// <remarks/>
+        UTC0300_BAGHDAD,
+        
+        /// <remarks/>
+        UTC0300_KALININGRAD,
+        
+        /// <remarks/>
+        UTC0300_KUWAIT,
+        
+        /// <remarks/>
+        UTC0300_NAIROBI,
+        
+        /// <remarks/>
+        UTC0330_TEHRAN,
+        
+        /// <remarks/>
+        UTC0400_ABU_DHABI,
+        
+        /// <remarks/>
+        UTC0400_BAKU,
+        
+        /// <remarks/>
+        UTC0400_MOSCOW,
+        
+        /// <remarks/>
+        UTC0400_PORT_LOUIS,
+        
+        /// <remarks/>
+        UTC0400_TBILISI,
+        
+        /// <remarks/>
+        UTC0400_YEREVAN,
+        
+        /// <remarks/>
+        UTC0430_KABUL,
+        
+        /// <remarks/>
+        UTC0500_ISLAMABAD,
+        
+        /// <remarks/>
+        UTC0500_TASHKENT,
+        
+        /// <remarks/>
+        UTC0530_CHENNAI,
+        
+        /// <remarks/>
+        UTC0530_SRI_JAYAWARDENEPURA,
+        
+        /// <remarks/>
+        UTC0545_KATHMANDU,
+        
+        /// <remarks/>
+        UTC0600_ASTANA,
+        
+        /// <remarks/>
+        UTC0600_DHAKA,
+        
+        /// <remarks/>
+        UTC0600_EKATERINBURG,
+        
+        /// <remarks/>
+        UTC0630_YANGON_RANGOON_,
+        
+        /// <remarks/>
+        UTC0700_BANGKOK,
+        
+        /// <remarks/>
+        UTC0700_NOVOSIBIRSK,
+        
+        /// <remarks/>
+        UTC0800_BEIJING,
+        
+        /// <remarks/>
+        UTC0800_KRASNOYARSK,
+        
+        /// <remarks/>
+        UTC0800_KUALA_LUMPUR,
+        
+        /// <remarks/>
+        UTC0800_PERTH,
+        
+        /// <remarks/>
+        UTC0800_TAIPEI,
+        
+        /// <remarks/>
+        UTC0800_ULAANBAATAR,
+        
+        /// <remarks/>
+        UTC0900_IRKUTSK,
+        
+        /// <remarks/>
+        UTC0900_OSAKA,
+        
+        /// <remarks/>
+        UTC0830_PYONGYANG,
+        
+        /// <remarks/>
+        UTC0900_SEOUL,
+        
+        /// <remarks/>
+        UTC0930_ADELAIDE,
+        
+        /// <remarks/>
+        UTC0930_DARWIN,
+        
+        /// <remarks/>
+        UTC1000_BRISBANE,
+        
+        /// <remarks/>
+        UTC1000_CANBERRA,
+        
+        /// <remarks/>
+        UTC1000_GUAM,
+        
+        /// <remarks/>
+        UTC1000_HOBART,
+        
+        /// <remarks/>
+        UTC1000_YAKUTSK,
+        
+        /// <remarks/>
+        UTC1100_SOLOMON_IS_,
+        
+        /// <remarks/>
+        UTC1100_VLADIVOSTOK,
+        
+        /// <remarks/>
+        UTC1200_AUCKLAND,
+        
+        /// <remarks/>
+        UTC1200_COORDINATED_UNIVERSAL_TIME_12,
+        
+        /// <remarks/>
+        UTC1200_FIJI,
+        
+        /// <remarks/>
+        UTC1200_MAGADAN,
+        
+        /// <remarks/>
+        UTC1300_NUKU_ALOFA,
+        
+        /// <remarks/>
+        UTC1300_SAMOA,
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://pm.v2.webservice.projectmanagergui.xmlintl.com/")]
+    public partial class xtmUserExtDescriptorAPI : xtmUserDescriptorAPI {
+        
+        private string displayNameField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public string displayName {
+            get {
+                return this.displayNameField;
+            }
+            set {
+                this.displayNameField = value;
+                this.RaisePropertyChanged("displayName");
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://pm.v2.webservice.projectmanagergui.xmlintl.com/")]
+    public partial class xtmGenerateCostOptionsAPI : object, System.ComponentModel.INotifyPropertyChanged {
+        
+        private xtmCostsAssignmentAPI assignmentField;
+        
+        private xtmCostsMissingRatesEnum missingRatesProviderField;
+        
+        private bool missingRatesProviderFieldSpecified;
+        
+        private xtmCostsMissingTimeEnum missingTimeProviderField;
+        
+        private bool missingTimeProviderFieldSpecified;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
+        public xtmCostsAssignmentAPI assignment {
+            get {
+                return this.assignmentField;
+            }
+            set {
+                this.assignmentField = value;
+                this.RaisePropertyChanged("assignment");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public xtmCostsMissingRatesEnum missingRatesProvider {
+            get {
+                return this.missingRatesProviderField;
+            }
+            set {
+                this.missingRatesProviderField = value;
+                this.RaisePropertyChanged("missingRatesProvider");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool missingRatesProviderSpecified {
+            get {
+                return this.missingRatesProviderFieldSpecified;
+            }
+            set {
+                this.missingRatesProviderFieldSpecified = value;
+                this.RaisePropertyChanged("missingRatesProviderSpecified");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public xtmCostsMissingTimeEnum missingTimeProvider {
+            get {
+                return this.missingTimeProviderField;
+            }
+            set {
+                this.missingTimeProviderField = value;
+                this.RaisePropertyChanged("missingTimeProvider");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlIgnoreAttribute()]
+        public bool missingTimeProviderSpecified {
+            get {
+                return this.missingTimeProviderFieldSpecified;
+            }
+            set {
+                this.missingTimeProviderFieldSpecified = value;
+                this.RaisePropertyChanged("missingTimeProviderSpecified");
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://pm.v2.webservice.projectmanagergui.xmlintl.com/")]
+    public enum xtmCostsMissingRatesEnum {
+        
+        /// <remarks/>
+        ZERO,
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
+    [System.SerializableAttribute()]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://pm.v2.webservice.projectmanagergui.xmlintl.com/")]
+    public enum xtmCostsMissingTimeEnum {
+        
+        /// <remarks/>
+        ZERO,
     }
     
     /// <remarks/>
@@ -8342,696 +9213,6 @@ namespace LjungbergIt.Xtm.Webservice.XtmServiceReference {
             System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
             if ((propertyChanged != null)) {
                 propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(xtmUserOuterDescriptorAPI))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(xtmUserDescriptorAPI))]
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(xtmUserExtDescriptorAPI))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://pm.v2.webservice.projectmanagergui.xmlintl.com/")]
-    public partial class xtmUserBaseDescriptorAPI : object, System.ComponentModel.INotifyPropertyChanged {
-        
-        private long idField;
-        
-        private bool idFieldSpecified;
-        
-        private string nameField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
-        public long id {
-            get {
-                return this.idField;
-            }
-            set {
-                this.idField = value;
-                this.RaisePropertyChanged("id");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool idSpecified {
-            get {
-                return this.idFieldSpecified;
-            }
-            set {
-                this.idFieldSpecified = value;
-                this.RaisePropertyChanged("idSpecified");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
-        public string name {
-            get {
-                return this.nameField;
-            }
-            set {
-                this.nameField = value;
-                this.RaisePropertyChanged("name");
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://pm.v2.webservice.projectmanagergui.xmlintl.com/")]
-    public partial class xtmUserOuterDescriptorAPI : xtmUserBaseDescriptorAPI {
-        
-        private pmDateFormat dateFormatField;
-        
-        private bool dateFormatFieldSpecified;
-        
-        private languageCODE preferredLanguageField;
-        
-        private bool preferredLanguageFieldSpecified;
-        
-        private pmTimeFormat timeFormatField;
-        
-        private bool timeFormatFieldSpecified;
-        
-        private timeZoneEnum timeZoneEnumField;
-        
-        private bool timeZoneEnumFieldSpecified;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
-        public pmDateFormat dateFormat {
-            get {
-                return this.dateFormatField;
-            }
-            set {
-                this.dateFormatField = value;
-                this.RaisePropertyChanged("dateFormat");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool dateFormatSpecified {
-            get {
-                return this.dateFormatFieldSpecified;
-            }
-            set {
-                this.dateFormatFieldSpecified = value;
-                this.RaisePropertyChanged("dateFormatSpecified");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
-        public languageCODE preferredLanguage {
-            get {
-                return this.preferredLanguageField;
-            }
-            set {
-                this.preferredLanguageField = value;
-                this.RaisePropertyChanged("preferredLanguage");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool preferredLanguageSpecified {
-            get {
-                return this.preferredLanguageFieldSpecified;
-            }
-            set {
-                this.preferredLanguageFieldSpecified = value;
-                this.RaisePropertyChanged("preferredLanguageSpecified");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
-        public pmTimeFormat timeFormat {
-            get {
-                return this.timeFormatField;
-            }
-            set {
-                this.timeFormatField = value;
-                this.RaisePropertyChanged("timeFormat");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool timeFormatSpecified {
-            get {
-                return this.timeFormatFieldSpecified;
-            }
-            set {
-                this.timeFormatFieldSpecified = value;
-                this.RaisePropertyChanged("timeFormatSpecified");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
-        public timeZoneEnum timeZoneEnum {
-            get {
-                return this.timeZoneEnumField;
-            }
-            set {
-                this.timeZoneEnumField = value;
-                this.RaisePropertyChanged("timeZoneEnum");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool timeZoneEnumSpecified {
-            get {
-                return this.timeZoneEnumFieldSpecified;
-            }
-            set {
-                this.timeZoneEnumFieldSpecified = value;
-                this.RaisePropertyChanged("timeZoneEnumSpecified");
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
-    [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://pm.v2.webservice.projectmanagergui.xmlintl.com/")]
-    public enum pmDateFormat {
-        
-        /// <remarks/>
-        DAY_MONTH_LONGYEAR,
-        
-        /// <remarks/>
-        MONTH_DAY_LONGYEAR,
-        
-        /// <remarks/>
-        LONGYEAR_MONTH_DAY,
-        
-        /// <remarks/>
-        SHORTYEAR_MONTH_DAY,
-        
-        /// <remarks/>
-        DAY_MONTH_SHORTYEAR,
-        
-        /// <remarks/>
-        MONTH_DAY_YEAR,
-        
-        /// <remarks/>
-        DAY_MONTH_LONGYEAR_SLASH,
-        
-        /// <remarks/>
-        MONTH_DAY_LONGYEAR_SLASH,
-        
-        /// <remarks/>
-        LONGYEAR_MONTH_DAY_SLASH,
-        
-        /// <remarks/>
-        SHORTYEAR_MONTH_DAY_SLASH,
-        
-        /// <remarks/>
-        DAY_MONTH_SHORTYEAR_SLASH,
-        
-        /// <remarks/>
-        MONTH_DAY_YEAR_SLASH,
-        
-        /// <remarks/>
-        DAY_MEDIUMMONTH_LONGYEAR,
-        
-        /// <remarks/>
-        MEDIUMMONTH_DAY_LONGYEAR,
-        
-        /// <remarks/>
-        LONGYEAR_MEDIUMMONTH_DAY,
-        
-        /// <remarks/>
-        SHORTYEAR_MEDIUMMONTH_DAY,
-        
-        /// <remarks/>
-        DAY_MEDIUMMONTH_SHORTYEAR,
-        
-        /// <remarks/>
-        MEDIUMMONTH_DAY_YEAR,
-        
-        /// <remarks/>
-        DAY_MEDIUMMONTH_LONGYEAR_SLASH,
-        
-        /// <remarks/>
-        MEDIUMMONTH_DAY_LONGYEAR_SLASH,
-        
-        /// <remarks/>
-        LONGYEAR_MEDIUMMONTH_DAY_SLASH,
-        
-        /// <remarks/>
-        SHORTYEAR_MEDIUMMONTH_DAY_SLASH,
-        
-        /// <remarks/>
-        DAY_MEDIUMMONTH_SHORTYEAR_SLASH,
-        
-        /// <remarks/>
-        MEDIUMMONTH_DAY_YEAR_SLASH,
-        
-        /// <remarks/>
-        UTC,
-        
-        /// <remarks/>
-        LONGYEAR_MONTH_DAY_TIME_UTC,
-        
-        /// <remarks/>
-        PROJECT_ACTIONS_HISTORY_LOG,
-        
-        /// <remarks/>
-        EDITOR_SIMPLE_DATE_FORMAT,
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
-    [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://pm.v2.webservice.projectmanagergui.xmlintl.com/")]
-    public enum pmTimeFormat {
-        
-        /// <remarks/>
-        SHORTHOUR_MINUTES,
-        
-        /// <remarks/>
-        LONGHOUR_MINUTES,
-        
-        /// <remarks/>
-        LONGHOUR_MINUTES_SECONDS,
-        
-        /// <remarks/>
-        SHORTHOUR_MINUTES_AM_PM,
-        
-        /// <remarks/>
-        LONGHOUR_MINUTES_AM_PM,
-        
-        /// <remarks/>
-        LONGHOUR_MINUTES_SECONDS_AM_PM,
-        
-        /// <remarks/>
-        UTC,
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
-    [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://pm.v2.webservice.projectmanagergui.xmlintl.com/")]
-    public enum timeZoneEnum {
-        
-        /// <remarks/>
-        UTC_1200_INTERNATIONAL_DATE_LINE_WEST,
-        
-        /// <remarks/>
-        UTC_1100_COORDINATED_UNIVERSAL_TIME_11,
-        
-        /// <remarks/>
-        UTC_1000_HAWAII,
-        
-        /// <remarks/>
-        UTC_0900_ALASKA,
-        
-        /// <remarks/>
-        UTC_0800_BAJA_CALIFORNIA,
-        
-        /// <remarks/>
-        UTC_0800_PACIFIC_TIME_US_CANADA_,
-        
-        /// <remarks/>
-        UTC_0700_ARIZONA,
-        
-        /// <remarks/>
-        UTC_0700_CHIHUAHUA,
-        
-        /// <remarks/>
-        UTC_0700_MOUNTAIN_TIME_US_CANADA_,
-        
-        /// <remarks/>
-        UTC_0600_CENTRAL_AMERICA,
-        
-        /// <remarks/>
-        UTC_0600_CENTRAL_TIME_US_CANADA_,
-        
-        /// <remarks/>
-        UTC_0600_GUADALAJARA,
-        
-        /// <remarks/>
-        UTC_0600_SASKATCHEWAN,
-        
-        /// <remarks/>
-        UTC_0500_BOGOTA,
-        
-        /// <remarks/>
-        UTC_0500_EASTERN_TIME_US_CANADA_,
-        
-        /// <remarks/>
-        UTC_0500_INDIANA_EAST_,
-        
-        /// <remarks/>
-        UTC_0430_CARACAS,
-        
-        /// <remarks/>
-        UTC_0400_ASUNCION,
-        
-        /// <remarks/>
-        UTC_0400_ATLANTIC_TIME_CANADA_,
-        
-        /// <remarks/>
-        UTC_0400_CUIABA,
-        
-        /// <remarks/>
-        UTC_0400_GEORGETOWN,
-        
-        /// <remarks/>
-        UTC_0400_SANTIAGO,
-        
-        /// <remarks/>
-        UTC_0330_NEWFOUNDLAND,
-        
-        /// <remarks/>
-        UTC_0300_BRASILIA,
-        
-        /// <remarks/>
-        UTC_0300_BUENOS_AIRES,
-        
-        /// <remarks/>
-        UTC_0300_CAYENNE,
-        
-        /// <remarks/>
-        UTC_0300_GREENLAND,
-        
-        /// <remarks/>
-        UTC_0300_MONTEVIDEO,
-        
-        /// <remarks/>
-        UTC_0300_SALVADOR,
-        
-        /// <remarks/>
-        UTC_0200_COORDINATED_UNIVERSAL_TIME_02,
-        
-        /// <remarks/>
-        UTC_0200_MID_ATLANTIC,
-        
-        /// <remarks/>
-        UTC_0100_AZORES,
-        
-        /// <remarks/>
-        UTC_0100_CAPE_VERDE_IS_,
-        
-        /// <remarks/>
-        UTC_CASABLANCA,
-        
-        /// <remarks/>
-        UTC_COORDINATED_UNIVERSAL_TIME,
-        
-        /// <remarks/>
-        UTC_DUBLIN,
-        
-        /// <remarks/>
-        UTC_MONROVIA,
-        
-        /// <remarks/>
-        UTC0100_AMSTERDAM,
-        
-        /// <remarks/>
-        UTC0100_BELGRADE,
-        
-        /// <remarks/>
-        UTC0100_BRUSSELS,
-        
-        /// <remarks/>
-        UTC0100_SARAJEVO,
-        
-        /// <remarks/>
-        UTC0100_WEST_CENTRAL_AFRICA,
-        
-        /// <remarks/>
-        UTC0100_WINDHOEK,
-        
-        /// <remarks/>
-        UTC0200_AMMAN,
-        
-        /// <remarks/>
-        UTC0200_ATHENS,
-        
-        /// <remarks/>
-        UTC0200_BEIRUT,
-        
-        /// <remarks/>
-        UTC0200_CAIRO,
-        
-        /// <remarks/>
-        UTC0200_DAMASCUS,
-        
-        /// <remarks/>
-        UTC0200_HARARE,
-        
-        /// <remarks/>
-        UTC0200_HELSINKI,
-        
-        /// <remarks/>
-        UTC0200_ISTANBUL,
-        
-        /// <remarks/>
-        UTC0200_JERUSALEM,
-        
-        /// <remarks/>
-        UTC0200_NICOSIA,
-        
-        /// <remarks/>
-        UTC0300_BAGHDAD,
-        
-        /// <remarks/>
-        UTC0300_KALININGRAD,
-        
-        /// <remarks/>
-        UTC0300_KUWAIT,
-        
-        /// <remarks/>
-        UTC0300_NAIROBI,
-        
-        /// <remarks/>
-        UTC0330_TEHRAN,
-        
-        /// <remarks/>
-        UTC0400_ABU_DHABI,
-        
-        /// <remarks/>
-        UTC0400_BAKU,
-        
-        /// <remarks/>
-        UTC0400_MOSCOW,
-        
-        /// <remarks/>
-        UTC0400_PORT_LOUIS,
-        
-        /// <remarks/>
-        UTC0400_TBILISI,
-        
-        /// <remarks/>
-        UTC0400_YEREVAN,
-        
-        /// <remarks/>
-        UTC0430_KABUL,
-        
-        /// <remarks/>
-        UTC0500_ISLAMABAD,
-        
-        /// <remarks/>
-        UTC0500_TASHKENT,
-        
-        /// <remarks/>
-        UTC0530_CHENNAI,
-        
-        /// <remarks/>
-        UTC0530_SRI_JAYAWARDENEPURA,
-        
-        /// <remarks/>
-        UTC0545_KATHMANDU,
-        
-        /// <remarks/>
-        UTC0600_ASTANA,
-        
-        /// <remarks/>
-        UTC0600_DHAKA,
-        
-        /// <remarks/>
-        UTC0600_EKATERINBURG,
-        
-        /// <remarks/>
-        UTC0630_YANGON_RANGOON_,
-        
-        /// <remarks/>
-        UTC0700_BANGKOK,
-        
-        /// <remarks/>
-        UTC0700_NOVOSIBIRSK,
-        
-        /// <remarks/>
-        UTC0800_BEIJING,
-        
-        /// <remarks/>
-        UTC0800_KRASNOYARSK,
-        
-        /// <remarks/>
-        UTC0800_KUALA_LUMPUR,
-        
-        /// <remarks/>
-        UTC0800_PERTH,
-        
-        /// <remarks/>
-        UTC0800_TAIPEI,
-        
-        /// <remarks/>
-        UTC0800_ULAANBAATAR,
-        
-        /// <remarks/>
-        UTC0900_IRKUTSK,
-        
-        /// <remarks/>
-        UTC0900_OSAKA,
-        
-        /// <remarks/>
-        UTC0900_SEOUL,
-        
-        /// <remarks/>
-        UTC0930_ADELAIDE,
-        
-        /// <remarks/>
-        UTC0930_DARWIN,
-        
-        /// <remarks/>
-        UTC1000_BRISBANE,
-        
-        /// <remarks/>
-        UTC1000_CANBERRA,
-        
-        /// <remarks/>
-        UTC1000_GUAM,
-        
-        /// <remarks/>
-        UTC1000_HOBART,
-        
-        /// <remarks/>
-        UTC1000_YAKUTSK,
-        
-        /// <remarks/>
-        UTC1100_SOLOMON_IS_,
-        
-        /// <remarks/>
-        UTC1100_VLADIVOSTOK,
-        
-        /// <remarks/>
-        UTC1200_AUCKLAND,
-        
-        /// <remarks/>
-        UTC1200_COORDINATED_UNIVERSAL_TIME_12,
-        
-        /// <remarks/>
-        UTC1200_FIJI,
-        
-        /// <remarks/>
-        UTC1200_MAGADAN,
-        
-        /// <remarks/>
-        UTC1300_NUKU_ALOFA,
-        
-        /// <remarks/>
-        UTC1300_SAMOA,
-    }
-    
-    /// <remarks/>
-    [System.Xml.Serialization.XmlIncludeAttribute(typeof(xtmUserExtDescriptorAPI))]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://pm.v2.webservice.projectmanagergui.xmlintl.com/")]
-    public partial class xtmUserDescriptorAPI : xtmUserBaseDescriptorAPI {
-        
-        private actorType typeField;
-        
-        private bool typeFieldSpecified;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
-        public actorType type {
-            get {
-                return this.typeField;
-            }
-            set {
-                this.typeField = value;
-                this.RaisePropertyChanged("type");
-            }
-        }
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlIgnoreAttribute()]
-        public bool typeSpecified {
-            get {
-                return this.typeFieldSpecified;
-            }
-            set {
-                this.typeFieldSpecified = value;
-                this.RaisePropertyChanged("typeSpecified");
-            }
-        }
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
-    [System.SerializableAttribute()]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://pm.v2.webservice.projectmanagergui.xmlintl.com/")]
-    public enum actorType {
-        
-        /// <remarks/>
-        INTERNALLINGUIST,
-        
-        /// <remarks/>
-        EXTERNALLINGUIST,
-        
-        /// <remarks/>
-        LSP,
-        
-        /// <remarks/>
-        USERGROUP,
-    }
-    
-    /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Xml", "4.6.1064.2")]
-    [System.SerializableAttribute()]
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.ComponentModel.DesignerCategoryAttribute("code")]
-    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://pm.v2.webservice.projectmanagergui.xmlintl.com/")]
-    public partial class xtmUserExtDescriptorAPI : xtmUserDescriptorAPI {
-        
-        private string displayNameField;
-        
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=0)]
-        public string displayName {
-            get {
-                return this.displayNameField;
-            }
-            set {
-                this.displayNameField = value;
-                this.RaisePropertyChanged("displayName");
             }
         }
     }
@@ -14037,6 +14218,8 @@ namespace LjungbergIt.Xtm.Webservice.XtmServiceReference {
         
         private xtmFileDescriptorAPI fileDescriptorField;
         
+        private string messageField;
+        
         private xtmProjectDescriptorAPI projectDescriptorField;
         
         private xtmPROJECTFILECOMPLETIONSTATUS statusField;
@@ -14057,6 +14240,18 @@ namespace LjungbergIt.Xtm.Webservice.XtmServiceReference {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=1)]
+        public string message {
+            get {
+                return this.messageField;
+            }
+            set {
+                this.messageField = value;
+                this.RaisePropertyChanged("message");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
         public xtmProjectDescriptorAPI projectDescriptor {
             get {
                 return this.projectDescriptorField;
@@ -14068,7 +14263,7 @@ namespace LjungbergIt.Xtm.Webservice.XtmServiceReference {
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
         public xtmPROJECTFILECOMPLETIONSTATUS status {
             get {
                 return this.statusField;
@@ -20452,6 +20647,9 @@ namespace LjungbergIt.Xtm.Webservice.XtmServiceReference {
         
         /// <remarks/>
         BILLINGUAL_XLIFF,
+        
+        /// <remarks/>
+        MULTILINGUAL,
     }
     
     /// <remarks/>
@@ -26514,6 +26712,8 @@ namespace LjungbergIt.Xtm.Webservice.XtmServiceReference {
         
         private xtmJobDescriptorAPI jobDescriptorField;
         
+        private string messageField;
+        
         private xtmJOBFILECOMPLETIONSTATUS statusField;
         
         private bool statusFieldSpecified;
@@ -26544,6 +26744,18 @@ namespace LjungbergIt.Xtm.Webservice.XtmServiceReference {
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=2)]
+        public string message {
+            get {
+                return this.messageField;
+            }
+            set {
+                this.messageField = value;
+                this.RaisePropertyChanged("message");
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(Form=System.Xml.Schema.XmlSchemaForm.Unqualified, Order=3)]
         public xtmJOBFILECOMPLETIONSTATUS status {
             get {
                 return this.statusField;

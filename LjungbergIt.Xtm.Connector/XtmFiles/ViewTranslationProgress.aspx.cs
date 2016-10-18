@@ -25,7 +25,18 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
             if (projectIdOk)
             {
                 ImportFromXml import = new ImportFromXml();
-                bool success = import.CreateTranslatedContent(projectId);
+
+                Item finnishedProgressItem = null;
+                Item progressFolder = ScConstants.SitecoreDatabases.MasterDb.GetItem(ScConstants.SitecoreIDs.TranslationInProgressFolder);
+                foreach (Item progressItem in progressFolder.GetChildren())
+                {
+                    if (progressItem.Name.Equals(projectId.ToString()))
+                    {
+                        finnishedProgressItem = progressItem;
+                    }
+                }
+
+                bool success = import.CreateTranslatedContent(projectId, finnishedProgressItem);
                 lwProgress.DataSource = BuildProjectlist();
                 lwProgress.DataBind();
                 if (success)

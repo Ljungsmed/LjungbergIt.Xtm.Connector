@@ -5,6 +5,10 @@
         
 }
 
+li {
+    padding: 0 5px 0 5px;
+    margin: 0 10px 0 10px;
+}
 .container {
     padding: 5px 0 0 15px;
 }

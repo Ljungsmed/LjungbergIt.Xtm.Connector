@@ -1,11 +1,5 @@
 ﻿using LjungbergIt.Xtm.Connector.Pipelines;
 using Sitecore.Shell.Framework.Commands;
-using Sitecore.Web.UI.Sheer;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LjungbergIt.Xtm.Connector.Buttons
 {

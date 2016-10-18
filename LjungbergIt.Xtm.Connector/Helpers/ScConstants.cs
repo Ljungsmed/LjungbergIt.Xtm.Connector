@@ -18,6 +18,7 @@ namespace LjungbergIt.Xtm.Connector.Helpers
             public static readonly string XtmSettingsXtmTemplateFolder = "{7EA4644E-4AE7-4D7F-B807-5D3E51444FAD}";
             public static readonly string XtmSettingsLanguageMappingFolder = "{7D96664A-4CB2-4847-9C41-479DF9AD43F5}";
             public static readonly string XtmSettingsLanguageFolder = "{D3B57D66-1FE4-43C6-8EC5-2D93A21E0471}";
+            public static readonly string XtmSettingsDocumentationFolder = "{ECC6B7F8-69C6-4CE6-857A-BABDD68D2FC0}";
         }
 
         public struct SitecoreWorkflowIDs
@@ -103,6 +104,7 @@ namespace LjungbergIt.Xtm.Connector.Helpers
         {
             public static readonly string https = "{D2079525-D82D-4C33-B2B3-B5FA1FACD890}";
             public static readonly string Endpoint = "{4F43B55C-813D-4FCB-AEFE-8A45A441EEDD}";
+            public static readonly string CallbackUrl = "{27B0373F-6B96-496C-820E-FF3447E67A16}";
         }
 
         public struct XtmLanguageTemplate
@@ -113,7 +115,13 @@ namespace LjungbergIt.Xtm.Connector.Helpers
         public struct XtmConnectorBaseTemplate
         {
             //public static readonly string TranslatedRevision = "{3D08F793-798D-4097-90BE-1311400A43E9}";
-        }    
+        }
+
+        public struct XtmDocumentationSectionTemplate
+        {
+            public static readonly string SectionHeading = "{6C9BB079-D699-4E25-A521-C2A9FB056C58}";
+            public static readonly string SectionText = "{597C4989-17EF-4C52-BD1A-A1796A79BB2B}";
+        }
 
         public struct Misc
         {

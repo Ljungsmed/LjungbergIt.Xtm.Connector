@@ -133,6 +133,7 @@
     </Content>
     <Content Include="XtmFiles\AddItemForTranslation.aspx" />
     <Content Include="XtmFiles\TranslationDetailedView.aspx" />
+    <Content Include="XtmFiles\ViewDocumentation.aspx" />
     <Content Include="XtmFiles\ViewTranslationProgress.aspx" />
     <Content Include="XtmFiles\XtmStyles\HeadingBg.png" />
     <Content Include="XtmFiles\XtmStyles\Xtm.css" />
@@ -148,6 +149,7 @@
     <Compile Include="Buttons\StartTranslation.cs" />
     <Compile Include="Buttons\TestSecurity.cs" />
     <Compile Include="Buttons\TranslationDetailedView.cs" />
+    <Compile Include="Buttons\ViewDocumentation.cs" />
     <Compile Include="Buttons\ViewTranslationProgress.cs" />
     <Compile Include="Commands\XtmStartTranslation.cs" />
     <Compile Include="Export\Project.cs" />
@@ -172,6 +174,7 @@
     <Compile Include="Pipelines\XtmPipelineArgs.cs" />
     <Compile Include="Pipelines\XtmProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tasks\GetTranslatedContent.cs" />
     <Compile Include="TestSecurity.aspx.cs">
       <DependentUpon>TestSecurity.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -200,6 +203,13 @@
     </Compile>
     <Compile Include="XtmFiles\TranslationDetailedView.aspx.designer.cs">
       <DependentUpon>TranslationDetailedView.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="XtmFiles\ViewDocumentation.aspx.cs">
+      <DependentUpon>ViewDocumentation.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="XtmFiles\ViewDocumentation.aspx.designer.cs">
+      <DependentUpon>ViewDocumentation.aspx</DependentUpon>
     </Compile>
     <Compile Include="XtmFiles\ViewTranslationProgress.aspx.cs">
       <DependentUpon>ViewTranslationProgress.aspx</DependentUpon>

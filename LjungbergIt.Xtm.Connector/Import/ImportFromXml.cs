@@ -25,12 +25,12 @@ namespace LjungbergIt.Xtm.Connector.Import
                 bool projectIdOk = long.TryParse(progressItem[ScConstants.SitecoreFieldIds.XtmProjectId], out projectId);
                 if (projectIdOk)
                 {
-                    bool success = CreateTranslatedContent(projectId);
+                    bool success = CreateTranslatedContent(projectId, progressItem);
                 }
             }
         }
 
-        public bool CreateTranslatedContent(long projectId)
+        public bool CreateTranslatedContent(long projectId, Item progressItem)
         {
             XtmProject xtmProject = new XtmProject();
             LoginProperties login = new LoginProperties();
@@ -39,8 +39,6 @@ namespace LjungbergIt.Xtm.Connector.Import
             string password = login.ScPassword;
             bool success = new bool();
 
-            //Item settingsItem = ScConstants.SitecoreDatabases.MasterDb.GetItem(ScConstants.SitecoreIDs.XtmSettingsItem);
-            //string webServiceEndPoint = settingsItem[ScConstants.SitecoreFieldIds.XtmSettingsEndpoint];
             XtmWebserviceProperties xtmWebserviceProperties = new XtmWebserviceProperties();
 
             bool finished = xtmProject.IsTranslationFinished(projectId, client, userId, password, xtmWebserviceProperties.WebserviceEndpoint, xtmWebserviceProperties.IsHttps);
@@ -58,13 +56,7 @@ namespace LjungbergIt.Xtm.Connector.Import
                     {
                         using (new SecurityDisabler())
                         {
-                            foreach (Item progressItem in masterDb.GetItem(ScConstants.SitecoreIDs.TranslationInProgressFolder).GetChildren())
-                            {
-                                if (progressItem.Name.Equals(projectId.ToString()))
-                                {
-                                    progressItem.Delete();
-                                }
-                            }
+                            progressItem.Delete();                               
                         }
                     }
                     success = true;
@@ -185,7 +177,8 @@ namespace LjungbergIt.Xtm.Connector.Import
 
             foreach (Item langMapping in languageMappingFolder.GetChildren())
             {
-                if (langMapping[ScConstants.SitecoreFieldIds.XtmLanguageName].Equals(languageToTransform))
+                string xtmLang = ScConstants.SitecoreDatabases.MasterDb.GetItem(langMapping[ScConstants.SitecoreFieldIds.XtmLanguageName]).Name;
+                if (xtmLang.Equals(languageToTransform))
                 {
                     languageToTransform = langMapping[ScConstants.SitecoreFieldIds.SitecoreLanguageName];
                 }

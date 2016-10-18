@@ -7,6 +7,7 @@ namespace LjungbergIt.Xtm.Connector.Helpers
     {
         public bool IsHttps { get; set; }
         public string WebserviceEndpoint  { get; set; }
+        public string callBackUrl { get; set; }
 
         public XtmWebserviceProperties()
         {
@@ -22,6 +23,8 @@ namespace LjungbergIt.Xtm.Connector.Helpers
             }
 
             WebserviceEndpoint = xtmSettingsItem[ScConstants.XtmSettingsTemplate.Endpoint];
+
+            callBackUrl = xtmSettingsItem[ScConstants.XtmSettingsTemplate.CallbackUrl];
 
         }
     }

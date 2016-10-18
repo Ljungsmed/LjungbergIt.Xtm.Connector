@@ -8,7 +8,7 @@ namespace LjungbergIt.Xtm.Webservice
 {
     public class XtmCreateProject
     {
-        public List<string> Create(string filePath, string fileName, string sourceLanguage, string translationLanguage, string xtmTemplate, string xtmClient, long userId, string password, long customer, string webServiceEndPoint, bool https)
+        public List<string> Create(string filePath, string fileName, string sourceLanguage, string translationLanguage, string xtmTemplate, string xtmClient, long userId, string password, long customer, string webServiceEndPoint, bool https, string callbackUrl)
         {
             List<string> resultList = new List<string>();
             bool success = false;
@@ -22,7 +22,7 @@ namespace LjungbergIt.Xtm.Webservice
             project.Customer = customer;
             project.TargetLanguage = translationLanguage;
             project.SourceLanguage = sourceLanguage;
-            project.Template = xtmTemplate;
+            project.Template = xtmTemplate;  
 
             byte[] fileInBytes = File.ReadAllBytes(filePath);
             xtmFileMTOMAPI fileToTranslate = new xtmFileMTOMAPI();
@@ -44,7 +44,11 @@ namespace LjungbergIt.Xtm.Webservice
                 sitecoreSourceLanguage = "en_GB";
             }
             languageCODE parsedSourceLanguage = new languageCODE();
-            bool sourceLanguageCodeParsed = languageCODE.TryParse(sitecoreSourceLanguage, true, out parsedSourceLanguage); 
+            bool sourceLanguageCodeParsed = languageCODE.TryParse(sitecoreSourceLanguage, true, out parsedSourceLanguage);
+
+            //Set the callback URL that XTM will call when the project is finished and include a JSON response in the POST
+            xtmProjectCallbackAPI callBackAPI = new xtmProjectCallbackAPI();
+            callBackAPI.projectFinishedCallback = callbackUrl;
 
             if (languageCodeParsed && sourceLanguageCodeParsed)
             {
@@ -59,10 +63,7 @@ namespace LjungbergIt.Xtm.Webservice
                 projectMTOM.sourceLanguageSpecified = true;
                 projectMTOM.targetLanguages = targetLang;
                 projectMTOM.customer = xtmCustomer;
-                //projectMTOM.dueDate //Optional
-                //projectMTOM.domain //Optional                
-                //projectMTOM.workflowForNonAnalyzableFiles //Optional
-                //projectMTOM.externalDescriptor //Optional
+                //projectMTOM.projectCallback = callBackAPI;
                 if (!project.Template.Equals(""))
                 {
                     xtmTemplateExtendedDescriptorAPI xtmTemplateDescriptor = new xtmTemplateExtendedDescriptorAPI();

@@ -15,6 +15,7 @@ namespace LjungbergIt.Xtm.Webservice
             login.client = project.Client;
             login.userId = project.UserId;
             login.password = project.Password;
+            //login.integrationKey = 
             login.userIdSpecified = true;
 
             return login;
@@ -33,8 +34,9 @@ namespace LjungbergIt.Xtm.Webservice
             //BasicHttpsBinding binding = new BasicHttpsBinding();
             BasicHttpBinding binding = new BasicHttpBinding();
             EndpointAddress endPoint = new EndpointAddress(endPointUrl);
-
+            
             binding.Name = "XTMWebServiceSoapBinding";
+            //binding.MaxReceivedMessageSize = 20000000;
             if (https)
             {
                 binding.Security.Mode = BasicHttpSecurityMode.Transport;

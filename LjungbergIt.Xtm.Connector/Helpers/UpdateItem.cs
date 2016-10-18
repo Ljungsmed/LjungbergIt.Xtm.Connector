@@ -19,9 +19,12 @@ namespace LjungbergIt.Xtm.Connector.Helpers
                 {
                     foreach (UpdateItem updateProp in updateProps)
                     {
-                        itemToUpdate.Editing.BeginEdit();
-                        itemToUpdate[updateProp.FieldIdOrName] = updateProp.FieldValue;
-                        itemToUpdate.Editing.EndEdit();
+                        if (updateProp.FieldIdOrName != "")
+                        {
+                            itemToUpdate.Editing.BeginEdit();
+                            itemToUpdate[updateProp.FieldIdOrName] = updateProp.FieldValue;
+                            itemToUpdate.Editing.EndEdit();
+                        }                        
                     }
                 }
             }

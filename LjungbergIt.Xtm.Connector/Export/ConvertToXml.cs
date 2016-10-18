@@ -29,7 +29,6 @@ namespace LjungbergIt.Xtm.Connector.Export
                 Item archive = null;
                 using (new SecurityDisabler())
                 {
-
                     Item archiveFolder = masterDb.GetItem(ScConstants.SitecoreIDs.TranslationQueueArchiveFolder);
                     string itemName = DateTime.Now.ToString("yyyyMMdd-HHmmss");
                     Item newArchive = archiveFolder.Add(itemName, ScConstants.SitecoreTemplates.TranslationQueueLanguageFolderTemplate);
@@ -151,7 +150,7 @@ namespace LjungbergIt.Xtm.Connector.Export
 
             foreach (Field field in ItemToTranslate.Fields)
             {
-                if (!field.Name.Contains("__"))
+                if (!field.Name.Contains("__") && !field.Name.Contains("XTM_"))
                 {
                     xw.WriteStartElement(ScConstants.XmlNodes.XmlElementField);
                     xw.WriteAttributeString(ScConstants.XmlNodes.XmlAttributeFieldName, field.Name);

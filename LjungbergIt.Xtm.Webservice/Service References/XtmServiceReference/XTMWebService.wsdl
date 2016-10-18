@@ -462,6 +462,7 @@
         <xs:sequence>
           <xs:element minOccurs="0" name="fileDescriptor" type="tns:xtmFileDescriptorAPI" />
           <xs:element minOccurs="0" name="jobDescriptor" type="tns:xtmJobDescriptorAPI" />
+          <xs:element minOccurs="0" name="message" type="xs:string" />
           <xs:element minOccurs="0" name="status" type="tns:xtmJOBFILECOMPLETIONSTATUS" />
         </xs:sequence>
       </xs:complexType>
@@ -1817,6 +1818,7 @@
       <xs:complexType name="xtmProjectFileStatusResponseAPI">
         <xs:sequence>
           <xs:element minOccurs="0" name="fileDescriptor" type="tns:xtmFileDescriptorAPI" />
+          <xs:element minOccurs="0" name="message" type="xs:string" />
           <xs:element minOccurs="0" name="projectDescriptor" type="tns:xtmProjectDescriptorAPI" />
           <xs:element minOccurs="0" name="status" type="tns:xtmPROJECTFILECOMPLETIONSTATUS" />
         </xs:sequence>
@@ -2626,7 +2628,17 @@
         </xs:sequence>
       </xs:complexType>
       <xs:complexType name="xtmGenerateCostOptionsAPI">
-        <xs:sequence />
+        <xs:sequence>
+          <xs:element minOccurs="0" name="assignment" type="tns:xtmCostsAssignmentAPI" />
+          <xs:element minOccurs="0" name="missingRatesProvider" type="tns:xtmCostsMissingRatesEnum" />
+          <xs:element minOccurs="0" name="missingTimeProvider" type="tns:xtmCostsMissingTimeEnum" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="xtmCostsAssignmentAPI">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="overrideAssignment" type="tns:xtmCostsOverrideAssignmentEnum" />
+          <xs:element minOccurs="0" name="user" type="tns:xtmUserDescriptorAPI" />
+        </xs:sequence>
       </xs:complexType>
       <xs:complexType name="xtmGenerateCostResponseAPI">
         <xs:sequence>
@@ -2841,6 +2853,7 @@
           <xs:enumeration value="bn_BD" />
           <xs:enumeration value="bg_BG" />
           <xs:enumeration value="ca_AD" />
+          <xs:enumeration value="dnj" />
           <xs:enumeration value="da_DK" />
           <xs:enumeration value="prs_AF" />
           <xs:enumeration value="dv_IN" />
@@ -2897,6 +2910,7 @@
           <xs:enumeration value="grn" />
           <xs:enumeration value="gu_IN" />
           <xs:enumeration value="ht_HT" />
+          <xs:enumeration value="cnh" />
           <xs:enumeration value="ha_NG" />
           <xs:enumeration value="he_IL" />
           <xs:enumeration value="hi_IN" />
@@ -2961,6 +2975,7 @@
           <xs:enumeration value="nb_NO" />
           <xs:enumeration value="nn_NO" />
           <xs:enumeration value="nso_ZA" />
+          <xs:enumeration value="nus" />
           <xs:enumeration value="oc_FR" />
           <xs:enumeration value="or_IN" />
           <xs:enumeration value="om_ET" />
@@ -3069,6 +3084,7 @@
           <xs:enumeration value="yi_IL" />
           <xs:enumeration value="yi_US" />
           <xs:enumeration value="yo_NG" />
+          <xs:enumeration value="czt" />
           <xs:enumeration value="zu_ZA" />
         </xs:restriction>
       </xs:simpleType>
@@ -3776,6 +3792,7 @@
         <xs:restriction base="xs:string">
           <xs:enumeration value="XTM_XLIFF" />
           <xs:enumeration value="BILLINGUAL_XLIFF" />
+          <xs:enumeration value="MULTILINGUAL" />
         </xs:restriction>
       </xs:simpleType>
       <xs:simpleType name="editorROLEAPI">
@@ -3828,6 +3845,7 @@
           <xs:enumeration value="LONGYEAR_MONTH_DAY_TIME_UTC" />
           <xs:enumeration value="PROJECT_ACTIONS_HISTORY_LOG" />
           <xs:enumeration value="EDITOR_SIMPLE_DATE_FORMAT" />
+          <xs:enumeration value="FORMAT_LONG_DATE_FILE_SYSTEM_WRITABLE" />
         </xs:restriction>
       </xs:simpleType>
       <xs:simpleType name="pmTimeFormat">
@@ -3927,6 +3945,7 @@
           <xs:enumeration value="UTC0800_ULAANBAATAR" />
           <xs:enumeration value="UTC0900_IRKUTSK" />
           <xs:enumeration value="UTC0900_OSAKA" />
+          <xs:enumeration value="UTC0830_PYONGYANG" />
           <xs:enumeration value="UTC0900_SEOUL" />
           <xs:enumeration value="UTC0930_ADELAIDE" />
           <xs:enumeration value="UTC0930_DARWIN" />
@@ -4177,6 +4196,22 @@
           <xs:enumeration value="ACCORDINGLY_TO_STATE" />
           <xs:enumeration value="ALL_UPDATED_SEGMENTS" />
           <xs:enumeration value="ALL_SEGMENTS" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="xtmCostsOverrideAssignmentEnum">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="OVERRIDE_MISSING" />
+          <xs:enumeration value="OVERRIDE_ALL" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="xtmCostsMissingRatesEnum">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="ZERO" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="xtmCostsMissingTimeEnum">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="ZERO" />
         </xs:restriction>
       </xs:simpleType>
       <xs:simpleType name="xtmTMCOMPLETIONSTATUS">
