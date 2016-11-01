@@ -63,7 +63,7 @@ namespace LjungbergIt.Xtm.Webservice
                 projectMTOM.sourceLanguageSpecified = true;
                 projectMTOM.targetLanguages = targetLang;
                 projectMTOM.customer = xtmCustomer;
-                //projectMTOM.projectCallback = callBackAPI;
+                projectMTOM.projectCallback = callBackAPI;
                 if (!project.Template.Equals(""))
                 {
                     xtmTemplateExtendedDescriptorAPI xtmTemplateDescriptor = new xtmTemplateExtendedDescriptorAPI();

@@ -20,12 +20,45 @@
         </div>
         <div style="clear: both;"></div>
     <div class="container">
-        <asp:Repeater runat="server" ID="repTranslationQueue" ItemType="LjungbergIt.Xtm.Connector.Helpers.ScQueueItem">
+        <asp:Repeater runat="server" ID="rptTranslationQueue" ItemType="LjungbergIt.Xtm.Connector.Helpers.ScQueueItem">
             <HeaderTemplate>
-
+                <table class="tablestyle">
+                        <tr class="greybc whitetext">                            
+                            <th class="whitetext">
+                                Name
+                            </th>
+                            <th>
+                                Path
+                            </th>
+                            <th>
+                                Source Language
+                            </th>
+                            <th>
+                                Target Language
+                            </th>
+                            <th>
+                                Xtm Template
+                            </th>
+                        </tr>
             </HeaderTemplate>
             <ItemTemplate>
-
+                <tr>
+                    <td>
+                        <%# Item.QueueItemName %>
+                    </td>
+                    <td>
+                        <%# Item.QueueItemPath %>
+                    </td>
+                    <td>
+                        <%# Item.SourceLanguage %>
+                    </td>
+                    <td>
+                        <%# Item.TargetLanguage %>
+                    </td>
+                    <td>
+                        <%# Item.XtmTemplate %>
+                    </td>
+                </tr>
             </ItemTemplate>
             <FooterTemplate>
 

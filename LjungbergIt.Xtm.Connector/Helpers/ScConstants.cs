@@ -123,11 +123,18 @@ namespace LjungbergIt.Xtm.Connector.Helpers
             public static readonly string SectionText = "{597C4989-17EF-4C52-BD1A-A1796A79BB2B}";
         }
 
+        public struct XtmTranslationQueueItemTemplate
+        {
+            public static readonly string ItemId = "{F226C914-A62E-4B58-A2FC-B59CBD4C00F8}";
+        }
+
         public struct Misc
         {
             //public static readonly string EmailVaidationString = "\\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}\\b";
             public static readonly string translationFolderName = "XTMData";
             public static readonly string filesFortranslationFolderName = "TranslationFiles";
+            public static readonly string CallbackParameter = "xtmProjectId";
+            public static readonly string CallbackUrl = "/xtmfiles/xtmcallback.aspx";
         }
 
         public struct XmlNodes

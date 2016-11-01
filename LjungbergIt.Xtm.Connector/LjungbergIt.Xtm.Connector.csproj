@@ -135,6 +135,7 @@
     <Content Include="XtmFiles\TranslationDetailedView.aspx" />
     <Content Include="XtmFiles\ViewDocumentation.aspx" />
     <Content Include="XtmFiles\ViewTranslationProgress.aspx" />
+    <Content Include="XtmFiles\XtmCallback.aspx" />
     <Content Include="XtmFiles\XtmStyles\HeadingBg.png" />
     <Content Include="XtmFiles\XtmStyles\Xtm.css" />
     <Content Include="XtmFiles\XtmStyles\xtmlogo.png" />
@@ -158,6 +159,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\ScQueueItem.cs" />
+    <Compile Include="Helpers\ScSearch.cs" />
     <Compile Include="Helpers\ScUser.cs" />
     <Compile Include="Helpers\LanguageMapping.cs" />
     <Compile Include="Helpers\LoginProperties.cs" />
@@ -217,6 +219,13 @@
     </Compile>
     <Compile Include="XtmFiles\ViewTranslationProgress.aspx.designer.cs">
       <DependentUpon>ViewTranslationProgress.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="XtmFiles\XtmCallback.aspx.cs">
+      <DependentUpon>XtmCallback.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="XtmFiles\XtmCallback.aspx.designer.cs">
+      <DependentUpon>XtmCallback.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

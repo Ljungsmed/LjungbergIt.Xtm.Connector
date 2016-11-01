@@ -12,7 +12,9 @@ namespace LjungbergIt.Xtm.Connector.Helpers
         public string SourceLanguage { get; set; }
         public string TargetLanguage { get; set; }
         public string XtmTemplate { get; set; }
-        public Item QueueItem { get; set; }
+
+        public string QueueItemName { get; set; }
+        public string QueueItemPath { get; set; }
         public string AddedBy { get; set; }
     }
 }

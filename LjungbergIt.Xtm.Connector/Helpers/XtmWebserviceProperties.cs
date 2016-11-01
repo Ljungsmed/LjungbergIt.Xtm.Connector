@@ -24,7 +24,7 @@ namespace LjungbergIt.Xtm.Connector.Helpers
 
             WebserviceEndpoint = xtmSettingsItem[ScConstants.XtmSettingsTemplate.Endpoint];
 
-            callBackUrl = xtmSettingsItem[ScConstants.XtmSettingsTemplate.CallbackUrl];
+            callBackUrl = xtmSettingsItem[ScConstants.XtmSettingsTemplate.CallbackUrl] + ScConstants.Misc.CallbackUrl;
 
         }
     }

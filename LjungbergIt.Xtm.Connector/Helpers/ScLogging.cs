@@ -4,7 +4,7 @@ namespace LjungbergIt.Xtm.Connector.Helpers
 {
     class ScLogging
     {
-        string common = "LjungbergIt: ";
+        string common = "XTM Connector by LjungbergIt: ";
         public void WriteInfo(string textToLog)
         {
             Log.Info(common + textToLog, this);

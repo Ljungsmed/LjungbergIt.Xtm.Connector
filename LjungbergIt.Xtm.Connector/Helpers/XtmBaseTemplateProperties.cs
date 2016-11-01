@@ -17,9 +17,6 @@ namespace LjungbergIt.Xtm.Connector.Helpers
         public XtmBaseTemplateProperties GetXtmBaseTemplateProperties(Item currentItem)
         {
             XtmBaseTemplateProperties properties = new XtmBaseTemplateProperties();
-
-
-
             return properties;
         }
     }

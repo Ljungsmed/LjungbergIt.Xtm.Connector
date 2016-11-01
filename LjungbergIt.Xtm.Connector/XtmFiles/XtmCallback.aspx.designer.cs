@@ -10,7 +10,7 @@
 namespace LjungbergIt.Xtm.Connector.XtmFiles {
     
     
-    public partial class TranslationDetailedView {
+    public partial class XtmCallback {
         
         /// <summary>
         /// form1 control.
@@ -20,14 +20,5 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
-        
-        /// <summary>
-        /// rptTranslationQueue control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater rptTranslationQueue;
     }
 }
