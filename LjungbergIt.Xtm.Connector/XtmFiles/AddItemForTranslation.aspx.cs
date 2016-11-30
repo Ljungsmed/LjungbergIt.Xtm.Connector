@@ -1,4 +1,5 @@
 ﻿using LjungbergIt.Xtm.Connector.AddForTranslation;
+using LjungbergIt.Xtm.Connector.Export;
 using LjungbergIt.Xtm.Connector.Helpers;
 using Sitecore.Collections;
 using Sitecore.Data;
@@ -8,6 +9,8 @@ using Sitecore.Security.Accounts;
 using Sitecore.SecurityModel;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Net;
 using System.Text;
 using System.Web.UI.WebControls;
 
@@ -98,7 +101,7 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
 
             else
             {
-                //Get the item id of the item that needs to be added for translation
+                //Get the item that needs to be added for translation
                 Item contextItem = masterDb.GetItem(Request.QueryString["id"]);
                 //Create an item list of items to translate, if sub items needs to be added there will be more than one item
                 ItemList ItemsToTranslate = new ItemList();
@@ -221,6 +224,16 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
                 return Language.Parse(defaultSourceLanguageItem.Name);
             }                
             
+        }
+
+        protected void btnGenerateHtml_Click(object sender, EventArgs e)
+        {
+            WebRequest req = WebRequest.Create("http://sitecore81update1/test");
+            WebResponse response = req.GetResponse();
+            StreamReader sr = new StreamReader(response.GetResponseStream());
+            string htmlString = sr.ReadToEnd();
+            Html html = new Html();
+            html.GenerateHtml(htmlString);
         }
     }
 }

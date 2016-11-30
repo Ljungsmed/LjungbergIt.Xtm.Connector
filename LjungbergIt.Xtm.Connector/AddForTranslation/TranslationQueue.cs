@@ -45,7 +45,7 @@ namespace LjungbergIt.Xtm.Connector.AddForTranslation
                 }
 
                 Utils utils = new Utils();
-                string itemName = string.Format("{0}_{1}_{2}", utils.FormatItemName(itemToTranslate.ID.ToString()), targetLanguage, "VERSION");
+                string itemName = string.Format("{0}_{1}", utils.FormatItemName(itemToTranslate.ID.ToString()), targetLanguage);
 
                 if (queueItemNames.Contains(itemName))
                 {

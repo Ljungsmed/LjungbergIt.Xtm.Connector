@@ -39,6 +39,9 @@
                             <th>
                                 Xtm Template
                             </th>
+                            <th>
+                                Added By
+                            </th>
                         </tr>
             </HeaderTemplate>
             <ItemTemplate>
@@ -57,6 +60,9 @@
                     </td>
                     <td>
                         <%# Item.XtmTemplate %>
+                    </td>
+                    <td>
+                        <%# Item.AddedBy %>
                     </td>
                 </tr>
             </ItemTemplate>

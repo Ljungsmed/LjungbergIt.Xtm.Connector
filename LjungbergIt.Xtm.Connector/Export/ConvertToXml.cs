@@ -39,6 +39,7 @@ namespace LjungbergIt.Xtm.Connector.Export
                 foreach (Item translationFolderItem in queuedItemsFolder.GetChildren())
                 {
                     string fileName = translationFolderItem.Name;
+                    string projectName = masterDb.GetItem(ScConstants.SitecoreIDs.XtmSettingsItem)[ScConstants.XtmSettingsTemplate.ProjectNamePrefix];
                     string xtmTemplateId = string.Empty;
                     string xtmTemplateItemId = translationFolderItem[ScConstants.SitecoreFieldIds.QueuFolderXtmTemplate];
                     if (xtmTemplateItemId != "")
@@ -59,6 +60,7 @@ namespace LjungbergIt.Xtm.Connector.Export
                         string filePath = "~\\" + ScConstants.Misc.translationFolderName + "\\" + ScConstants.Misc.filesFortranslationFolderName + "\\" + fileName + ".xml";
                         string fullFilePath = System.Web.HttpContext.Current.Server.MapPath(filePath);
 
+                        //Add content of all items within a translation queue folder to a single XML file for adding a single project in XTM
                         using (FileStream fs = new FileStream(fullFilePath, FileMode.Create))
                         {
                             XmlWriterSettings settings = new XmlWriterSettings();
@@ -70,13 +72,28 @@ namespace LjungbergIt.Xtm.Connector.Export
                             updateList.Add(new UpdateItem() { FieldIdOrName = ScConstants.SitecoreXtmTemplateFieldIDs.InTranslation, FieldValue = "1" });
                             //xw.WriteStartDocument();
                             xw.WriteStartElement(ScConstants.XmlNodes.XmlRoot);
+                            int count = 0;
                             foreach (Item queuedItem in queuedItemList)
                             {
                                 Item itemInTranslation = masterDb.GetItem(queuedItem[ScConstants.SitecoreFieldNames.TranslationQueueItem_ItemId]);
                                 AddElement(xw, queuedItem, translationProperties.SourceLanguage);
                                 updateItem.Update(masterDb.GetItem(itemInTranslation.ID), updateList);
+                                if (count == 0)
+                                {
+                                    projectName = projectName + " " + itemInTranslation.Name;
+                                }
+                                count++;
                             }
-                            //xw.WriteEndDocument();
+                            if (count > 1)
+                            {
+                                string pagestring = "pages";
+                                if (count == 2)
+                                {
+                                    pagestring = "page";
+                                }
+                                projectName = projectName + " + " + (count - 1).ToString() + " " + pagestring;
+                            }
+                            
                             xw.WriteEndElement();
                             xw.Flush();
                             xw.Close();
@@ -84,7 +101,7 @@ namespace LjungbergIt.Xtm.Connector.Export
 
                         //When translation file in XML have been created, a project on XTM gets created with the XML file as the translation file
 
-                        string resultOfCreatingXtmProject = startTranslation.SendFilesToXtm(fullFilePath, fileName, translationProperties);
+                        string resultOfCreatingXtmProject = startTranslation.SendFilesToXtm(fullFilePath, projectName, translationProperties);
 
                         if (resultOfCreatingXtmProject.Equals("success"))
                         {

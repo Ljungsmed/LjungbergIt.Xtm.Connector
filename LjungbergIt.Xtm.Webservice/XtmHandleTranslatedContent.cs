@@ -10,9 +10,9 @@ namespace LjungbergIt.Xtm.Webservice
 
         XtmWebserviceAccess xtmAccess = new XtmWebserviceAccess();
 
-        public List<byte[]> GetFileInBytes(long projectID, string xtmClient, long userId, string password, string webServiceEndPoint, bool https)
+        public List<byte[]> GetFileInBytes(long projectID, string xtmClient, long userId, string password, string webServiceEndPoint, bool https, string integrationKey)
         {
-            XtmProject project = new XtmProject { Client = xtmClient, UserId = userId, Password = password };
+            XtmProject project = new XtmProject { Client = xtmClient, UserId = userId, Password = password, IntegrationKey = integrationKey };
             StringBuilder result = new StringBuilder();
             loginAPI login = xtmAccess.Login(project);
 

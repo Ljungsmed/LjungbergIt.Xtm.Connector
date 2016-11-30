@@ -24,12 +24,9 @@ namespace LjungbergIt.Xtm.Connector.Import
             long userId = login.ScUserId;
             string password = login.ScPassword;
 
-            //Item settingsItem = ScConstants.SitecoreDatabases.MasterDb.GetItem(ScConstants.SitecoreIDs.XtmSettingsItem);
-            //string webServiceEndPoint = settingsItem[ScConstants.SitecoreFieldIds.XtmSettingsEndpoint];
-
             XtmWebserviceProperties xtmWebserviceProperties = new XtmWebserviceProperties();
 
-            List<XtmTemplate> templateList = xtmGetTemplates.GetTemplates(login.ScClient, login.ScUserId, login.ScPassword, login.ScCustomer, xtmWebserviceProperties.WebserviceEndpoint, xtmWebserviceProperties.IsHttps);
+            List<XtmTemplate> templateList = xtmGetTemplates.GetTemplates(login.ScClient, login.ScUserId, login.ScPassword, login.ScCustomer, xtmWebserviceProperties.WebserviceEndpoint, xtmWebserviceProperties.IsHttps, login.ScIntegrationKey);
             if (templateList.Count != 0)
             {
                 Database masterDb = ScConstants.SitecoreDatabases.MasterDb;
@@ -80,22 +77,8 @@ namespace LjungbergIt.Xtm.Connector.Import
                         updateList.Add(new UpdateItem { FieldIdOrName = ScConstants.SitecoreFieldIds.XtmTemplateName, FieldValue = itemName });
                         updateList.Add(new UpdateItem { FieldIdOrName = ScConstants.SitecoreFieldIds.XtmTemplateId, FieldValue = xtmTemplate.XtmTemplateId.ToString() });
                         updateItem.CreateItem(xtmTemplate.XtmTemplateName, xtmTemplateFolder, ScConstants.SitecoreTemplates.XtmTemplate, updateList);
-                        returnString = "There are new XTM templates imported for use";
+                        returnString = "There are new XTM templates imported for use";                        
                     }
-
-                    //bool xtmTemplateDeleted = true;
-                    //foreach (Item template in xtmTemplateFolder.GetChildren())
-                    //{
-                    //    if (template[ScConstants.SitecoreFieldIds.XtmTemplateId].Equals(xtmTemplate.XtmTemplateId.ToString()))
-                    //    {
-                    //        xtmTemplateDeleted = false;
-                    //    }
-                    //}
-
-                    //if (xtmTemplateDeleted)
-                    //{
-
-                    //}
                 }
             }
             return returnString;

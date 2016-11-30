@@ -67,7 +67,7 @@ namespace LjungbergIt.Xtm.Connector.Helpers
         {
             //public static readonly string MainTitle = "main title";
             public static readonly string TranslationQueueItem_ItemId = "ItemId";
-            public static readonly string TranslationQueueItem_MasterLanguage = "MasterLanguage";
+            public static readonly string TranslationQueueItem_MasterLanguage = "{0E5B813D-C8AD-4C8B-80A8-5F85E2F981CA}";
             public static readonly string TranslationQueueItem_TranslateTo = "TranslateTo";
             public static readonly string TranslationQueueItem_Version = "Version";
             public static readonly string Settings_MasterLanguage = "DefaultMasterLanguage";
@@ -105,6 +105,8 @@ namespace LjungbergIt.Xtm.Connector.Helpers
             public static readonly string https = "{D2079525-D82D-4C33-B2B3-B5FA1FACD890}";
             public static readonly string Endpoint = "{4F43B55C-813D-4FCB-AEFE-8A45A441EEDD}";
             public static readonly string CallbackUrl = "{27B0373F-6B96-496C-820E-FF3447E67A16}";
+            public static readonly string ProjectNamePrefix = "{230BD66E-EB4A-471A-BC7A-936354E18C11}";
+            public static readonly string IntegrationKey = "{7D3AC5A3-7AE0-41C5-A046-F95282DFF883}";
         }
 
         public struct XtmLanguageTemplate
@@ -126,6 +128,8 @@ namespace LjungbergIt.Xtm.Connector.Helpers
         public struct XtmTranslationQueueItemTemplate
         {
             public static readonly string ItemId = "{F226C914-A62E-4B58-A2FC-B59CBD4C00F8}";
+            public static readonly string AddedBy = "{5676881D-A27B-4536-8C53-A7C90E76AC26}";
+
         }
 
         public struct Misc

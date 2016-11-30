@@ -37,6 +37,7 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
                     scQueueItem.XtmTemplate = xtmTemplate;
                     scQueueItem.QueueItemName = translateItem.Name;
                     scQueueItem.QueueItemPath = translateItem.Paths.ContentPath;
+                    scQueueItem.AddedBy = queueItem[ScConstants.XtmTranslationQueueItemTemplate.AddedBy];
 
                     queueItemList.Add(scQueueItem);
                 }

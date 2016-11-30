@@ -48,5 +48,14 @@ namespace LjungbergIt.Xtm.Connector.Helpers
             }
         }
 
+        string scIntegrationKey;
+        public string ScIntegrationKey
+        {
+            get
+            {
+                return scIntegrationKey = settingsItem[ScConstants.XtmSettingsTemplate.IntegrationKey];
+            }
+        }
+
     }
 }

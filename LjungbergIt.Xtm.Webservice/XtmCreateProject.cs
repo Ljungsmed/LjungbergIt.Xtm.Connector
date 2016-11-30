@@ -8,7 +8,7 @@ namespace LjungbergIt.Xtm.Webservice
 {
     public class XtmCreateProject
     {
-        public List<string> Create(string filePath, string fileName, string sourceLanguage, string translationLanguage, string xtmTemplate, string xtmClient, long userId, string password, long customer, string webServiceEndPoint, bool https, string callbackUrl)
+        public List<string> Create(string filePath, string fileName, string sourceLanguage, string translationLanguage, string xtmTemplate, string xtmClient, long userId, string password, long customer, string webServiceEndPoint, bool https, string callbackUrl, string integrationKey)
         {
             List<string> resultList = new List<string>();
             bool success = false;
@@ -22,12 +22,12 @@ namespace LjungbergIt.Xtm.Webservice
             project.Customer = customer;
             project.TargetLanguage = translationLanguage;
             project.SourceLanguage = sourceLanguage;
-            project.Template = xtmTemplate;  
+            project.Template = xtmTemplate;
+            project.IntegrationKey = integrationKey; 
 
             byte[] fileInBytes = File.ReadAllBytes(filePath);
             xtmFileMTOMAPI fileToTranslate = new xtmFileMTOMAPI();
             StringBuilder projectName = new StringBuilder();
-            projectName.Append(DateTime.Now.ToString("yyyyMMdd_"));
             projectName.Append(fileName);
 
             loginAPI login = access.Login(project);

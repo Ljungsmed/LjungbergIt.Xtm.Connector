@@ -21,6 +21,7 @@ namespace LjungbergIt.Xtm.Webservice
         public string Client { get; set; }
         public long UserId { get; set; }
         public string Password { get; set; }
+        public string IntegrationKey { get; set; }
 
         public List<XtmProject> GetProjectProperties(List<long> projectIds, string client, long userId, string password, string webServiceEndPoint, bool https)
         {

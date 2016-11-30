@@ -15,7 +15,7 @@ namespace LjungbergIt.Xtm.Webservice
             login.client = project.Client;
             login.userId = project.UserId;
             login.password = project.Password;
-            //login.integrationKey = 
+            login.integrationKey = project.IntegrationKey; 
             login.userIdSpecified = true;
 
             return login;
@@ -24,19 +24,17 @@ namespace LjungbergIt.Xtm.Webservice
         public xtmCustomerDescriptorAPI XtmCustomer(long customerId)
         {
             xtmCustomerDescriptorAPI customer = new xtmCustomerDescriptorAPI();
-            customer.id = customerId; // 2462;
+            customer.id = customerId;
             customer.idSpecified = true;
             return customer;
         }
 
         public ProjectManagerMTOMWebServiceClient GetServiceClient(string endPointUrl, bool https)
         {
-            //BasicHttpsBinding binding = new BasicHttpsBinding();
             BasicHttpBinding binding = new BasicHttpBinding();
             EndpointAddress endPoint = new EndpointAddress(endPointUrl);
             
             binding.Name = "XTMWebServiceSoapBinding";
-            //binding.MaxReceivedMessageSize = 20000000;
             if (https)
             {
                 binding.Security.Mode = BasicHttpSecurityMode.Transport;

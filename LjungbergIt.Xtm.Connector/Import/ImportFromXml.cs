@@ -45,7 +45,7 @@ namespace LjungbergIt.Xtm.Connector.Import
             if (finished)
             {
                 XtmHandleTranslatedContent Xtm = new XtmHandleTranslatedContent();
-                List<byte[]> bytesList = Xtm.GetFileInBytes(projectId, client, userId, password, xtmWebserviceProperties.WebserviceEndpoint, xtmWebserviceProperties.IsHttps);
+                List<byte[]> bytesList = Xtm.GetFileInBytes(projectId, client, userId, password, xtmWebserviceProperties.WebserviceEndpoint, xtmWebserviceProperties.IsHttps, login.ScIntegrationKey);
                 
                 if (bytesList.Count != 0)
                 {
