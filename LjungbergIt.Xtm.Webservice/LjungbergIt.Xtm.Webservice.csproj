@@ -55,6 +55,7 @@
     <Compile Include="XtmHandleTranslatedContent.cs" />
     <Compile Include="XtmCreateProject.cs" />
     <Compile Include="XtmProject.cs" />
+    <Compile Include="XtmTranslationFile.cs" />
     <Compile Include="XtmWebserviceAccess.cs" />
   </ItemGroup>
   <ItemGroup>

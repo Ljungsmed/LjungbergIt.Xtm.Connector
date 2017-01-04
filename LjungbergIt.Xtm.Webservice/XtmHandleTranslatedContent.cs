@@ -12,7 +12,7 @@ namespace LjungbergIt.Xtm.Webservice
 
         public List<byte[]> GetFileInBytes(long projectID, string xtmClient, long userId, string password, string webServiceEndPoint, bool https, string integrationKey)
         {
-            XtmProject project = new XtmProject { Client = xtmClient, UserId = userId, Password = password, IntegrationKey = integrationKey };
+            XtmProject project = new XtmProject { Client = xtmClient, UserId = userId, Password = password };
             StringBuilder result = new StringBuilder();
             loginAPI login = xtmAccess.Login(project);
 

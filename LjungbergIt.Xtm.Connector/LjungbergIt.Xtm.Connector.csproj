@@ -153,6 +153,7 @@
     <Compile Include="Buttons\ViewDocumentation.cs" />
     <Compile Include="Buttons\ViewTranslationProgress.cs" />
     <Compile Include="Commands\XtmStartTranslation.cs" />
+    <Compile Include="Export\Files.cs" />
     <Compile Include="Export\Html.cs" />
     <Compile Include="Export\Project.cs" />
     <Compile Include="Export\StartTranslation.cs" />

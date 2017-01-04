@@ -8,19 +8,16 @@ namespace LjungbergIt.Xtm.Connector.Export
 {
     public class StartTranslation
     {
-        public string SendFilesToXtm(string filePath, string fileName, TranslationProperties translationProperties)
+        public string SendFilesToXtm(List<XtmTranslationFile> translationFiles, string fileName, TranslationProperties translationProperties)
         {
             XtmCreateProject xtmCreateProject = new XtmCreateProject();
             
             LoginProperties login = new LoginProperties();
-
-            //Item settingsItem = ScConstants.SitecoreDatabases.MasterDb.GetItem(ScConstants.SitecoreIDs.XtmSettingsItem);
-            //string webServiceEndPoint = settingsItem[ScConstants.SitecoreFieldIds.XtmSettingsEndpoint];
             XtmWebserviceProperties xtmWebserviceProperties = new XtmWebserviceProperties();
 
             string returnResult = "";
                   
-            List<string> result = xtmCreateProject.Create(filePath, fileName, translationProperties.SourceLanguage, translationProperties.TargetLanguage, translationProperties.XtmTemplate, login.ScClient, login.ScUserId, login.ScPassword, login.ScCustomer, xtmWebserviceProperties.WebserviceEndpoint, xtmWebserviceProperties.IsHttps, xtmWebserviceProperties.callBackUrl, login.ScIntegrationKey );
+            List<string> result = xtmCreateProject.Create(translationFiles, fileName, translationProperties.SourceLanguage, translationProperties.TargetLanguage, translationProperties.XtmTemplate, login.ScClient, login.ScUserId, login.ScPassword, login.ScCustomer, xtmWebserviceProperties.WebserviceEndpoint, xtmWebserviceProperties.IsHttps, xtmWebserviceProperties.callBackUrl, login.ScIntegrationKey );
 
             if (result[0].Equals("True"))
             {

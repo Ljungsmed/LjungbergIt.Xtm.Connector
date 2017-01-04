@@ -1,9 +1,5 @@
 ﻿using LjungbergIt.Xtm.Webservice.XtmServiceReference;
-using System;
-using System.Collections.Generic;
-using System.IO;
 using System.ServiceModel;
-using System.Text;
 
 namespace LjungbergIt.Xtm.Webservice
 {
@@ -15,7 +11,7 @@ namespace LjungbergIt.Xtm.Webservice
             login.client = project.Client;
             login.userId = project.UserId;
             login.password = project.Password;
-            login.integrationKey = project.IntegrationKey; 
+            login.integrationKey = "765c8be4597c4c01a978ddff10626f42"; 
             login.userIdSpecified = true;
 
             return login;

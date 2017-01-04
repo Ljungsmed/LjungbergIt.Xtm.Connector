@@ -15,7 +15,7 @@ namespace LjungbergIt.Xtm.Webservice
         public List<XtmTemplate> GetTemplates(string xtmClient, long userId, string password, long CustomerId, string webServiceEndPoint, bool https, string integrationKey)
         {
             List<XtmTemplate> templateList = new List<XtmTemplate>();
-            XtmProject project = new XtmProject { Client = xtmClient, UserId = userId, Password = password, IntegrationKey = integrationKey };
+            XtmProject project = new XtmProject { Client = xtmClient, UserId = userId, Password = password };
             XtmWebserviceAccess xtmAccess = new XtmWebserviceAccess();
             loginAPI login = xtmAccess.Login(project);
             
