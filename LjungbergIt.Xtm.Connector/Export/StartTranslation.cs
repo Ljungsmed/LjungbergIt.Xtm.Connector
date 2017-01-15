@@ -6,33 +6,34 @@ using System.Collections.Generic;
 
 namespace LjungbergIt.Xtm.Connector.Export
 {
-    public class StartTranslation
+  public class StartTranslation
+  {
+    public ReturnMessage SendFilesToXtm(List<XtmTranslationFile> translationFiles, string fileName, TranslationProperties translationProperties)
     {
-        public string SendFilesToXtm(List<XtmTranslationFile> translationFiles, string fileName, TranslationProperties translationProperties)
-        {
-            XtmCreateProject xtmCreateProject = new XtmCreateProject();
-            
-            LoginProperties login = new LoginProperties();
-            XtmWebserviceProperties xtmWebserviceProperties = new XtmWebserviceProperties();
+      ReturnMessage returnMessage = new ReturnMessage();
+      XtmCreateProject xtmCreateProject = new XtmCreateProject();
 
-            string returnResult = "";
-                  
-            List<string> result = xtmCreateProject.Create(translationFiles, fileName, translationProperties.SourceLanguage, translationProperties.TargetLanguage, translationProperties.XtmTemplate, login.ScClient, login.ScUserId, login.ScPassword, login.ScCustomer, xtmWebserviceProperties.WebserviceEndpoint, xtmWebserviceProperties.IsHttps, xtmWebserviceProperties.callBackUrl, login.ScIntegrationKey );
+      LoginProperties login = new LoginProperties();
+      XtmWebserviceProperties xtmWebserviceProperties = new XtmWebserviceProperties();
 
-            if (result[0].Equals("True"))
-            {
-                Project project = new Project();
-                project.CreateProgressItem(result[1]);
-                returnResult = "success";
-            }
-            else
-            {
-                returnResult = result[1];
-            }
-           
-            //File.Delete(filePath);            
+      //string returnResult = "";
 
-            return returnResult;
-        }
+      List<string> result = xtmCreateProject.Create(translationFiles, fileName, translationProperties.SourceLanguage, translationProperties.TargetLanguage, translationProperties.XtmTemplate, login.ScClient, login.ScUserId, login.ScPassword, login.ScCustomer, xtmWebserviceProperties.WebserviceEndpoint, xtmWebserviceProperties.IsHttps, xtmWebserviceProperties.callBackUrl);
+
+      if (result[0].Equals("True"))
+      {
+        Project project = new Project();
+        project.CreateProgressItem(result[1]);
+        returnMessage.Success = true;
+        returnMessage.Message = "Project with id " + result[1] + " successfully created in Xtm";
+        //returnResult = "success";
+      }
+      else
+      {
+        returnMessage.Success = false;
+        returnMessage.Message = result[1];
+      }
+      return returnMessage;
     }
+  }
 }

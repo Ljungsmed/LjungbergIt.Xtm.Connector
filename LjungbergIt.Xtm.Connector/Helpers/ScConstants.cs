@@ -106,7 +106,8 @@ namespace LjungbergIt.Xtm.Connector.Helpers
       public static readonly string Endpoint = "{4F43B55C-813D-4FCB-AEFE-8A45A441EEDD}";
       public static readonly string CallbackUrl = "{27B0373F-6B96-496C-820E-FF3447E67A16}";
       public static readonly string ProjectNamePrefix = "{230BD66E-EB4A-471A-BC7A-936354E18C11}";
-      public static readonly string IntegrationKey = "{7D3AC5A3-7AE0-41C5-A046-F95282DFF883}";
+      //public static readonly string IntegrationKey = "{7D3AC5A3-7AE0-41C5-A046-F95282DFF883}";
+      public static readonly string BaseSiteUrl = "{9DA93B5C-D933-40B6-A357-E41C6FC336FD}";
     }
 
     public struct XtmLanguageTemplate

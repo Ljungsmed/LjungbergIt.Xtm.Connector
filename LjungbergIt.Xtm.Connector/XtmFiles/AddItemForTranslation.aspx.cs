@@ -222,18 +222,7 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
                 Item defaultSourceLanguageItem = masterDb.GetItem(xtmSettingsItem[ScConstants.SitecoreFieldIds.XtmSettingsDefaultSourceLanguage]);
                 //Item defaultSourceLanguageItem = Database.GetDatabase("master").GetItem(xtmSettingsItem[ScConstants.SitecoreFieldIds.XtmSettingsDefaultSourceLanguage]);
                 return Language.Parse(defaultSourceLanguageItem.Name);
-            }                
-            
-        }
-
-        protected void btnGenerateHtml_Click(object sender, EventArgs e)
-        {
-            WebRequest req = WebRequest.Create("http://sitecore81update1/test");
-            WebResponse response = req.GetResponse();
-            StreamReader sr = new StreamReader(response.GetResponseStream());
-            string htmlString = sr.ReadToEnd();
-            Html html = new Html();
-            html.GenerateHtml(htmlString);
+            }
         }
     }
 }

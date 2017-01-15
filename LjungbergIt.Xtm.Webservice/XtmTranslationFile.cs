@@ -10,5 +10,7 @@ namespace LjungbergIt.Xtm.Webservice
   {
     public string FilePath { get; set; }
     public string FileName { get; set; }
+    public string HtmlFilePath { get; set; }
+    public bool HtmlFileAvailable { get; set; }
   }
 }

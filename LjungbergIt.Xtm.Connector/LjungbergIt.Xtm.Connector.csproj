@@ -43,6 +43,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="HtmlAgilityPack, Version=1.4.6.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlAgilityPack.1.4.6\lib\Net45\HtmlAgilityPack.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Kamsar.WebConsole, Version=1.2.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Kamsar.WebConsole.1.2.2.0\lib\net40\Kamsar.WebConsole.dll</HintPath>
       <Private>True</Private>
@@ -160,6 +164,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\ReturnMessage.cs" />
     <Compile Include="Helpers\ScQueueItem.cs" />
     <Compile Include="Helpers\ScSearch.cs" />
     <Compile Include="Helpers\ScUser.cs" />
@@ -171,6 +176,7 @@
     <Compile Include="Helpers\Utils.cs" />
     <Compile Include="AddForTranslation\GetLanguageQueueFolder.cs" />
     <Compile Include="Helpers\XtmBaseTemplateProperties.cs" />
+    <Compile Include="Helpers\XtmSettingsItem.cs" />
     <Compile Include="Helpers\XtmWebserviceProperties.cs" />
     <Compile Include="Import\GetXtmTemplates.cs" />
     <Compile Include="Import\ImportFromXml.cs" />
@@ -242,9 +248,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\LjungbergIt.Xtm.Webservice\LjungbergIt.Xtm.Webservice.csproj">
       <Project>{d4bc6560-801f-4aec-a859-9e8d9814ec65}</Project>

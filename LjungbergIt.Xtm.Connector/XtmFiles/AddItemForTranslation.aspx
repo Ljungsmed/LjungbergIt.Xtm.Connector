@@ -33,10 +33,6 @@
                 <asp:DropDownList ID="ddSourceLanguage" runat="server" OnSelectedIndexChanged="ddSourceLanguage_SelectedIndexChanged" AutoPostBack="true" CssClass="dropdown" />
             </div>
 
-            <div>
-                <asp:Button ID="btnGenerateHtml" runat="server" OnClick="btnGenerateHtml_Click" Text="test HTML" />
-            </div>
-
             <br />
             <div>
                 Choose the target languages (target languages will override any languages specified on an XTM Template)

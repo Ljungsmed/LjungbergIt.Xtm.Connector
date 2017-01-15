@@ -16,18 +16,27 @@ namespace LjungbergIt.Xtm.Connector.Import
   {
     Database masterDb = ScConstants.SitecoreDatabases.MasterDb;
 
-    public void CreateTranslatedContentFromProgressFolder()
+    public ReturnMessage CreateTranslatedContentFromProgressFolder()
     {
+      ReturnMessage returnMessage = new ReturnMessage();
       Item inProgressFolder = masterDb.GetItem(ScConstants.SitecoreIDs.TranslationInProgressFolder);
       foreach (Item progressItem in inProgressFolder.GetChildren())
       {
+        string progressItemId = progressItem[ScConstants.SitecoreFieldIds.XtmProjectId];
         long projectId;
-        bool projectIdOk = long.TryParse(progressItem[ScConstants.SitecoreFieldIds.XtmProjectId], out projectId);
+        bool projectIdOk = long.TryParse(progressItemId, out projectId);
         if (projectIdOk)
         {
-          bool success = CreateTranslatedContent(projectId, progressItem);
+          bool result = CreateTranslatedContent(projectId, progressItem);
+          returnMessage.Success = result;
+        }
+        else
+        {
+          returnMessage.Success = false;
+          returnMessage.Message = "ProjectId: " + progressItemId + " is not in a correct fortmat";
         }
       }
+      return returnMessage;
     }
 
     public bool CreateTranslatedContent(long projectId, Item progressItem)
@@ -45,7 +54,7 @@ namespace LjungbergIt.Xtm.Connector.Import
       if (finished)
       {
         XtmHandleTranslatedContent Xtm = new XtmHandleTranslatedContent();
-        List<byte[]> bytesList = Xtm.GetFileInBytes(projectId, client, userId, password, xtmWebserviceProperties.WebserviceEndpoint, xtmWebserviceProperties.IsHttps, login.ScIntegrationKey);
+        List<byte[]> bytesList = Xtm.GetFileInBytes(projectId, client, userId, password, xtmWebserviceProperties.WebserviceEndpoint, xtmWebserviceProperties.IsHttps);
 
         if (bytesList.Count != 0)
         {

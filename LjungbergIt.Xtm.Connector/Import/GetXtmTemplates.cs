@@ -26,7 +26,7 @@ namespace LjungbergIt.Xtm.Connector.Import
 
             XtmWebserviceProperties xtmWebserviceProperties = new XtmWebserviceProperties();
 
-            List<XtmTemplate> templateList = xtmGetTemplates.GetTemplates(login.ScClient, login.ScUserId, login.ScPassword, login.ScCustomer, xtmWebserviceProperties.WebserviceEndpoint, xtmWebserviceProperties.IsHttps, login.ScIntegrationKey);
+            List<XtmTemplate> templateList = xtmGetTemplates.GetTemplates(login.ScClient, login.ScUserId, login.ScPassword, login.ScCustomer, xtmWebserviceProperties.WebserviceEndpoint, xtmWebserviceProperties.IsHttps);
             if (templateList.Count != 0)
             {
                 Database masterDb = ScConstants.SitecoreDatabases.MasterDb;

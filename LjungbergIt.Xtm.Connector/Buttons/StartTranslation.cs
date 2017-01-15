@@ -1,5 +1,6 @@
 ﻿using LjungbergIt.Xtm.Connector.Commands;
 using LjungbergIt.Xtm.Connector.Export;
+using LjungbergIt.Xtm.Connector.Helpers;
 using Sitecore.Shell.Framework.Commands;
 using Sitecore.Web.UI.Sheer;
 using System;
@@ -10,14 +11,26 @@ using System.Threading.Tasks;
 
 namespace LjungbergIt.Xtm.Connector.Buttons
 {
-    class StartTranslation : Command
+  class StartTranslation : Command
+  {
+    public override void Execute(CommandContext context)
     {
-        public override void Execute(CommandContext context)
+      ConvertToXml convert = new ConvertToXml();
+      List<ReturnMessage> info = convert.Transform();
+      StringBuilder response = new StringBuilder();
+      if (info.Count > 0)
+      {
+        foreach (ReturnMessage message in info)
         {
-            ConvertToXml convert = new ConvertToXml();
-            string info = convert.Transform();
-            //SheerResponse.Alert(info, false, "what is this?");
-            Sitecore.Context.ClientPage.ClientResponse.Alert(info);
+          response.Append(message.Message);
+          response.Append("<br />");
         }
+      }  
+      else
+      {
+        response.Append("No return messages TODO FIX");
+      }
+      Sitecore.Context.ClientPage.ClientResponse.Alert(response.ToString());
     }
+  }
 }
