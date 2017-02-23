@@ -161,6 +161,7 @@
     <Compile Include="Export\Html.cs" />
     <Compile Include="Export\Project.cs" />
     <Compile Include="Export\StartTranslation.cs" />
+    <Compile Include="Export\XtmBaseTemplate.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -180,6 +181,7 @@
     <Compile Include="Helpers\XtmWebserviceProperties.cs" />
     <Compile Include="Import\GetXtmTemplates.cs" />
     <Compile Include="Import\ImportFromXml.cs" />
+    <Compile Include="Import\ValidateXml.cs" />
     <Compile Include="Import\XtmLanguages.cs" />
     <Compile Include="Pipelines\XtmPipelineArgs.cs" />
     <Compile Include="Pipelines\XtmProcessor.cs" />

@@ -40,6 +40,15 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles {
         protected global::System.Web.UI.WebControls.ListView lwProgress;
         
         /// <summary>
+        /// rptProjectErrors control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rptProjectErrors;
+        
+        /// <summary>
         /// litInfo control.
         /// </summary>
         /// <remarks>

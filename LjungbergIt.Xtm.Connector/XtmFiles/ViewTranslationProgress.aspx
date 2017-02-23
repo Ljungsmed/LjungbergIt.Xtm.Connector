@@ -98,6 +98,41 @@
                 </ItemTemplate>
             </asp:ListView>
         </div>
+        <br />
+        <div>
+            <asp:Repeater ID="rptProjectErrors" runat="server" ItemType="LjungbergIt.Xtm.Webservice.XtmProject">
+                <HeaderTemplate>
+                    <div>
+                        <h2>
+                            The following projects could not be found, please contact XTM support for further support.
+                        </h2>
+                    </div>
+                    <br />
+                    <table class="tablestyle">
+                        <tr class="greybc whitetext">                            
+                            <th class="whitetext">
+                                Project Name
+                            </th>
+                            <th>
+                                Project ID
+                            </th>
+                         </tr>
+                </HeaderTemplate>
+                <ItemTemplate>
+                    <tr>
+                        <td>
+                            <%# Item.ProjectName %>
+                        </td>
+                        <td>
+                            <%# Item.ProjectId %>
+                        </td>
+                    </tr>
+                </ItemTemplate>
+                <FooterTemplate>
+                    </table>
+                </FooterTemplate>
+            </asp:Repeater>
+        </div>
         <div>
             <asp:Literal ID="litInfo" runat="server" />
         </div>

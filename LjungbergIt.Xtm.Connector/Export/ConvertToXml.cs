@@ -198,7 +198,7 @@ namespace LjungbergIt.Xtm.Connector.Export
       //TODO add a try catch 
       Language SourceLanguage = Language.Parse(language);
       //Sitecore.Data.Version version = Sitecore.Data.Version.Parse(ItemToAdd[ScConstants.SitecoreFieldNames.TranslationQueueItem_Version]);
-      Sitecore.Data.ID ItemId = new Sitecore.Data.ID(ItemToAdd[ScConstants.SitecoreFieldNames.TranslationQueueItem_ItemId]);
+      ID ItemId = new ID(ItemToAdd[ScConstants.SitecoreFieldNames.TranslationQueueItem_ItemId]);
 
       Item ItemToTranslate = ScConstants.SitecoreDatabases.MasterDb.GetItem(ItemId, SourceLanguage);
 

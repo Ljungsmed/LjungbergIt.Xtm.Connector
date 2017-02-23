@@ -21,6 +21,14 @@ h1 {
     padding:0;
 }
 
+h2 {
+    color: #474747;
+    font-weight: normal;
+    font-size: 18px;
+    margin:0;
+    padding:0;
+}
+
 th, td {
     padding: 10px;
 }

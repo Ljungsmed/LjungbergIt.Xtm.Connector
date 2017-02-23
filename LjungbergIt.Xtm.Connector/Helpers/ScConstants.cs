@@ -29,6 +29,7 @@ namespace LjungbergIt.Xtm.Connector.Helpers
 
     public struct SitecoreXtmTemplateFieldIDs
     {
+      //TODO move all these to Export/XtmBaseTemplate.cs
       public static readonly string Translated = "{0A60DBA6-38D2-4EAE-8A26-85A3D85BC0FF}";
       public static readonly string TranslatedDate = "{F6276376-28A9-4BE4-AAEA-C20DBC4A4F0C}";
       public static readonly string AddedToTranslateionBy = "{974F434B-6C07-4E62-9350-719D65BABFFA}";
@@ -57,8 +58,7 @@ namespace LjungbergIt.Xtm.Connector.Helpers
       //public static readonly TemplateID TemplateName = new TemplateID(new ID("Id of the template"));
       public static readonly TemplateID TranslationQueueItemTemplate = new TemplateID(new ID("{C4A16DCB-2659-42D6-A641-89A83F34F358}"));
       public static readonly TemplateID TranslationQueueLanguageFolderTemplate = new TemplateID(new ID("{83825651-C491-4B03-9229-27A4954B38A9}"));
-      public static readonly TemplateID TranslationInProgressTemplate = new TemplateID(new ID("{2D0F6780-6E62-428D-A52B-B560BDE0C8DC}"));
-      public static readonly TemplateID XtmBaseTemplate = new TemplateID(new ID("{62378E9D-DEA1-4DED-8FFE-A944002ABC87}"));
+      public static readonly TemplateID TranslationInProgressTemplate = new TemplateID(new ID("{2D0F6780-6E62-428D-A52B-B560BDE0C8DC}"));      
       public static readonly TemplateID XtmTemplate = new TemplateID(new ID("{417CBA9B-9A28-4BF5-A1E0-1D5C1B513DB0}"));
       public static readonly TemplateID XtmLanguage = new TemplateID(new ID("{3F8ECEFB-B8AB-424E-9FD5-9ED3EE2624B6}"));
     }

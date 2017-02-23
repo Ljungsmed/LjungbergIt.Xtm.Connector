@@ -16,6 +16,7 @@ namespace LjungbergIt.Xtm.Connector.Import
   {
     Database masterDb = ScConstants.SitecoreDatabases.MasterDb;
 
+    //CreateTranslatedContentFromProgressFolder is only used for the scheduled task
     public ReturnMessage CreateTranslatedContentFromProgressFolder()
     {
       ReturnMessage returnMessage = new ReturnMessage();
@@ -66,7 +67,7 @@ namespace LjungbergIt.Xtm.Connector.Import
             {
               using (new SecurityDisabler())
               {
-                //progressItem.Delete();                               
+                progressItem.Delete();                               
               }
             }
           }         
@@ -101,10 +102,10 @@ namespace LjungbergIt.Xtm.Connector.Import
             entry.ExtractToFile(xmlFileName, true);
             xmlDoc.Load(xmlFileName);
             xmlDocuments.Add(xmlDoc);
-          }
-          File.Delete(zipFileName);
-          File.Delete(xmlFileName);
+          }          
         }
+        File.Delete(zipFileName);
+        File.Delete(xmlFileName);
         count++;        
       }      
       return xmlDocuments;
@@ -112,27 +113,36 @@ namespace LjungbergIt.Xtm.Connector.Import
 
     public bool ReadFromXml(XmlDocument xmlDocument)
     {
+      ScLogging scLogging = new ScLogging();
       try
       {
         XmlNode rootElement = xmlDocument.SelectSingleNode(ScConstants.XmlNodes.XmlRoot);
         foreach (XmlNode node in rootElement)
         {
-          if (node.Name.Equals(ScConstants.XmlNodes.XmlRootElement))
-          {
-            Item translatedItem = CreateNewTranslatedVersion(node);
-          }
+          //Validate node before trying to create the translated item
+          ValidateXml validateXml = new ValidateXml();
 
-          if (node.Name.Equals(ScConstants.XmlNodes.XmlAttributeFieldName))
+          if (validateXml.Validate(node))
           {
-
+            if (node.Name.Equals(ScConstants.XmlNodes.XmlRootElement))
+            {
+              Item translatedItem = CreateNewTranslatedVersion(node);
+            }
           }
+          else
+          {
+            scLogging.WriteWarn("Xml for the item with ID " + node.Attributes[ScConstants.XmlNodes.XmlAttributeId].Value + "was inconsistent and a new translated version was not created");
+          }
+          //if (node.Name.Equals(ScConstants.XmlNodes.XmlAttributeFieldName))
+          //{
+
+          //}
         }
-
         return true;
       }
       catch (Exception ex)
       {
-        ScLogging scLogging = new ScLogging();
+        
         scLogging.WriteError(ex.Message);
         return false;
       }
@@ -174,10 +184,14 @@ namespace LjungbergIt.Xtm.Connector.Import
 
       foreach (XmlNode fieldNode in node)
       {
-        UpdateItem field = new UpdateItem();
-        field.FieldIdOrName = fieldNode.Attributes[ScConstants.XmlNodes.XmlAttributeFieldName].Value;
-        field.FieldValue = fieldNode.InnerText;
-        fieldObjects.Add(field);
+        string fieldName = fieldNode.Attributes[ScConstants.XmlNodes.XmlAttributeFieldName].Value;
+        if (!fieldName.Equals(""))
+        {
+          UpdateItem field = new UpdateItem();
+          field.FieldIdOrName = fieldName;
+          field.FieldValue = fieldNode.InnerText;
+          fieldObjects.Add(field);
+        }        
       }
 
       UpdateItem updateItem = new UpdateItem();
