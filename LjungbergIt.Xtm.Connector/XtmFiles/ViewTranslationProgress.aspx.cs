@@ -45,7 +45,7 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
         }
         else
         {
-          info = "There was a problem with the translated project in XTM, please contact your XTM admin";
+          info = "There was a problem with the translated project with id " + projectId + " in XTM, please contact your XTM admin";
         }
       }
       else
@@ -108,7 +108,7 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
 
       XtmProject xtmProject = new XtmProject();
       LoginProperties login = new LoginProperties();
-      List<XtmProject> projects = xtmProject.GetProjectProperties(xtmProjectIds, login.ScClient, login.ScUserId, login.ScPassword, xtmWebserviceProperties.WebserviceEndpoint, xtmWebserviceProperties.IsHttps);
+      List<XtmProject> projects = xtmProject.GetProjects(xtmProjectIds, login.ScClient, login.ScUserId, login.ScPassword, xtmWebserviceProperties.WebserviceEndpoint, xtmWebserviceProperties.IsHttps);
 
       return projects;
     }

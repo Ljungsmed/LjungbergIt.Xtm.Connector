@@ -1,9 +1,6 @@
 ﻿using LjungbergIt.Xtm.Webservice.XtmServiceReference;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LjungbergIt.Xtm.Webservice
 {
@@ -18,50 +15,15 @@ namespace LjungbergIt.Xtm.Webservice
     public DateTime CreatedDate { get; set; }
     public DateTime DueDate { get; set; }
     public string WorkflowStatus { get; set; }
+    public bool WorkflowFinished { get; set; }
+    public string ProjectStatus { get; set; }
     public string Client { get; set; }
     public long UserId { get; set; }
     public string Password { get; set; }
     public bool ProjectError { get; set; }
     public string ProjectErrorMessage { get; set; }
-    //public string IntegrationKey { get; set; }
 
-    public List<XtmProject> GetProjectProperties(List<long> projectIds, string client, long userId, string password, string webServiceEndPoint, bool https)
-    {
-      List<XtmProject> xtmProjects = new List<XtmProject>();
-      XtmProject loginProject = new XtmProject { Client = client, UserId = userId, Password = password };
-
-      foreach (long id in projectIds)
-      {
-        xtmProjectDetailsResponseAPI project = GetXtmProject(id, loginProject, webServiceEndPoint, https);
-
-        XtmProject xtmProject = new XtmProject();
-
-        xtmProject.ProjectId = id;
-
-        if (project != null)
-        {
-          xtmProject.ProjectError = false;          
-          xtmProject.ProjectName = project.name;
-          xtmProject.Customer = project.customer.id;
-          xtmProject.SourceLanguage = project.sourceLanguage.ToString();
-          xtmProject.TargetLanguage = project.targetLanguages[0].ToString();
-          xtmProject.CreatedDate = project.createDate;
-          xtmProject.DueDate = project.dueDate;
-          xtmProject.WorkflowStatus = project.status.ToString();          
-        }
-        else
-        {
-          xtmProject.ProjectError = true;
-          xtmProject.ProjectErrorMessage = "this is the error message";
-          xtmProject.ProjectName = "Project not found";
-        }
-
-        xtmProjects.Add(xtmProject);
-      }
-      return xtmProjects;
-    }
-
-    public xtmProjectDetailsResponseAPI GetXtmProject(long projectId, XtmProject loginProject, string webServiceEndPoint, bool https)
+    public XtmProject GetXtmProject(long projectId, XtmProject loginProject, string webServiceEndPoint, bool https)
     {
       XtmWebserviceAccess xtmAccess = new XtmWebserviceAccess();
       loginAPI login = xtmAccess.Login(loginProject);
@@ -76,31 +38,54 @@ namespace LjungbergIt.Xtm.Webservice
 
       XtmWebserviceAccess access = new XtmWebserviceAccess();
       ProjectManagerMTOMWebServiceClient client = access.GetServiceClient(webServiceEndPoint, https);
-      //ProjectManagerMTOMWebServiceClient client = new ProjectManagerMTOMWebServiceClient();
+
+      XtmProject xtmProject = new XtmProject();
+
+      xtmProject.ProjectId = projectId;
 
       try
       {
         xtmProjectDetailsResponseAPI[] projectResponses = client.findProject(login, filter, null);
-        return projectResponses[0]; //Assuming there is always only one project in the response
+        //Assuming there is always only one project in the response
+        xtmProject.ProjectError = false;
+        xtmProject.ProjectName = projectResponses[0].name;
+        xtmProject.Customer = projectResponses[0].customer.id;
+        xtmProject.SourceLanguage = projectResponses[0].sourceLanguage.ToString();
+        xtmProject.TargetLanguage = projectResponses[0].targetLanguages[0].ToString();
+        xtmProject.CreatedDate = projectResponses[0].createDate;
+        xtmProject.DueDate = projectResponses[0].dueDate;
+        xtmProject.WorkflowStatus = projectResponses[0].status.ToString();
+        if (projectResponses[0].status.Equals(xtmProjectStatusEnum.FINISHED))
+        {
+          WorkflowFinished = true;
+        }
+        else
+        {
+          WorkflowFinished = false;
+        }
+        xtmProject.ProjectStatus = projectResponses[0].activity.ToString();
+
       }
-      catch (Exception)
+      catch (Exception e)
       {
-        return null;
-      }     
+        xtmProject.ProjectError = true;
+        xtmProject.ProjectErrorMessage = e.Message;
+        xtmProject.ProjectName = "Error finding project in XTM";
+
+      }
+      return xtmProject;
     }
 
-    public bool IsTranslationFinished(long projectId, string client, long userId, string password, string webServiceEndPoint, bool https)
+    public List<XtmProject> GetProjects(List<long> projectIds, string client, long userId, string password, string webServiceEndPoint, bool https)
     {
-      bool result = false;
+      List<XtmProject> xtmProjects = new List<XtmProject>();
       XtmProject loginProject = new XtmProject { Client = client, UserId = userId, Password = password };
 
-      xtmProjectDetailsResponseAPI project = GetXtmProject(projectId, loginProject, webServiceEndPoint, https);
-      if (project.status.Equals(xtmProjectStatusEnum.FINISHED))
+      foreach (long id in projectIds)
       {
-        result = true;
+        xtmProjects.Add(GetXtmProject(id, loginProject, webServiceEndPoint, https));
       }
-
-      return result;
+      return xtmProjects;
     }
   }
 }

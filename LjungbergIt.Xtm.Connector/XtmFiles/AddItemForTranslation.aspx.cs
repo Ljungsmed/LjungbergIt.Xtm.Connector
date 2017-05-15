@@ -9,8 +9,6 @@ using Sitecore.Security.Accounts;
 using Sitecore.SecurityModel;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Net;
 using System.Text;
 using System.Web.UI.WebControls;
 
@@ -22,7 +20,6 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
 
     protected void Page_Load(object sender, EventArgs e)
     {
-
       //TODO add security check so this file can only be called if Sitecore authenticated
       if (IsPostBack)
       {
@@ -30,74 +27,86 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
       }
       else
       {
-        Item contextItem = masterDb.GetItem(Request.QueryString["id"]);
-        //TODO check if the above is not null!
+        string itemIdString = Request.QueryString["id"];
+        Item contextItem = masterDb.GetItem(itemIdString);
 
-        XtmBaseTemplate xtmBaseTemplate = new XtmBaseTemplate(null);
-
-        //Display the current item being added for translation
         StringBuilder heading = new StringBuilder();
-        if (xtmBaseTemplate.CheckForBaseTemplate(contextItem))
+
+        if (contextItem != null)
         {
-          heading.Append("Add \"");
-          heading.Append(contextItem.Name);
-          heading.Append("\" for translation");
+          XtmBaseTemplate xtmBaseTemplate = new XtmBaseTemplate(null);
+
+          //Display the current item being added for translation
+          
+          if (xtmBaseTemplate.CheckForBaseTemplate(contextItem))
+          {
+            heading.Append("Add \"");
+            heading.Append(contextItem.Name);
+            heading.Append("\" for translation");
+          }
+          else
+          {
+            heading.Append(contextItem.Name);
+            heading.Append(" is not allowed for translation, but subitems can still be added using the below checkbox");
+          }
+
+          litHeading.Text = heading.ToString();
+
+          //Display the default langauge which is specified on the xtm settings item
+          Language defaultSourceLanguage = GetDefaultSourceLanguage();
+          StringBuilder sbSourceLanguage = new StringBuilder();
+          sbSourceLanguage.Append("The defualt source language is: ");
+          sbSourceLanguage.Append(defaultSourceLanguage.CultureInfo.DisplayName);
+          sbSourceLanguage.Append(". Change below if custom source langauge is required for this content");
+          litSourceLanguage.Text = sbSourceLanguage.ToString();
+
+          //Build the drop down list with available Sitecore source languages to choose from if the default should be overwritten
+          //Build the check box list with available Sitecore target languages to choose from
+          ddSourceLanguage.Items.Add(new ListItem("", ""));
+          LanguageCollection languages = masterDb.GetLanguages();
+          foreach (Language language in languages)
+          {
+            ListItem listItemSourceLanguage = new ListItem(language.CultureInfo.DisplayName, language.CultureInfo.ToString());
+            ListItem listItemTargetLanugage = new ListItem(language.CultureInfo.DisplayName, language.CultureInfo.ToString());
+
+            if (defaultSourceLanguage == language)
+            {
+              listItemTargetLanugage.Enabled = false;
+            }
+
+            ddSourceLanguage.Items.Add(listItemSourceLanguage);
+            cbTargetLanguages.Items.Add(listItemTargetLanugage);
+          }
+
+          //Build the dropdown list with available xtm templates
+
+          using (new SecurityDisabler())
+          {
+            Item xtmTemplatesFolder = masterDb.GetItem(ScConstants.SitecoreIDs.XtmSettingsXtmTemplateFolder);
+            Item xtmSettingsItem = masterDb.GetItem(ScConstants.SitecoreIDs.XtmSettingsItem);
+            Item defaultXtmTemplate = masterDb.GetItem(xtmSettingsItem[ScConstants.SitecoreFieldIds.XtmSettingsDefaultXtmTemplate]);
+
+            ddXtmTemplate.Items.Add(new ListItem("", ""));
+            foreach (Item xtmTemplate in xtmTemplatesFolder.GetChildren())
+            {
+              ListItem listItem = new ListItem(xtmTemplate.Name, xtmTemplate.ID.ToString());
+              if (defaultXtmTemplate != null)
+              {
+                if (defaultXtmTemplate.Name.Equals(xtmTemplate.Name))
+                {
+                  listItem.Selected = true;
+                }
+              }
+              ddXtmTemplate.Items.Add(listItem);
+            }
+          }
         }
         else
         {
-          heading.Append(contextItem.Name);
-          heading.Append(" is not allowed for translation, but subitems can still be added using the below checkbox");
-        }
-        
-        litHeading.Text = heading.ToString();
-
-        //Display the default langauge which is specified on the xtm settings item
-        Language defaultSourceLanguage = GetDefaultSourceLanguage();
-        StringBuilder sbSourceLanguage = new StringBuilder();
-        sbSourceLanguage.Append("The defualt source language is: ");
-        sbSourceLanguage.Append(defaultSourceLanguage.CultureInfo.DisplayName);
-        sbSourceLanguage.Append(". Change below if custom source langauge is required for this content");
-        litSourceLanguage.Text = sbSourceLanguage.ToString();
-
-        //Build the drop down list with available Sitecore source languages to choose from if the default should be overwritten
-        //Build the check box list with available Sitecore target languages to choose from
-        ddSourceLanguage.Items.Add(new ListItem("", ""));
-        LanguageCollection languages = masterDb.GetLanguages();
-        foreach (Language language in languages)
-        {
-          ListItem listItemSourceLanguage = new ListItem(language.CultureInfo.DisplayName, language.CultureInfo.ToString());
-          ListItem listItemTargetLanugage = new ListItem(language.CultureInfo.DisplayName, language.CultureInfo.ToString());
-
-          if (defaultSourceLanguage == language)
-          {
-            listItemTargetLanugage.Enabled = false;
-          }
-
-          ddSourceLanguage.Items.Add(listItemSourceLanguage);
-          cbTargetLanguages.Items.Add(listItemTargetLanugage);
-        }
-
-        //Build the dropdown list with available xtm templates
-
-        using (new SecurityDisabler())
-        {
-          Item xtmTemplatesFolder = masterDb.GetItem(ScConstants.SitecoreIDs.XtmSettingsXtmTemplateFolder);
-          Item xtmSettingsItem = masterDb.GetItem(ScConstants.SitecoreIDs.XtmSettingsItem);
-          Item defaultXtmTemplate = masterDb.GetItem(xtmSettingsItem[ScConstants.SitecoreFieldIds.XtmSettingsDefaultXtmTemplate]);
-
-          ddXtmTemplate.Items.Add(new ListItem("", ""));
-          foreach (Item xtmTemplate in xtmTemplatesFolder.GetChildren())
-          {
-            ListItem listItem = new ListItem(xtmTemplate.Name, xtmTemplate.ID.ToString());
-            if (defaultXtmTemplate != null)
-            {
-              if (defaultXtmTemplate.Name.Equals(xtmTemplate.Name))
-              {
-                listItem.Selected = true;
-              }
-            }
-            ddXtmTemplate.Items.Add(listItem);
-          }
+          heading.Append("Error: Item with ID ");
+          heading.Append(itemIdString);
+          heading.Append(" was not found");
+          litHeading.Text = heading.ToString();
         }
       }
     }

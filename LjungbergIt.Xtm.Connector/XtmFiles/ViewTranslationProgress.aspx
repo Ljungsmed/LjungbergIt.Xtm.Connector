@@ -19,122 +19,109 @@
             </div>
         </div>
         <div style="clear: both;"></div>
-        <%--<div class="headingarea">
-            <h2>View Translation Progress</h2>
-        </div>--%>
-        <div>
-            <asp:Literal ID="litTest" runat="server" Text="" />
-        </div>
-        <div>
-            <asp:ListView ID="lwProgress" runat="server" ItemType="LjungbergIt.Xtm.Webservice.XtmProject">
-                <LayoutTemplate>
-                    <table class="tablestyle">
-                        <tr class="greybc whitetext">
-                            
-                            <th class="whitetext">
-                                Project Name
-                            </th>
-                            <th>
-                                Project ID
-                            </th>
-                            <%--<th>
+        
+        <div class="container">
+            <div>
+                <asp:Literal ID="litTest" runat="server" Text="" />
+            </div>
+            <div>
+                <asp:ListView ID="lwProgress" runat="server" ItemType="LjungbergIt.Xtm.Webservice.XtmProject">
+                    <LayoutTemplate>
+                        <table class="tablestyle">
+                            <tr class="greybc whitetext">
+                                <th class="whitetext">Project Name
+                                </th>
+                                <th>Project ID
+                                </th>
+                                <%--<th>
                                 Customer
                             </th>--%>
-                            <th>
-                                Source Language
-                            </th>
-                            <th>
-                                Target Language
-                            </th>
-                            <th>
-                                Created
-                            </th>
-                            <%--<th>
+                                <th>Source Language
+                                </th>
+                                <th>Target Language
+                                </th>
+                                <th>Created
+                                </th>
+                                <%--<th>
                                 Due Date
                             </th>--%>
-                            <th>
-                                Status
-                            </th>
-                            <th>
-                                Start import
-                            </th>
-                        </tr>
-                        <tr id="itemPlaceholder" runat="server">
-                        </tr>
-                    </table>
-                </LayoutTemplate>
-                <ItemTemplate>
-                
-                    <tr>
-                        
-                        <td>
-                            <%# Item.ProjectName %>
-                        </td>
-                        <td>
-                            <%# Item.ProjectId %>
-                        </td>
-                        <%--<td>
+                                <th>Status
+                                </th>
+                                <th>Start import
+                                </th>
+                            </tr>
+                            <tr id="itemPlaceholder" runat="server">
+                            </tr>
+                        </table>
+                    </LayoutTemplate>
+                    <ItemTemplate>
+                        <tr>
+                            <td>
+                                <%# Item.ProjectName %>
+                            </td>
+                            <td>
+                                <%# Item.ProjectId %>
+                            </td>
+                            <%--<td>
                             <%# Item.Customer %>
                         </td>--%>
-                        <td>
-                            <%# Item.SourceLanguage %>
-                        </td>
-                        <td>
-                            <%# Item.TargetLanguage %>
-                        </td>
-                        <td>
-                            <%# Item.CreatedDate.ToString("dd-MM-yyyy HH:mm") %>
-                        </td>
-                       <%-- <td>
+                            <td>
+                                <%# Item.SourceLanguage %>
+                            </td>
+                            <td>
+                                <%# Item.TargetLanguage %>
+                            </td>
+                            <td>
+                                <%# Item.CreatedDate.ToString("dd-MM-yyyy HH:mm") %>
+                            </td>
+                            <%-- <td>
                             <%# Item.DueDate.ToString("dd-MM-yyyy HH:mm") %>
                         </td>--%>
-                        <td>
-                            <%# Item.WorkflowStatus %>
-                        </td>
-                        <td>                                                        
-                            <asp:Button runat="server" Visible='<%# RenderImportButton(Item.WorkflowStatus) %>' Text="Import now" CommandArgument='<%# Item.ProjectId %>' />                             
-                        </td>
-                    </tr>
-                </ItemTemplate>
-            </asp:ListView>
-        </div>
-        <br />
-        <div>
-            <asp:Repeater ID="rptProjectErrors" runat="server" ItemType="LjungbergIt.Xtm.Webservice.XtmProject">
-                <HeaderTemplate>
-                    <div>
-                        <h2>
-                            The following projects could not be found, please contact XTM support for further support.
-                        </h2>
-                    </div>
-                    <br />
-                    <table class="tablestyle">
-                        <tr class="greybc whitetext">                            
-                            <th class="whitetext">
-                                Project Name
-                            </th>
-                            <th>
-                                Project ID
-                            </th>
-                         </tr>
-                </HeaderTemplate>
-                <ItemTemplate>
-                    <tr>
-                        <td>
-                            <%# Item.ProjectName %>
-                        </td>
-                        <td>
-                            <%# Item.ProjectId %>
-                        </td>
-                    </tr>
-                </ItemTemplate>
-                <FooterTemplate>
-                    </table>
-                </FooterTemplate>
-            </asp:Repeater>
-        </div>
-        <div>
-            <asp:Literal ID="litInfo" runat="server" />
+                            <td>
+                                <%# Item.WorkflowStatus %>
+                            </td>
+                            <td>
+                                <asp:Button runat="server" Visible='<%# RenderImportButton(Item.WorkflowStatus) %>' Text="Import now" CommandArgument='<%# Item.ProjectId %>' />
+                            </td>
+                        </tr>
+                    </ItemTemplate>
+                </asp:ListView>
+            </div>
+            <br />
+            <div id="ProjectErrorList" runat="server">
+                <asp:Repeater ID="rptProjectErrors" runat="server" ItemType="LjungbergIt.Xtm.Webservice.XtmProject">
+                    <HeaderTemplate>
+                        <div>
+                            <h2>The following projects could not be found, please contact XTM support for further support.
+                            </h2>
+                        </div>
+                        <br />
+                        <table class="tablestyle">
+                            <tr class="greybc whitetext">
+                                <th class="whitetext">Error Description
+                                </th>
+                                <th>Project ID
+                                </th>
+                            </tr>
+                    </HeaderTemplate>
+                    <ItemTemplate>
+                        <tr>
+                            <td>
+                                <%# Item.ProjectName %>
+                            </td>
+                            <td>
+                                <%# Item.ProjectId %>
+                            </td>
+                        </tr>
+                    </ItemTemplate>
+                    <FooterTemplate>
+                        </table>
+                    </FooterTemplate>
+                </asp:Repeater>
+            </div>
+            <div>
+                <asp:Literal ID="litInfo" runat="server" />
+            </div>
         </div>
     </form>
 </body>

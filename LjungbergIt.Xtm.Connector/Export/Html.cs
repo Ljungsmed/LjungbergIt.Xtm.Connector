@@ -1,7 +1,6 @@
 ﻿using LjungbergIt.Xtm.Connector.Helpers;
 using Sitecore.Data.Items;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
@@ -14,13 +13,15 @@ namespace LjungbergIt.Xtm.Connector.Export
     public ReturnMessage GenerateHtml(Item translationItem, string htmlFilePath)
     {
       ScLogging scLogging = new ScLogging();
-      ReturnMessage returMessage = new ReturnMessage();
+      ReturnMessage returnMessage = new ReturnMessage();
       XtmSettingsItem settings = new XtmSettingsItem();
       string HomeItemPath = settings.HomeItem.Paths.FullPath;
       StringBuilder fullUrl = new StringBuilder(settings.BaseSiteUrl);
-      fullUrl.Append(translationItem.Paths.Path.Replace(HomeItemPath, ""));
+      //fullUrl.Append(translationItem.Paths.Path.Replace(HomeItemPath, ""));
 
-      //try converting the 
+      fullUrl.Append("/?sc_itemid=");
+      fullUrl.Append(translationItem.ID.ToString());
+
       try
       {
         WebRequest req = WebRequest.Create(fullUrl.ToString());
@@ -36,21 +37,27 @@ namespace LjungbergIt.Xtm.Connector.Export
         HtmlNode rootNode = htmlDoc.DocumentNode;
 
         //change all elements that references a static source to have the base url as prefix
-        SetNewAttributeValue(rootNode, ".//link", "href", baseUrl);
-        SetNewAttributeValue(rootNode, ".//img", "src", baseUrl);
+        if (!baseUrl.Contains("https"))
+        {
+          baseUrl = baseUrl.Replace("http", "https");
+        }
+        //string baseUrlHttps = baseUrl.Replace("http", "https");
+        SetNewAttributeValue(rootNode, ".//link", "href", baseUrl); //finds all <link href="css styles" /> and sets the full url
+        SetNewAttributeValue(rootNode, ".//img", "src", baseUrl); //finds all <img> and sets the full url
+        SetNewAttributeValue(rootNode, ".//script", "src", baseUrl); //finds all <scripts> and sets the full url
 
         htmlDoc.Save(htmlFilePath);
 
-        returMessage.Success = true;
+        returnMessage.Success = true;
       }
       catch (Exception e)
       {
-        returMessage.Success = false;
+        returnMessage.Success = false;
         scLogging.WriteWarn("HTML preview file not created for Item" + translationItem.Name + ". Error: " + e.Message);
-        returMessage.Message = "No preview created for " + translationItem.Name;
+        returnMessage.Message = "No preview created for " + translationItem.Name + ". Item is not published or does not have presentation details";
       }
-      returMessage.Item = translationItem;
-      return returMessage;
+      returnMessage.Item = translationItem;
+      return returnMessage;
     }
 
     private void SetNewAttributeValue(HtmlNode rootNode, string xPath, string attributeName, string preFixValue)

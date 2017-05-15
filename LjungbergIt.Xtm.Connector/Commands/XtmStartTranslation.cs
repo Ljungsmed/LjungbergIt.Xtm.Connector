@@ -11,12 +11,13 @@ using System.Web;
 
 namespace LjungbergIt.Xtm.Connector.Commands
 {
-    public class XtmStartTranslation
+  public class XtmStartTranslation
+  {
+    public void start()
     {
-        public void start()
-        {
-            ConvertToXml convert = new ConvertToXml();
-            convert.Transform();
-        }
+      string filePath = HttpContext.Current.Server.MapPath("~\\" + ScConstants.Misc.translationFolderName + "\\" + ScConstants.Misc.filesFortranslationFolderName + "\\");
+      ConvertToXml convert = new ConvertToXml();
+      convert.Transform(filePath);
     }
+  }
 }

@@ -11,27 +11,34 @@ namespace LjungbergIt.Xtm.Connector.Export
     public ReturnMessage SendFilesToXtm(List<XtmTranslationFile> translationFiles, string fileName, TranslationProperties translationProperties)
     {
       ReturnMessage returnMessage = new ReturnMessage();
-      XtmCreateProject xtmCreateProject = new XtmCreateProject();
+      XtmSettingsItem xtmSettingsItem = new XtmSettingsItem();
 
-      LoginProperties login = new LoginProperties();
-      XtmWebserviceProperties xtmWebserviceProperties = new XtmWebserviceProperties();
-
-      //string returnResult = "";
-
-      List<string> result = xtmCreateProject.Create(translationFiles, fileName, translationProperties.SourceLanguage, translationProperties.TargetLanguage, translationProperties.XtmTemplate, login.ScClient, login.ScUserId, login.ScPassword, login.ScCustomer, xtmWebserviceProperties.WebserviceEndpoint, xtmWebserviceProperties.IsHttps, xtmWebserviceProperties.callBackUrl);
-
-      if (result[0].Equals("True"))
+      if (!xtmSettingsItem.IsInDebugMode)
       {
-        Project project = new Project();
-        project.CreateProgressItem(result[1]);
-        returnMessage.Success = true;
-        returnMessage.Message = "Project with id " + result[1] + " successfully created in Xtm";
-        //returnResult = "success";
+        XtmCreateProject xtmCreateProject = new XtmCreateProject();
+
+        LoginProperties login = new LoginProperties();
+        XtmWebserviceProperties xtmWebserviceProperties = new XtmWebserviceProperties();
+
+        List<string> result = xtmCreateProject.Create(translationFiles, fileName, translationProperties.SourceLanguage, translationProperties.TargetLanguage, translationProperties.XtmTemplate, login.ScClient, login.ScUserId, login.ScPassword, login.ScCustomer, xtmWebserviceProperties.WebserviceEndpoint, xtmWebserviceProperties.IsHttps, xtmWebserviceProperties.callBackUrl);
+
+        if (result[0].Equals("True"))
+        {
+          Project project = new Project();
+          project.CreateProgressItem(result[1]);
+          returnMessage.Success = true;
+          returnMessage.Message = "Project with id " + result[1] + " successfully created in Xtm";
+        }
+        else
+        {
+          returnMessage.Success = false;
+          returnMessage.Message = result[1];
+        }
       }
       else
       {
         returnMessage.Success = false;
-        returnMessage.Message = result[1];
+        returnMessage.Message = "No Projects created in XTM as the XTM Connector module is in Debug mode";
       }
       return returnMessage;
     }

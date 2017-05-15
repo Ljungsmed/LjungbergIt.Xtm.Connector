@@ -24,7 +24,6 @@ namespace LjungbergIt.Xtm.Webservice
       project.TargetLanguage = translationLanguage;
       project.SourceLanguage = sourceLanguage;
       project.Template = xtmTemplate;
-      //project.IntegrationKey = integrationKey; 
 
       xtmFileMTOMAPI[] filesToTranslate = new xtmFileMTOMAPI[translationFiles.Count];
       int count = 0;

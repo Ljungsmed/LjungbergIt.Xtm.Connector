@@ -18,10 +18,11 @@ namespace LjungbergIt.Xtm.Connector.Export
   public class ConvertToXml
   {
     Database masterDb = ScConstants.SitecoreDatabases.MasterDb;
-    public List<ReturnMessage> Transform()
+    public List<ReturnMessage> Transform(string filePath)
     {
       List<ReturnMessage> returnMessageList = new List<ReturnMessage>();
 
+      //get the folder that contains all awaiting translation jobs
       Item queuedItemsFolder = masterDb.GetItem(ScConstants.SitecoreIDs.TranslationQueueFolder);
 
       //Translation job = a number of pages/items added for translation with the same source and target language and Xtm template
@@ -36,6 +37,7 @@ namespace LjungbergIt.Xtm.Connector.Export
           string xtmTemplateItemId = translationFolderItem[ScConstants.SitecoreFieldIds.QueuFolderXtmTemplate];
           if (xtmTemplateItemId != "")
           {
+            //Get the actual ID that corrosponds to the ID of the template in XTM
             xtmTemplateId = masterDb.GetItem(xtmTemplateItemId)[ScConstants.SitecoreFieldIds.XtmTemplateId];
           }
 
@@ -49,7 +51,7 @@ namespace LjungbergIt.Xtm.Connector.Export
           //Get an ItemList of all the pages/items for the translation job
           ItemList queuedItemList = buildQueuedItemList(translationFolderItem, translationProperties.SourceLanguage);
 
-          //If the translation job folde is empty do nothing
+          //If the translation job folder is empty do nothing
           if (queuedItemList.Count != 0)
           {
             List<XtmTranslationFile> translationFileList = new List<XtmTranslationFile>();
@@ -57,9 +59,12 @@ namespace LjungbergIt.Xtm.Connector.Export
             string firstItemName = string.Empty;
             foreach (Item queuedItem in queuedItemList)
             {
-              string filePath = "~\\" + ScConstants.Misc.translationFolderName + "\\" + ScConstants.Misc.filesFortranslationFolderName + "\\" + translationFolderItem.Name + "_" + queuedItem.Name;
-              string xmlFilePath = System.Web.HttpContext.Current.Server.MapPath(filePath + ".xml");
-              string htmlFilePath = System.Web.HttpContext.Current.Server.MapPath(filePath + ".html");
+              //string filePath = "~\\" + ScConstants.Misc.translationFolderName + "\\" + ScConstants.Misc.filesFortranslationFolderName + "\\" + translationFolderItem.Name + "_" + queuedItem.Name;
+              string completeFilePath = filePath + translationFolderItem.Name + "_" + queuedItem.Name;
+              string xmlFilePath = completeFilePath + ".xml";
+              string htmlFilePath = completeFilePath + ".html";
+              //string xmlFilePath = System.Web.HttpContext.Current.Server.MapPath(filePath + ".xml");
+              //string htmlFilePath = System.Web.HttpContext.Current.Server.MapPath(filePath + ".html");
 
               XtmTranslationFile translationFile = new XtmTranslationFile();
               translationFile.FilePath = xmlFilePath;
@@ -107,7 +112,7 @@ namespace LjungbergIt.Xtm.Connector.Export
                 //TODO should there be a warning when no preview/HTML could be created??
                 //returnMessageList.Add(htmlCreationReturnMessage);
               }
-              
+
               translationFileList.Add(translationFile);
               count++;
             }
@@ -157,7 +162,7 @@ namespace LjungbergIt.Xtm.Connector.Export
             message.Append("The translation job folder ");
             message.Append(translationFolderItem.Name);
             message.Append(" did not contain any pages/items");
-            returnMessageList.Add(new ReturnMessage { Success = false, Message = message.ToString(), Item=translationFolderItem });
+            returnMessageList.Add(new ReturnMessage { Success = false, Message = message.ToString(), Item = translationFolderItem });
           }
         }
       }
@@ -215,11 +220,37 @@ namespace LjungbergIt.Xtm.Connector.Export
       {
         if (!field.Name.Contains("__") && !field.Name.Contains("XTM_"))
         {
-          xw.WriteStartElement(ScConstants.XmlNodes.XmlElementField);
-          xw.WriteAttributeString(ScConstants.XmlNodes.XmlAttributeFieldName, field.Name);
-          xw.WriteAttributeString(ScConstants.XmlNodes.XmlAttributeFieldType, field.Type);
-          xw.WriteString(field.Value);
-          xw.WriteEndElement();
+          //if the field is shared, it should not be translated
+          if (!field.Shared)
+          {
+            //private static Regex _invalidXMLChars = new Regex(
+            //@"(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|[\x00-\x08\x0B\x0C\x0E-\x1F\x7F-\x9F\uFEFF\uFFFE\uFFFF]",
+            //RegexOptions.Compiled);
+            //XmlConvert.IsXmlChar
+            string fieldValue = string.Empty;
+            bool fieldValueOk = true;
+            try
+            {
+              fieldValue = XmlConvert.VerifyXmlChars(field.Value);
+            }
+            catch (XmlException e)
+            {
+              fieldValueOk = false;
+              string error = e.Message;
+              ExportInfo exportInfo = new ExportInfo();
+              exportInfo.UpdateValueField(error,ItemToTranslate.ID.ToString(), field.Name, false);
+              //string statusFieldValue = exportInfo.StatusField.Value;
+            }
+            
+            if (fieldValueOk)
+            {
+              xw.WriteStartElement(ScConstants.XmlNodes.XmlElementField);
+              xw.WriteAttributeString(ScConstants.XmlNodes.XmlAttributeFieldName, field.Name);
+              xw.WriteAttributeString(ScConstants.XmlNodes.XmlAttributeFieldType, field.Type);
+              xw.WriteString(field.Value);
+              xw.WriteEndElement();
+            }            
+          }
         }
       }
 

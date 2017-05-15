@@ -15,6 +15,7 @@ namespace LjungbergIt.Xtm.Connector.Import
   class ImportFromXml
   {
     Database masterDb = ScConstants.SitecoreDatabases.MasterDb;
+    ScLogging scLogging = new ScLogging();
 
     //CreateTranslatedContentFromProgressFolder is only used for the scheduled task
     public ReturnMessage CreateTranslatedContentFromProgressFolder()
@@ -40,43 +41,56 @@ namespace LjungbergIt.Xtm.Connector.Import
       return returnMessage;
     }
 
+    //CreateTranslatedContent is directly called by the import button manaully or by the XtmCallback.aspx
     public bool CreateTranslatedContent(long projectId, Item progressItem)
     {
-      XtmProject xtmProject = new XtmProject();
+      XtmProject xtmProject = new XtmProject(); 
       LoginProperties login = new LoginProperties();
       string client = login.ScClient;
       long userId = login.ScUserId;
       string password = login.ScPassword;
+      XtmProject xtmLoginProject = new XtmProject { Client = client, UserId = userId, Password = password };
       bool success = new bool();
 
       XtmWebserviceProperties xtmWebserviceProperties = new XtmWebserviceProperties();
 
-      bool finished = xtmProject.IsTranslationFinished(projectId, client, userId, password, xtmWebserviceProperties.WebserviceEndpoint, xtmWebserviceProperties.IsHttps);
-      if (finished)
+      //bool finished = xtmProject.IsTranslationFinished(projectId, client, userId, password, xtmWebserviceProperties.WebserviceEndpoint, xtmWebserviceProperties.IsHttps);
+      xtmProject = xtmProject.GetXtmProject(projectId, xtmLoginProject, xtmWebserviceProperties.WebserviceEndpoint, xtmWebserviceProperties.IsHttps);
+
+      if (xtmProject.WorkflowStatus.Equals("FINISHED"))
       {
         XtmHandleTranslatedContent Xtm = new XtmHandleTranslatedContent();
         List<byte[]> bytesList = Xtm.GetFileInBytes(projectId, client, userId, password, xtmWebserviceProperties.WebserviceEndpoint, xtmWebserviceProperties.IsHttps);
 
-        if (bytesList.Count != 0)
+        try
         {
-          List<XmlDocument> translatedXmlDocs = ConvertTranslatedBytesToXML(projectId, bytesList);
-          foreach(XmlDocument xmlDoc in translatedXmlDocs)
+          if (bytesList.Count != 0)
           {
-            bool result = ReadFromXml(xmlDoc);
-            if (result)
+            List<XmlDocument> translatedXmlDocs = ConvertTranslatedBytesToXML(projectId, bytesList);
+            foreach (XmlDocument xmlDoc in translatedXmlDocs)
             {
-              using (new SecurityDisabler())
+              bool result = ReadFromXml(xmlDoc);
+              if (result)
               {
-                progressItem.Delete();                               
+                using (new SecurityDisabler())
+                {
+                  progressItem.Delete();
+                }
               }
             }
-          }         
-          success = true;
+            success = true;
+          }
+          else
+          {
+            success = false;
+          }
         }
-        else
+        catch (Exception e)
         {
           success = false;
+          scLogging.WriteError("Something is wrong witht the returned byte array for project with id " + projectId.ToString() + ". following error occured: " + e.Message);
         }
+        
       }
       return success;
     }
@@ -84,30 +98,38 @@ namespace LjungbergIt.Xtm.Connector.Import
     public List<XmlDocument> ConvertTranslatedBytesToXML(long projectId, List<byte[]> bytesList)
     {
       List<XmlDocument> xmlDocuments = new List<XmlDocument>();
-      string filePath = System.Web.HttpContext.Current.Server.MapPath("~\\" + ScConstants.Misc.translationFolderName + "\\" + ScConstants.Misc.filesForImportFolderName + "\\");
-      int count = 1;
-
-      foreach (byte[] bytes in bytesList)
+      try
       {
-        string zipFileName = filePath + "file" + count.ToString() + ".zip";
-        string xmlFileName = filePath + "file" + count.ToString() + ".xml";        
-        
-        File.WriteAllBytes(zipFileName, bytes);
-        using (ZipArchive archive = ZipFile.OpenRead(zipFileName))
+        string filePath = System.Web.HttpContext.Current.Server.MapPath("~\\" + ScConstants.Misc.translationFolderName + "\\" + ScConstants.Misc.filesForImportFolderName + "\\");
+        int count = 1;
+
+        foreach (byte[] bytes in bytesList)
         {
-          IReadOnlyCollection<ZipArchiveEntry> zipEntries = archive.Entries;
-          foreach (ZipArchiveEntry entry in zipEntries)
+          string zipFileName = filePath + "file" + count.ToString() + ".zip";
+          string xmlFileName = filePath + "file" + count.ToString() + ".xml";
+
+          File.WriteAllBytes(zipFileName, bytes);
+          using (ZipArchive archive = ZipFile.OpenRead(zipFileName))
           {
-            XmlDocument xmlDoc = new XmlDocument();
-            entry.ExtractToFile(xmlFileName, true);
-            xmlDoc.Load(xmlFileName);
-            xmlDocuments.Add(xmlDoc);
-          }          
+            IReadOnlyCollection<ZipArchiveEntry> zipEntries = archive.Entries;
+            foreach (ZipArchiveEntry entry in zipEntries)
+            {
+              XmlDocument xmlDoc = new XmlDocument();
+              entry.ExtractToFile(xmlFileName, true);
+              xmlDoc.Load(xmlFileName);
+              xmlDocuments.Add(xmlDoc);
+            }
+          }
+          File.Delete(zipFileName);
+          File.Delete(xmlFileName);
+          count++;
         }
-        File.Delete(zipFileName);
-        File.Delete(xmlFileName);
-        count++;        
-      }      
+      }
+      catch (Exception e)
+      {
+        scLogging.WriteError(e.Message);
+      }
+      
       return xmlDocuments;
     }
 

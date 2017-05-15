@@ -157,7 +157,7 @@
     <Compile Include="Buttons\ViewDocumentation.cs" />
     <Compile Include="Buttons\ViewTranslationProgress.cs" />
     <Compile Include="Commands\XtmStartTranslation.cs" />
-    <Compile Include="Export\Files.cs" />
+    <Compile Include="Export\ExportInfo.cs" />
     <Compile Include="Export\Html.cs" />
     <Compile Include="Export\Project.cs" />
     <Compile Include="Export\StartTranslation.cs" />
@@ -165,6 +165,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\Label.cs" />
     <Compile Include="Helpers\ReturnMessage.cs" />
     <Compile Include="Helpers\ScQueueItem.cs" />
     <Compile Include="Helpers\ScSearch.cs" />
@@ -181,8 +182,10 @@
     <Compile Include="Helpers\XtmWebserviceProperties.cs" />
     <Compile Include="Import\GetXtmTemplates.cs" />
     <Compile Include="Import\ImportFromXml.cs" />
+    <Compile Include="Import\MetaTranslationItem.cs" />
     <Compile Include="Import\ValidateXml.cs" />
     <Compile Include="Import\XtmLanguages.cs" />
+    <Compile Include="MetaData\Pipelines\GetContentEditorWarnings\InTranslation.cs" />
     <Compile Include="Pipelines\XtmPipelineArgs.cs" />
     <Compile Include="Pipelines\XtmProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -243,6 +246,7 @@
     <Content Include="App_Config\Include\XtmConnector.config">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="App_Config\Include\LjungbergIt.Xtm.ScWarnings.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
