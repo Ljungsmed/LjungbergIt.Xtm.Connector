@@ -10,7 +10,7 @@ namespace LjungbergIt.Xtm.Connector.AddForTranslation
     {
         public string ItemId { get; set; }
         public string SourceLanguage { get; set; }
-        public string TargetLanguage { get; set; }
+        public List<string> TargetLanguages { get; set; }
         public string XtmTemplate { get; set; }
     }
 }

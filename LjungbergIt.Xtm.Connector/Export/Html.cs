@@ -42,6 +42,7 @@ namespace LjungbergIt.Xtm.Connector.Export
           baseUrl = baseUrl.Replace("http", "https");
         }
         //string baseUrlHttps = baseUrl.Replace("http", "https");
+        
         SetNewAttributeValue(rootNode, ".//link", "href", baseUrl); //finds all <link href="css styles" /> and sets the full url
         SetNewAttributeValue(rootNode, ".//img", "src", baseUrl); //finds all <img> and sets the full url
         SetNewAttributeValue(rootNode, ".//script", "src", baseUrl); //finds all <scripts> and sets the full url
@@ -67,12 +68,12 @@ namespace LjungbergIt.Xtm.Connector.Export
       {
         bool AttributeFound = node.GetAttributeValue(attributeName, false);
         //TODO check if attr. exists
-        //TODO check if attr. already have http (full path)
         string href = node.GetAttributeValue(attributeName, "");
-        node.SetAttributeValue(attributeName, preFixValue + href);
-      }
-
-      
+        if (!href.Contains("http"))
+        {
+          node.SetAttributeValue(attributeName, preFixValue + href);
+        }        
+      }      
     }
   }
 }

@@ -54,6 +54,7 @@ namespace LjungbergIt.Xtm.Connector.Buttons
       updateProps.Add(new UpdateItem { FieldIdOrName = exportInfo.StatusField, FieldValue = "Currently running" });
       updateProps.Add(new UpdateItem { FieldIdOrName = exportInfo.StartField, FieldValue = startTime.ToString("yyyyMMddThhmmss") });
       updateProps.Add(new UpdateItem { FieldIdOrName = exportInfo.ErrorsField, FieldValue = string.Empty });
+      updateProps.Add(new UpdateItem { FieldIdOrName = exportInfo.InitiatedBy, FieldValue = Sitecore.Context.User.Name });
 
       UpdateItem updateItem = new UpdateItem();
       updateItem.Update(exportInfo.ExportInfoItem, updateProps);
@@ -67,11 +68,8 @@ namespace LjungbergIt.Xtm.Connector.Buttons
       updateProps.Add(new UpdateItem { FieldIdOrName = exportInfo.StatusField, FieldValue = "Finnished" });
       updateProps.Add(new UpdateItem { FieldIdOrName = exportInfo.EndField, FieldValue = endTime.ToString("yyyyMMddThhmmss") });
       updateProps.Add(new UpdateItem { FieldIdOrName = exportInfo.TotalTime, FieldValue = totalTime.Seconds.ToString() + " Seconds"});
-      //updateProps.Add(new UpdateItem { FieldIdOrName = exportInfo.InitiatedBy, FieldValue = totalTime.Seconds.ToString() });
 
       updateItem.Update(exportInfo.ExportInfoItem, updateProps);
-      
-      //long totalTime = startTime.Ticks - endTime.Ticks;
     }
   }
 }

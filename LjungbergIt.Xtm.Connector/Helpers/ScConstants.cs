@@ -66,7 +66,7 @@ namespace LjungbergIt.Xtm.Connector.Helpers
     public struct SitecoreFieldNames
     {
       //public static readonly string MainTitle = "main title";
-      public static readonly string TranslationQueueItem_ItemId = "ItemId";
+      //public static readonly string TranslationQueueItem_ItemId = "ItemId";
       public static readonly string TranslationQueueItem_MasterLanguage = "{0E5B813D-C8AD-4C8B-80A8-5F85E2F981CA}";
       public static readonly string TranslationQueueItem_TranslateTo = "TranslateTo";
       public static readonly string TranslationQueueItem_Version = "Version";
@@ -85,9 +85,9 @@ namespace LjungbergIt.Xtm.Connector.Helpers
       public static readonly string XtmSettingsPasword = "{C04387E1-8073-438E-875E-597810C776B3}";
       public static readonly string XtmSettingsCustomer = "{E2286B50-BC26-42F3-B17F-DB280E62E42B}";
       public static readonly string XtmSettingsEndpoint = "{4F43B55C-813D-4FCB-AEFE-8A45A441EEDD}";
-      public static readonly string QueuFolderSourceLanguage = "{49BB7FBD-0C7E-41BA-8E0B-0FCA7F8BB538}";
+      //public static readonly string QueuFolderSourceLanguage = "{49BB7FBD-0C7E-41BA-8E0B-0FCA7F8BB538}";
       public static readonly string QueuFolderTranslateTo = "{D61CDBB9-1056-440B-B02B-38AEAB882AB0}";
-      public static readonly string QueuFolderXtmTemplate = "{00C42DB8-293A-41A2-9ED9-12244523EA9C}";
+      //public static readonly string QueuFolderXtmTemplate = "{00C42DB8-293A-41A2-9ED9-12244523EA9C}";
       //public static readonly string XtmBaseTemplateTranslated = "{0A60DBA6-38D2-4EAE-8A26-85A3D85BC0FF}";
       //public static readonly string XtmBaseTemplateInTranslation = "{C33EEDFF-6244-4453-8C99-F5DCC7AF3E9D}";
       //public static readonly string XtmBaseTemplateTranslatedDate = "{F6276376-28A9-4BE4-AAEA-C20DBC4A4F0C}";
@@ -113,6 +113,13 @@ namespace LjungbergIt.Xtm.Connector.Helpers
     public struct XtmLanguageTemplate
     {
       public static readonly string LanguageName = "{E8A5EADE-877A-4F22-A92C-1BDE0E52C234}";
+    }
+    public struct XtmQueueProjectTemplateFolder
+    {
+      public static readonly string TargetLanguages = "{868DD612-F45C-4B70-9C13-3F29B2C8CF2B}";
+      public static readonly string XTMProjectName = "{F0BB1E31-D56D-40A2-9008-862217657776}";
+      public static readonly string SourceLanguage = "{49BB7FBD-0C7E-41BA-8E0B-0FCA7F8BB538}";
+      public static readonly string XtmTemplate = "{00C42DB8-293A-41A2-9ED9-12244523EA9C}";
     }
 
     public struct XtmConnectorBaseTemplate

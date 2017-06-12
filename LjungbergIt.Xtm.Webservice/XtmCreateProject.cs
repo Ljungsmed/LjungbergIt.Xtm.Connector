@@ -9,7 +9,7 @@ namespace LjungbergIt.Xtm.Webservice
 {
   public class XtmCreateProject
   {
-    public List<string> Create(List<XtmTranslationFile> translationFiles, string fileName, string sourceLanguage, string translationLanguage, string xtmTemplate, string xtmClient, long userId, string password, long customer, string webServiceEndPoint, bool https, string callbackUrl)
+    public List<string> Create(List<XtmTranslationFile> translationFiles, string fileName, string sourceLanguage, List<string> translationLanguages, string xtmTemplate, string xtmClient, long userId, string password, long customer, string webServiceEndPoint, bool https, string callbackUrl)
     {
       List<string> resultList = new List<string>();
       bool success = false;
@@ -21,7 +21,8 @@ namespace LjungbergIt.Xtm.Webservice
       project.UserId = userId;
       project.Password = password;
       project.Customer = customer;
-      project.TargetLanguage = translationLanguage;
+      //FIX
+      //project.TargetLanguage = translationLanguage;
       project.SourceLanguage = sourceLanguage;
       project.Template = xtmTemplate;
 
@@ -45,10 +46,16 @@ namespace LjungbergIt.Xtm.Webservice
 
       xtmCustomerDescriptorAPI xtmCustomer = access.XtmCustomer(customer);
 
-      string targetLanguage = translationLanguage.Replace("-", "_");
-      languageCODE parsedLanguage = new languageCODE();
-      bool languageCodeParsed = languageCODE.TryParse(targetLanguage, true, out parsedLanguage);
+      //Convert the target language strings to Xtm langauges and add them to the list of target languages
+      languageCODE?[] targetLang = new languageCODE?[translationLanguages.Count];
+      for (int i = 0; i < translationLanguages.Count ; i++)
+      {
+        languageCODE parsedLanguage = new languageCODE();
+        bool languageCodeParsed = languageCODE.TryParse(translationLanguages[i], true, out parsedLanguage);
+        targetLang[i] = parsedLanguage;
+      }      
 
+      //TODO move to configuration
       string sitecoreSourceLanguage = sourceLanguage.Replace("-", "_");
       if (sitecoreSourceLanguage == "en")
       {
@@ -61,10 +68,8 @@ namespace LjungbergIt.Xtm.Webservice
       xtmProjectCallbackAPI callBackAPI = new xtmProjectCallbackAPI();
       callBackAPI.projectFinishedCallback = callbackUrl;
 
-      if (languageCodeParsed && sourceLanguageCodeParsed)
+      if (sourceLanguageCodeParsed)
       {
-        languageCODE?[] targetLang = new languageCODE?[] { parsedLanguage };
-
         xtmProjectMTOMAPI projectMTOM = new xtmProjectMTOMAPI();
         projectMTOM.name = projectName.ToString();
         projectMTOM.sourceLanguage = parsedSourceLanguage;
@@ -90,7 +95,7 @@ namespace LjungbergIt.Xtm.Webservice
           projectMTOM.workflow = workflow;
         }        
 
-        xtmCreateProjectMTOMOptionsAPI projectOptions = new xtmCreateProjectMTOMOptionsAPI();
+        //xtmCreateProjectMTOMOptionsAPI projectOptions = new xtmCreateProjectMTOMOptionsAPI();
 
         try
         {
@@ -129,8 +134,8 @@ namespace LjungbergIt.Xtm.Webservice
       }
       else
       {
-        info.Append("TargetLanguageError: target language not correctly parsed, the target language was: ");
-        info.Append(targetLanguage);
+        info.Append("Source language error: source language not correctly parsed, the source language was: ");
+        //info.Append(targetLanguages[0]);
       }
 
       resultList.Add(success.ToString());

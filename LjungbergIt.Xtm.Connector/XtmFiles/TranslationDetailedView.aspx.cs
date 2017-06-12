@@ -24,7 +24,7 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
                 foreach (Item queueItem in queueCategoryItem.GetChildren())
                 {
                     Item translateItem = masterDb.GetItem(queueItem[ScConstants.XtmTranslationQueueItemTemplate.ItemId]);
-                    string xtmTemplateId = queueCategoryItem[ScConstants.SitecoreFieldIds.QueuFolderXtmTemplate];
+                    string xtmTemplateId = queueCategoryItem[ScConstants.XtmQueueProjectTemplateFolder.XtmTemplate];
                     string xtmTemplate = string.Empty;
                     if (xtmTemplateId != "")
                     {
@@ -32,7 +32,7 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
                     }
 
                     ScQueueItem scQueueItem = new ScQueueItem();
-                    scQueueItem.SourceLanguage = queueCategoryItem[ScConstants.SitecoreFieldIds.QueuFolderSourceLanguage];
+                    scQueueItem.SourceLanguage = queueCategoryItem[ScConstants.XtmQueueProjectTemplateFolder.SourceLanguage];
                     scQueueItem.TargetLanguage = queueCategoryItem[ScConstants.SitecoreFieldIds.QueuFolderTranslateTo];
                     scQueueItem.XtmTemplate = xtmTemplate;
                     scQueueItem.QueueItemName = translateItem.Name;

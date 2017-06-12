@@ -18,6 +18,9 @@
                 <img src="/XtmFiles/XtmStyles/xtmlogo.png" alt="xtm logo" height="40" />
             </div>
         </div>
+        <div class="container errordiv">
+            <asp:Label ID="labelErrorMessage" runat="server" />
+        </div>
         <div style="clear: both;"></div>
         <div runat="server" id="divChooseTranslationOptions" class="container">
             <div class="headingarea">
@@ -28,39 +31,44 @@
             <div>
                 <asp:Literal runat="server" ID="litSourceLanguage" />
             </div>
-            <br />
-            <div>
+            <div class="divspace">
                 <asp:DropDownList ID="ddSourceLanguage" runat="server" OnSelectedIndexChanged="ddSourceLanguage_SelectedIndexChanged" AutoPostBack="true" CssClass="dropdown" />
             </div>
-
-            <br />
-            <div>
-                Choose the target languages (target languages will override any languages specified on an XTM Template)
+            <div class="divspace">
+                Project Name (Leave blank if you want to add to existing project):
             </div>
-            <br />
+            <div class="divspace">
+                <asp:TextBox runat="server" ID="txtProjectName" CssClass="textbox" />
+            </div>
+            <div runat="server" id="divExistingProjects">
+                <div class="divspace">
+                    Choose existing project to add translation to:
+                </div>
+                <div>
+                    <asp:RadioButtonList ID="rblExistingProjects" runat="server" />
+                </div>
+            </div>
+            <div class="divspace">
+                Choose the target languages (target languages will override any languages specified on an XTM Template)
+            </div>  
             <div>
                 <asp:CheckBoxList runat="server" ID="cbTargetLanguages"></asp:CheckBoxList>
             </div>
-            <br />
-            <div>
+            <div class="divspace">
                 Choose the XTM Template (Do not choose any if not needed)
             </div>
-            <br />
-            <div>
+            <div class="divspace">
                 <asp:DropDownList ID="ddXtmTemplate" runat="server" CssClass="dropdown" />
             </div>
-            <br />
-            <div>
+            <div class="divspace">
                 Include all sub-items:
                 <asp:CheckBox runat="server" ID="cbAllSubItems" CssClass="checkbox"></asp:CheckBox>
             </div>
-            <br />
-            <div>
-                <asp:Button runat="server" ID="btnAddForTranslation" Text="Add" OnClick="btnAddForTranslation_Click" CssClass="button" />
+            <div class="divspace">
+                <asp:Button runat="server" ID="btnAddForTranslation" Text="Add" OnClick="btnAddForTranslation_Click" CssClass="button" Width="40px" />
             </div>
         </div>
-        <br />
-        <div class="container">
+        <div class="container divspacebottom divspace">
             <asp:Label ID="labelResult" runat="server" />
         </div>
     </form>

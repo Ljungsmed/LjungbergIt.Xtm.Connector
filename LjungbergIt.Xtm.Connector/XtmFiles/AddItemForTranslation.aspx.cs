@@ -5,12 +5,13 @@ using Sitecore.Collections;
 using Sitecore.Data;
 using Sitecore.Data.Items;
 using Sitecore.Globalization;
-using Sitecore.Security.Accounts;
 using Sitecore.SecurityModel;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Web.UI.WebControls;
+using System.Linq;
+using LjungbergIt.Xtm.Connector.LanguageHandling;
 
 namespace LjungbergIt.Xtm.Connector.XtmFiles
 {
@@ -37,7 +38,7 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
           XtmBaseTemplate xtmBaseTemplate = new XtmBaseTemplate(null);
 
           //Display the current item being added for translation
-          
+
           if (xtmBaseTemplate.CheckForBaseTemplate(contextItem))
           {
             heading.Append("Add \"");
@@ -52,12 +53,29 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
 
           litHeading.Text = heading.ToString();
 
+          //Display all existing projects in a RadioButtonList
+
+          StringBuilder sbExistingProjects = new StringBuilder();
+
+          Item queueFolder = ScConstants.SitecoreDatabases.MasterDb.GetItem(ScConstants.SitecoreIDs.TranslationQueueFolder);
+          if (queueFolder.Children.Count == 0)
+          {
+            divExistingProjects.Visible = false;
+          }
+          else
+          {
+            foreach (Item projectItem in queueFolder.GetChildren().Where(item => item[ScConstants.XtmQueueProjectTemplateFolder.XTMProjectName] != ""))
+            {
+              rblExistingProjects.Items.Add(new ListItem(projectItem[ScConstants.XtmQueueProjectTemplateFolder.XTMProjectName], projectItem.ID.ToString()));
+            }
+          }
+
           //Display the default langauge which is specified on the xtm settings item
           Language defaultSourceLanguage = GetDefaultSourceLanguage();
           StringBuilder sbSourceLanguage = new StringBuilder();
-          sbSourceLanguage.Append("The defualt source language is: ");
+          sbSourceLanguage.Append("The defualt source language is: <strong>");
           sbSourceLanguage.Append(defaultSourceLanguage.CultureInfo.DisplayName);
-          sbSourceLanguage.Append(". Change below if custom source langauge is required for this content");
+          sbSourceLanguage.Append("</strong>. Change below if custom source langauge is required for this content");
           litSourceLanguage.Text = sbSourceLanguage.ToString();
 
           //Build the drop down list with available Sitecore source languages to choose from if the default should be overwritten
@@ -114,13 +132,12 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
     //Action when the "Add" button has been clicked
     protected void btnAddForTranslation_Click(object sender, EventArgs e)
     {
-      //Display error message if no target language has been chosen AND no template has been choosen
-      if (cbTargetLanguages.SelectedItem == null && ddXtmTemplate.SelectedValue == "")
+      //If new projectname or existing project has not been choosen, show error and do nothing 
+      if (rblExistingProjects.SelectedItem == null && txtProjectName.Text == string.Empty)
       {
-        labelResult.Style.Add("color", "red");
-        labelResult.Text = "No target language or template has been chosen";
+        labelErrorMessage.Style.Add("color", "red");
+        labelErrorMessage.Text = "Error: You have not chosen an existing project nor created a new";
       }
-
       else
       {
         //Get the item that needs to be added for translation
@@ -129,79 +146,157 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
         ItemList ItemsToTranslate = new ItemList();
         //Check if item has the XtmBaseTemplate. If not the item is not added for translation
         XtmBaseTemplate xtmBaseTemplate = new XtmBaseTemplate(null);
+        //If selected item is available for translation (have the correct base template) add it to the Item list
         if (xtmBaseTemplate.CheckForBaseTemplate(contextItem))
         {
           //Add item that needs to be translated to the item list
           ItemsToTranslate.Add(contextItem);
-        }        
+        }
         //If "add subitems" have been checked, go through all subitems and add the ones which are available for translation
         if (cbAllSubItems.Checked)
         {
           ItemsToTranslate = GetChildrenToTranslate(ItemsToTranslate, contextItem);
         }
-
-        //Set the xtm template, if none selected set the value to NONE
-        string xtmTemplate = ddXtmTemplate.SelectedValue;
-        if (xtmTemplate.Equals(""))
+     
+        if (ItemsToTranslate.Count == 0)
         {
-          xtmTemplate = "NONE";
+          labelErrorMessage.Style.Add("color", "red");
+          labelErrorMessage.Text = "No items were added. Both the chosen item and subitems were not eligable for translation";
         }
 
-        //Set the source language, if no source language chosen in the drop down, use the default source language
-        string sourceLanguage = ddSourceLanguage.SelectedValue;
-        if (sourceLanguage.Equals(""))
+        else
         {
-          sourceLanguage = GetDefaultSourceLanguage().CultureInfo.Name;
-        }
-
-        //set variables and initialize classes used in the foreach loop that generates a translation item per target languages, per item that needs to be translated
-        string addedBy = Sitecore.Context.User.Name;
-        StringBuilder info = new StringBuilder();
-        LanguageMapping languageMapping = new LanguageMapping();
-        List<LanguageMapping> languageMappingList = languageMapping.LanguageList();
-        TranslationQueue translationQueue = new TranslationQueue();
-
-        foreach (ListItem listItem in cbTargetLanguages.Items)
-        {
-          if (listItem.Selected == true)
+          StringBuilder info = new StringBuilder();
+          TranslationQueue translationQueue = new TranslationQueue();
+          //Set the source language, if no source language chosen in the drop down, use the default source language
+          string sourceLanguage = ddSourceLanguage.SelectedValue;
+          if (sourceLanguage.Equals(""))
           {
-            string targetLanguage = listItem.Value;
+            sourceLanguage = GetDefaultSourceLanguage().CultureInfo.Name;
+          }
+          List<string> targetLanguagesList = new List<string>();
+          string xtmTemplate = "NONE";
+          string addedBy = Sitecore.Context.User.Name;
+          string projectName = string.Empty;
+          bool noErrors = true;
+          bool validProjectName = true;
 
-            foreach (LanguageMapping langToMap in languageMappingList)
+          if (txtProjectName.Text != string.Empty)
+          {
+            projectName = txtProjectName.Text;
+            Utils utils = new Utils();
+            validProjectName = utils.ValidateItemName(projectName);
+          }
+
+          //If existing project is chosen
+          if (rblExistingProjects.SelectedItem != null)
+          {
+            labelErrorMessage.Text = string.Empty;
+            projectName = rblExistingProjects.SelectedItem.Text;
+
+            info.Append("Adding items for translation to existing project <strong>");
+            info.Append(projectName);
+            info.Append("</strong>");
+            
+          }
+          //Else create new project based on the value in the project name text box
+          else
+          {
+            //TODO check if project name from text box matches existing project
+             
+            //Display error message if no target language has been chosen AND no template has been choosen
+            if (cbTargetLanguages.SelectedItem == null && ddXtmTemplate.SelectedValue == "")
             {
-              if (langToMap.LangName.ToLower().Equals(targetLanguage.ToLower()))
-              {
-                targetLanguage = langToMap.XtmLangName;
-              }
+              labelErrorMessage.Style.Add("color", "red");
+              labelErrorMessage.Text = "Error: When creating new project, you have to chose target language(s) or an XTM template";
+              noErrors = false;
             }
 
+            else
+            {
+              if (!validProjectName)
+              {
+                labelErrorMessage.Style.Add("color", "red");
+                labelErrorMessage.Text = "Error: Project name can only contain normal charecters, numbers, hyphons and underscores";
+              }
+              else
+              {
+                labelErrorMessage.Text = string.Empty;
+
+                //Set the xtm template, if none selected set the value to NONE
+                xtmTemplate = ddXtmTemplate.SelectedValue;
+                if (xtmTemplate.Equals(""))
+                {
+                  xtmTemplate = "NONE";
+                }
+
+                //Populate the list of target langauges
+                foreach (ListItem listItem in cbTargetLanguages.Items)
+                {
+                  if (listItem.Selected == true)
+                  {
+                    //TODO move langaugeMapping to LanguageHandling 
+                    //foreach (LanguageMapping langToMap in languageMappingList)
+                    //{
+                    //  if (langToMap.LangName.ToLower().Equals(targetLanguage.ToLower()))
+                    //  {
+                    //    targetLanguage = langToMap.XtmLangName;
+                    //  }
+                    //}
+
+                    targetLanguagesList.Add(listItem.Value);
+                  }
+                }
+
+                //Set the info string
+                Mapping mapping = new Mapping();
+                info.Append("New project created with name <strong>");
+                info.Append(projectName);
+                info.Append("</strong>");
+                if (targetLanguagesList.Count != 0)
+                {
+                  info.Append("<br //>");
+                  info.Append("target languages: ");
+                  info.Append(mapping.TargetLanguagesString(targetLanguagesList));
+                }
+              }              
+            }            
+          }
+
+          if (noErrors && validProjectName)
+          {
+            info.Append("<br //>");
+            info.Append("<br //>");
             foreach (Item itemToTranslate in ItemsToTranslate)
             {
-              string result = translationQueue.AddToQueue(itemToTranslate, sourceLanguage, targetLanguage, xtmTemplate, addedBy);
+              string result = translationQueue.AddToQueue(itemToTranslate, sourceLanguage, targetLanguagesList, xtmTemplate, addedBy, projectName);
               info.Append(result);
               info.Append("<br //>");
             }
-          }
-        }
 
-        if (cbTargetLanguages.SelectedItem == null)
-        {
-          string result = translationQueue.AddToQueue(contextItem, sourceLanguage, "NONE", xtmTemplate, addedBy);
-          info.Append(result);
-          info.Append(", the XTM Template defines the target language");
-          info.Append("<br //>");
-        }
+            //TODO Move up so also subitems gets added
+            //if (cbTargetLanguages.SelectedItem == null)
+            //{
+            //  //string result = translationQueue.AddToQueue(contextItem, sourceLanguage, "NONE", xtmTemplate, addedBy, projectName);
+            //  //info.Append(result);
+            //  //info.Append(", the XTM Template defines the target language");
+            //  info.Append("No target languages were chosen!");
+            //  info.Append("<br //>");
+            //}
 
-        divChooseTranslationOptions.Visible = false;
-        labelResult.Text = info.ToString();
-      }
+            divChooseTranslationOptions.Visible = false;
+
+            labelResult.Text = info.ToString();
+          }          
+        }       
+      }      
     }
 
     private ItemList GetChildrenToTranslate(ItemList itemsToTranslate, Item parent)
     {
       if (parent.GetChildren() != null)
       {
-        
+
         foreach (Item child in parent.GetChildren())
         {
           XtmBaseTemplate xtmBaseTemplate = new XtmBaseTemplate(child);
@@ -215,7 +310,7 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
             {
               GetChildrenToTranslate(itemsToTranslate, child);
             }
-          }          
+          }
         }
       }
       return itemsToTranslate;
@@ -253,7 +348,6 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
       {
         Item xtmSettingsItem = masterDb.GetItem(ScConstants.SitecoreIDs.XtmSettingsItem);
         Item defaultSourceLanguageItem = masterDb.GetItem(xtmSettingsItem[ScConstants.SitecoreFieldIds.XtmSettingsDefaultSourceLanguage]);
-        //Item defaultSourceLanguageItem = Database.GetDatabase("master").GetItem(xtmSettingsItem[ScConstants.SitecoreFieldIds.XtmSettingsDefaultSourceLanguage]);
         return Language.Parse(defaultSourceLanguageItem.Name);
       }
     }

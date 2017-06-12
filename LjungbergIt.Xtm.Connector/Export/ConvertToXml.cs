@@ -1,5 +1,6 @@
 ﻿using LjungbergIt.Xtm.Connector.AddForTranslation;
 using LjungbergIt.Xtm.Connector.Helpers;
+using LjungbergIt.Xtm.Connector.LanguageHandling;
 using LjungbergIt.Xtm.Webservice;
 using Sitecore.Collections;
 using Sitecore.Data;
@@ -30,11 +31,11 @@ namespace LjungbergIt.Xtm.Connector.Export
       if (queuedItemsFolder.Children.Count != 0)
       {
         //For each translation job 
-        foreach (Item translationFolderItem in queuedItemsFolder.GetChildren())
+        foreach (Item translationProjectItem in queuedItemsFolder.GetChildren())
         {
           //if the translation job has an Xtm template, set a string with the id of the Xtm template, otherwise leave it as an empty string
           string xtmTemplateId = string.Empty;
-          string xtmTemplateItemId = translationFolderItem[ScConstants.SitecoreFieldIds.QueuFolderXtmTemplate];
+          string xtmTemplateItemId = translationProjectItem[ScConstants.XtmQueueProjectTemplateFolder.XtmTemplate];
           if (xtmTemplateItemId != "")
           {
             //Get the actual ID that corrosponds to the ID of the template in XTM
@@ -43,24 +44,34 @@ namespace LjungbergIt.Xtm.Connector.Export
 
           //Set the properties needed for creating a translation project in Xtm
           TranslationProperties translationProperties = new TranslationProperties();
-          translationProperties.SourceLanguage = translationFolderItem[ScConstants.SitecoreFieldIds.QueuFolderSourceLanguage];
-          translationProperties.TargetLanguage = translationFolderItem[ScConstants.SitecoreFieldIds.QueuFolderTranslateTo];
+          translationProperties.SourceLanguage = translationProjectItem[ScConstants.XtmQueueProjectTemplateFolder.SourceLanguage];
+
+          //Get target languages and convert to XTM languages
+          MultilistField targetLanguagesField = translationProjectItem.Fields[ScConstants.XtmQueueProjectTemplateFolder.TargetLanguages];
+          Item[] targetLanguagesItems = targetLanguagesField.GetItems();
+          
+          Mapping mapping = new Mapping();
+          //List<string> xtmFormatedLanguagelist = mapping.SitecoreLanguageToXtmLanguage(targetLanguagesItems);
+
+          translationProperties.TargetLanguages = mapping.SitecoreLanguageToXtmLanguage(targetLanguagesItems);
           translationProperties.XtmTemplate = xtmTemplateId;
-          translationProperties.ItemId = translationFolderItem.ID.ToString();
+          translationProperties.ItemId = translationProjectItem.ID.ToString();
 
           //Get an ItemList of all the pages/items for the translation job
-          ItemList queuedItemList = buildQueuedItemList(translationFolderItem, translationProperties.SourceLanguage);
+          ItemList queuedItemList = buildQueuedItemList(translationProjectItem, translationProperties.SourceLanguage);
 
           //If the translation job folder is empty do nothing
           if (queuedItemList.Count != 0)
           {
             List<XtmTranslationFile> translationFileList = new List<XtmTranslationFile>();
+            //count is used to add the number of pages that is in a translation project
             int count = 0;
+            //TODO remove as the projects are now created with custom name?
             string firstItemName = string.Empty;
             foreach (Item queuedItem in queuedItemList)
             {
               //string filePath = "~\\" + ScConstants.Misc.translationFolderName + "\\" + ScConstants.Misc.filesFortranslationFolderName + "\\" + translationFolderItem.Name + "_" + queuedItem.Name;
-              string completeFilePath = filePath + translationFolderItem.Name + "_" + queuedItem.Name;
+              string completeFilePath = filePath + translationProjectItem.Name + "_" + queuedItem.Name;
               string xmlFilePath = completeFilePath + ".xml";
               string htmlFilePath = completeFilePath + ".html";
               //string xmlFilePath = System.Web.HttpContext.Current.Server.MapPath(filePath + ".xml");
@@ -69,6 +80,7 @@ namespace LjungbergIt.Xtm.Connector.Export
               XtmTranslationFile translationFile = new XtmTranslationFile();
               translationFile.FilePath = xmlFilePath;
               string ItemId = queuedItem[ScConstants.XtmTranslationQueueItemTemplate.ItemId];
+              //Find the actual item that needs to be translated from the ItemId field of the translationQueueItem
               Item translationItem = masterDb.GetItem(ItemId);
               translationFile.FileName = translationItem.Name;
               if (count == 0)
@@ -82,16 +94,16 @@ namespace LjungbergIt.Xtm.Connector.Export
                 XmlWriterSettings settings = new XmlWriterSettings();
                 settings.Indent = true;
 
-                XmlWriter xw = XmlWriter.Create(fs, settings);
-                UpdateItem updateItem = new UpdateItem();
+                XmlWriter xw = XmlWriter.Create(fs, settings);                
                 List<UpdateItem> updateList = new List<UpdateItem>();
                 updateList.Add(new UpdateItem() { FieldIdOrName = ScConstants.SitecoreXtmTemplateFieldIDs.InTranslation, FieldValue = "1" });
 
                 xw.WriteStartElement(ScConstants.XmlNodes.XmlRoot);
 
-                Item itemInTranslation = masterDb.GetItem(queuedItem[ScConstants.SitecoreFieldNames.TranslationQueueItem_ItemId]);
+                //Item itemInTranslation = masterDb.GetItem(queuedItem[ScConstants.SitecoreFieldNames.TranslationQueueItem_ItemId]);
                 AddElement(xw, queuedItem, translationProperties.SourceLanguage);
-                updateItem.Update(masterDb.GetItem(itemInTranslation.ID), updateList);
+                UpdateItem updateItem = new UpdateItem();
+                updateItem.Update(masterDb.GetItem(translationItem.ID), updateList);
 
                 xw.WriteEndElement();
                 xw.Flush();
@@ -120,18 +132,18 @@ namespace LjungbergIt.Xtm.Connector.Export
             //Set the project name according to number of pages/items in the translation job
             StringBuilder projectName = new StringBuilder(masterDb.GetItem(ScConstants.SitecoreIDs.XtmSettingsItem)[ScConstants.XtmSettingsTemplate.ProjectNamePrefix]);
             projectName.Append(" ");
-            projectName.Append(firstItemName);
+            projectName.Append(queuedItemsFolder[ScConstants.XtmQueueProjectTemplateFolder.XTMProjectName]);
             if (count != 1)
             {
-              projectName.Append(" + ");
+              projectName.Append(" (with a total of ");
               projectName.Append((count - 1).ToString());
               if (count == 2)
               {
-                projectName.Append(" page");
+                projectName.Append(" page)");
               }
               else
               {
-                projectName.Append(" pages");
+                projectName.Append(" pages)");
               }
             }
 
@@ -152,7 +164,7 @@ namespace LjungbergIt.Xtm.Connector.Export
                 Item archiveFolder = masterDb.GetItem(ScConstants.SitecoreIDs.TranslationQueueArchiveFolder);
                 string itemName = DateTime.Now.ToString("yyyyMMdd-HHmmss");
                 Item newArchive = archiveFolder.Add(itemName, ScConstants.SitecoreTemplates.TranslationQueueLanguageFolderTemplate);
-                translationFolderItem.MoveTo(newArchive);
+                translationProjectItem.MoveTo(newArchive);
               }
             }
           }
@@ -160,9 +172,9 @@ namespace LjungbergIt.Xtm.Connector.Export
           {
             StringBuilder message = new StringBuilder();
             message.Append("The translation job folder ");
-            message.Append(translationFolderItem.Name);
+            message.Append(translationProjectItem.Name);
             message.Append(" did not contain any pages/items");
-            returnMessageList.Add(new ReturnMessage { Success = false, Message = message.ToString(), Item = translationFolderItem });
+            returnMessageList.Add(new ReturnMessage { Success = false, Message = message.ToString(), Item = translationProjectItem });
           }
         }
       }
@@ -203,12 +215,13 @@ namespace LjungbergIt.Xtm.Connector.Export
       //TODO add a try catch 
       Language SourceLanguage = Language.Parse(language);
       //Sitecore.Data.Version version = Sitecore.Data.Version.Parse(ItemToAdd[ScConstants.SitecoreFieldNames.TranslationQueueItem_Version]);
-      ID ItemId = new ID(ItemToAdd[ScConstants.SitecoreFieldNames.TranslationQueueItem_ItemId]);
+      ID ItemId = new ID(ItemToAdd[ScConstants.XtmTranslationQueueItemTemplate.ItemId]);
 
       Item ItemToTranslate = ScConstants.SitecoreDatabases.MasterDb.GetItem(ItemId, SourceLanguage);
 
       xw.WriteStartElement(ScConstants.XmlNodes.XmlRootElement);
-      xw.WriteAttributeString(ScConstants.XmlNodes.XmlAttributeId, ItemToAdd[ScConstants.SitecoreFieldNames.TranslationQueueItem_ItemId]);
+      xw.WriteAttributeString(ScConstants.XmlNodes.XmlAttributeId, ItemToAdd[ScConstants.XtmTranslationQueueItemTemplate.ItemId]);
+      //TODO change all constants to use XtmTranslationQueueItemTemplate
       xw.WriteAttributeString(ScConstants.XmlNodes.XmlAttributeLanguage, ItemToAdd[ScConstants.SitecoreFieldNames.TranslationQueueItem_TranslateTo]);
       xw.WriteAttributeString(ScConstants.XmlNodes.XmlAttributeVersion, ItemToAdd[ScConstants.SitecoreFieldNames.TranslationQueueItem_Version]);
       xw.WriteAttributeString(ScConstants.XmlNodes.XmlAttributeSourceLanguage, language);

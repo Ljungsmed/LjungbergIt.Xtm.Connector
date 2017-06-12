@@ -38,7 +38,7 @@
                             </th>--%>
                                 <th>Source Language
                                 </th>
-                                <th>Target Language
+                                <th>Target Language(s)
                                 </th>
                                 <th>Created
                                 </th>
@@ -69,7 +69,7 @@
                                 <%# Item.SourceLanguage %>
                             </td>
                             <td>
-                                <%# Item.TargetLanguage %>
+                                <%# Item.TargetLanguagesString %>
                             </td>
                             <td>
                                 <%# Item.CreatedDate.ToString("dd-MM-yyyy HH:mm") %>
@@ -87,6 +87,7 @@
                     </ItemTemplate>
                 </asp:ListView>
             </div>
+            <br />
             <br />
             <div id="ProjectErrorList" runat="server">
                 <asp:Repeater ID="rptProjectErrors" runat="server" ItemType="LjungbergIt.Xtm.Webservice.XtmProject">

@@ -64,7 +64,7 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
         List<XtmProject> allProjects = BuildProjectlist();
 
         List<XtmProject> projectsNoErrors = new List<XtmProject>();
-        List<XtmProject> ProjectsErrors = new List<XtmProject>();
+        List<XtmProject> projectsErrors = new List<XtmProject>();
         foreach (XtmProject project in allProjects)
         {
           if (!project.ProjectError)
@@ -73,15 +73,23 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
           }
           else
           {
-            ProjectsErrors.Add(project);
+            projectsErrors.Add(project);
           }
         }
 
         lwProgress.DataSource = projectsNoErrors;
         lwProgress.DataBind();
 
-        rptProjectErrors.DataSource = ProjectsErrors;
-        rptProjectErrors.DataBind();
+        if (projectsErrors.Count == 0)
+        {
+          ProjectErrorList.Visible = false;
+        }
+        else
+        {
+          rptProjectErrors.DataSource = projectsErrors;
+          rptProjectErrors.DataBind();
+        }
+        
       }
     }
 

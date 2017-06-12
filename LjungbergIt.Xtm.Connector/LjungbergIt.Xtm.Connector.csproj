@@ -170,7 +170,7 @@
     <Compile Include="Helpers\ScQueueItem.cs" />
     <Compile Include="Helpers\ScSearch.cs" />
     <Compile Include="Helpers\ScUser.cs" />
-    <Compile Include="Helpers\LanguageMapping.cs" />
+    <Compile Include="LanguageHandling\LanguageMapping.cs" />
     <Compile Include="Helpers\LoginProperties.cs" />
     <Compile Include="Helpers\ScConstants.cs" />
     <Compile Include="Helpers\ScLogging.cs" />
@@ -185,6 +185,8 @@
     <Compile Include="Import\MetaTranslationItem.cs" />
     <Compile Include="Import\ValidateXml.cs" />
     <Compile Include="Import\XtmLanguages.cs" />
+    <Compile Include="LanguageHandling\LanguageProps.cs" />
+    <Compile Include="LanguageHandling\Mapping.cs" />
     <Compile Include="MetaData\Pipelines\GetContentEditorWarnings\InTranslation.cs" />
     <Compile Include="Pipelines\XtmPipelineArgs.cs" />
     <Compile Include="Pipelines\XtmProcessor.cs" />

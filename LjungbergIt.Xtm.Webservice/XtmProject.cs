@@ -1,6 +1,7 @@
 ﻿using LjungbergIt.Xtm.Webservice.XtmServiceReference;
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace LjungbergIt.Xtm.Webservice
 {
@@ -11,6 +12,8 @@ namespace LjungbergIt.Xtm.Webservice
     public long Customer { get; set; }
     public string SourceLanguage { get; set; }
     public string TargetLanguage { get; set; }
+    public List<string> TargetLanguages { get; set; }
+    public string TargetLanguagesString { get; set; }
     public string Template { get; set; }
     public DateTime CreatedDate { get; set; }
     public DateTime DueDate { get; set; }
@@ -22,6 +25,11 @@ namespace LjungbergIt.Xtm.Webservice
     public string Password { get; set; }
     public bool ProjectError { get; set; }
     public string ProjectErrorMessage { get; set; }
+
+    public XtmProject()
+    {
+      TargetLanguages = new List<string>();
+    }
 
     public XtmProject GetXtmProject(long projectId, XtmProject loginProject, string webServiceEndPoint, bool https)
     {
@@ -52,6 +60,17 @@ namespace LjungbergIt.Xtm.Webservice
         xtmProject.Customer = projectResponses[0].customer.id;
         xtmProject.SourceLanguage = projectResponses[0].sourceLanguage.ToString();
         xtmProject.TargetLanguage = projectResponses[0].targetLanguages[0].ToString();
+        StringBuilder sbTargetLanguages = new StringBuilder();
+        for (int i = 0; i < projectResponses[0].targetLanguages.Length; i++)
+        {
+          TargetLanguages.Add(projectResponses[0].targetLanguages[i].ToString());
+          if (i != 0)
+          {
+            sbTargetLanguages.Append(", ");
+          }
+          sbTargetLanguages.Append(projectResponses[0].targetLanguages[i]);
+        }
+        xtmProject.TargetLanguagesString = sbTargetLanguages.ToString();
         xtmProject.CreatedDate = projectResponses[0].createDate;
         xtmProject.DueDate = projectResponses[0].dueDate;
         xtmProject.WorkflowStatus = projectResponses[0].status.ToString();
