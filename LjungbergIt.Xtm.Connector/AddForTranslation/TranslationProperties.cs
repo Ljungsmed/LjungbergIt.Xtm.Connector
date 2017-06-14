@@ -6,11 +6,14 @@ using System.Threading.Tasks;
 
 namespace LjungbergIt.Xtm.Connector.AddForTranslation
 {
-    public class TranslationProperties
-    {
-        public string ItemId { get; set; }
-        public string SourceLanguage { get; set; }
-        public List<string> TargetLanguages { get; set; }
-        public string XtmTemplate { get; set; }
-    }
+  public class TranslationProperties
+  {
+    //TODO use the ProjectName and ProjectDescription
+    public string ProjectName { get; set; }
+    public string ProjectDescription { get; set; }
+    public string ItemId { get; set; }
+    public string SourceLanguage { get; set; }
+    public List<string> TargetLanguages { get; set; }
+    public string XtmTemplate { get; set; }
+  }
 }

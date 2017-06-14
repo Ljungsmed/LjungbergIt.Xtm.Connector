@@ -1,4 +1,4 @@
-﻿using LjungbergIt.Xtm.Connector.Helpers;
+﻿using LjungbergIt.Xtm.Connector.LanguageHandling;
 using LjungbergIt.Xtm.Connector.LanguageHandling;
 using Sitecore.Collections;
 using Sitecore.Data.Fields;

@@ -78,6 +78,7 @@ namespace LjungbergIt.Xtm.Webservice
         projectMTOM.customer = xtmCustomer;
         projectMTOM.projectCallback = callBackAPI;
         projectMTOM.translationFiles = filesToTranslate;
+        //projectMTOM.description = 
 
         if (!project.Template.Equals(""))
         {

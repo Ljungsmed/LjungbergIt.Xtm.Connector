@@ -1,7 +1,7 @@
 ﻿using Sitecore.Data.Fields;
 using Sitecore.Data.Items;
 
-namespace LjungbergIt.Xtm.Connector.Helpers
+namespace LjungbergIt.Xtm.Connector.LanguageHandling
 {
     class XtmWebserviceProperties
     {

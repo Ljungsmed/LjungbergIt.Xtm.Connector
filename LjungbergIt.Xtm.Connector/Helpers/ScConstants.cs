@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LjungbergIt.Xtm.Connector.Helpers
+namespace LjungbergIt.Xtm.Connector.LanguageHandling
 {
   class ScConstants
   {

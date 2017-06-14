@@ -1,5 +1,5 @@
 ﻿using LjungbergIt.Xtm.Connector.Export;
-using LjungbergIt.Xtm.Connector.Helpers;
+using LjungbergIt.Xtm.Connector.LanguageHandling;
 using Sitecore.Data.Items;
 using Sitecore.Pipelines.GetContentEditorWarnings;
 using System;
@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace LjungbergIt.Xtm.Connector.MetaData.Pipelines.GetContentEditorWarnings
+namespace LjungbergIt.Xtm.Connector.MetaData.Pipelines.GetContentEditorWarnings //TODO change location and name to something more meaningfull
 {
   public class InTranslation
   {

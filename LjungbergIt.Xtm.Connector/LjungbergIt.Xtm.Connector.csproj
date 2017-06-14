@@ -168,8 +168,7 @@
     <Compile Include="Helpers\Label.cs" />
     <Compile Include="Helpers\ReturnMessage.cs" />
     <Compile Include="Helpers\ScQueueItem.cs" />
-    <Compile Include="Helpers\ScSearch.cs" />
-    <Compile Include="Helpers\ScUser.cs" />
+    <Compile Include="Import\ImportProps.cs" />
     <Compile Include="LanguageHandling\LanguageMapping.cs" />
     <Compile Include="Helpers\LoginProperties.cs" />
     <Compile Include="Helpers\ScConstants.cs" />
@@ -177,7 +176,6 @@
     <Compile Include="Helpers\UpdateItem.cs" />
     <Compile Include="Helpers\Utils.cs" />
     <Compile Include="AddForTranslation\GetLanguageQueueFolder.cs" />
-    <Compile Include="Helpers\XtmBaseTemplateProperties.cs" />
     <Compile Include="Helpers\XtmSettingsItem.cs" />
     <Compile Include="Helpers\XtmWebserviceProperties.cs" />
     <Compile Include="Import\GetXtmTemplates.cs" />
@@ -245,7 +243,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
-    <Content Include="App_Config\Include\XtmConnector.config">
+    <Content Include="App_Config\Include\LjungbergIt.Xtm.Connector.config">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="App_Config\Include\LjungbergIt.Xtm.ScWarnings.config" />

@@ -32,17 +32,17 @@ namespace LjungbergIt.Xtm.Test.Test
        
     }
 
-    private List<byte[]> GetBytesFromProject(long projectId)
+    private List<XtmJob> GetBytesFromProject(long projectId)
     {
       StringBuilder sb = new StringBuilder();
       TestLoginProps login = new TestLoginProps();
 
       XtmHandleTranslatedContent handleTranslatedContent = new XtmHandleTranslatedContent();
-      sb.Append("test");
-      List<byte[]> byteArray = handleTranslatedContent.GetFileInBytes(projectId, login.XtmClient, login.UserId, login.Password, login.WebServiceEndPoint, login.Https);
+      
+      List<XtmJob> byteArray = handleTranslatedContent.GetTranslatedJobs(projectId, login.XtmClient, login.UserId, login.Password, login.WebServiceEndPoint, login.Https);
       //List<byte[]> byteArray1 = handleTranslatedContent.GetFileInBytes(1593980, login.XtmClient, login.UserId, login.Password, login.WebServiceEndPoint, login.Https);
 
-      sb.Append(byteArray.Count.ToString());
+      
 
       XtmProject xtmProject = new XtmProject();
       XtmProject loginProject = new XtmProject { Client = login.XtmClient, UserId = login.UserId, Password = login.Password };
@@ -54,19 +54,19 @@ namespace LjungbergIt.Xtm.Test.Test
 
     private void createFilesFromBytes(long projectId)
     {
-      List<byte[]> bytesList = GetBytesFromProject(projectId);
+      List<XtmJob> bytesList = GetBytesFromProject(projectId);
 
       List<XmlDocument> xmlDocuments = new List<XmlDocument>();
 
       string filePath = System.Web.HttpContext.Current.Server.MapPath("~\\test\\");
       int count = 1;
 
-      foreach (byte[] bytes in bytesList)
+      foreach (XtmJob xtmJob in bytesList)
       {
         string zipFileName = filePath + "file" + count.ToString() + ".zip";
         string xmlFileName = filePath + "file" + count.ToString() + ".xml";
 
-        File.WriteAllBytes(zipFileName, bytes);
+        File.WriteAllBytes(zipFileName, xtmJob.TranslationFileInBytes);
         using (ZipArchive archive = ZipFile.OpenRead(zipFileName))
         {
           IReadOnlyCollection<ZipArchiveEntry> zipEntries = archive.Entries;

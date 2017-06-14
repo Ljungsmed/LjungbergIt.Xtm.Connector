@@ -6,12 +6,10 @@ using LjungbergIt.Xtm.Webservice.XtmServiceReference;
 namespace LjungbergIt.Xtm.Webservice
 {
   public class XtmHandleTranslatedContent
-  {
-
-    XtmWebserviceAccess xtmAccess = new XtmWebserviceAccess();
-
-    public List<byte[]> GetFileInBytes(long projectID, string xtmClient, long userId, string password, string webServiceEndPoint, bool https)
+  { 
+    public List<XtmJob> GetTranslatedJobs(long projectID, string xtmClient, long userId, string password, string webServiceEndPoint, bool https)
     {
+      XtmWebserviceAccess xtmAccess = new XtmWebserviceAccess();
       XtmProject project = new XtmProject { Client = xtmClient, UserId = userId, Password = password };
       StringBuilder result = new StringBuilder();
       loginAPI login = xtmAccess.Login(project);
@@ -27,6 +25,7 @@ namespace LjungbergIt.Xtm.Webservice
       xtmJobFileMTOMResponseAPI[] jobs = downloadProject.project.jobs;
 
       List<byte[]> byteList = new List<byte[]>();
+      List<XtmJob> xtmJobList = new List<XtmJob>();
 
       if (jobs != null)
       {
@@ -34,12 +33,18 @@ namespace LjungbergIt.Xtm.Webservice
         {
           if (job.fileMTOM != null)
           {
+            XtmJob xtmJob = new XtmJob()
+            {
+              TargetLanguage = job.targetLanguage.ToString(),
+              TranslationFileInBytes = job.fileMTOM
+            };
+            xtmJobList.Add(xtmJob);
             byteList.Add(job.fileMTOM);
           }
         }
       }
 
-      return byteList;
+      return xtmJobList;
     }
 
 

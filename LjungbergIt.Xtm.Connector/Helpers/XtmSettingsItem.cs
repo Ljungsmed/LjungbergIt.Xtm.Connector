@@ -2,7 +2,7 @@
 using Sitecore.Data.Items;
 using Sitecore.Data.Fields;
 
-namespace LjungbergIt.Xtm.Connector.Helpers
+namespace LjungbergIt.Xtm.Connector.LanguageHandling
 {
   public class XtmSettingsItem
   {

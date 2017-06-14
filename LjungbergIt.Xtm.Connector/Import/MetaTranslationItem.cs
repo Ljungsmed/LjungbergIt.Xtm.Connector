@@ -17,8 +17,5 @@ namespace LjungbergIt.Xtm.Connector.Import
       public static readonly string VersionNumber = "{662F3E94-A750-4678-BD69-4C082DE836F7}";
       public static readonly string ImportedDate = "{1C617837-C15C-4FA2-8D1E-3C72E75AB399}";
     }
-    
-
-
   }
 }

@@ -1,4 +1,4 @@
-﻿using LjungbergIt.Xtm.Connector.Helpers;
+﻿using LjungbergIt.Xtm.Connector.LanguageHandling;
 using LjungbergIt.Xtm.Connector.Export;
 using LjungbergIt.Xtm.Webservice;
 using System;

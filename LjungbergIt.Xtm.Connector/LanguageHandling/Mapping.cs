@@ -1,4 +1,4 @@
-﻿using LjungbergIt.Xtm.Connector.Helpers;
+﻿using LjungbergIt.Xtm.Connector.LanguageHandling;
 using Sitecore.Collections;
 using Sitecore.Data.Items;
 using System;
@@ -84,6 +84,21 @@ namespace LjungbergIt.Xtm.Connector.LanguageHandling
       //}
 
       return xtmLanguageList;
+    }
+
+    public string XtmLanguageToSitecoreLanguage(string xtmLanguage)
+    {
+      LanguageMapping languageMapping = new LanguageMapping();
+      List<LanguageMapping> languageMappingList = languageMapping.LanguageMappingList();
+      string returnLanguage = xtmLanguage.Replace("_", "-");
+      foreach (LanguageMapping mapping in languageMappingList)
+      {
+        if (mapping.XtmLangName.Equals(xtmLanguage))
+        {
+          returnLanguage = mapping.LangName;
+        }
+      }
+      return returnLanguage;
     }
 
   }

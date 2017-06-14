@@ -1,4 +1,5 @@
-﻿using LjungbergIt.Xtm.Connector.Helpers;
+﻿using LjungbergIt.Xtm.Connector.LanguageHandling;
+using LjungbergIt.Xtm.Connector.LanguageHandling;
 using LjungbergIt.Xtm.Webservice;
 using Sitecore.Data;
 using Sitecore.Data.Items;
@@ -60,17 +61,33 @@ namespace LjungbergIt.Xtm.Connector.Import
       if (xtmProject.WorkflowStatus.Equals("FINISHED"))
       {
         XtmHandleTranslatedContent Xtm = new XtmHandleTranslatedContent();
-        List<byte[]> bytesList = Xtm.GetFileInBytes(projectId, client, userId, password, xtmWebserviceProperties.WebserviceEndpoint, xtmWebserviceProperties.IsHttps);
+        List<XtmJob> xtmJobList = Xtm.GetTranslatedJobs(projectId, client, userId, password, xtmWebserviceProperties.WebserviceEndpoint, xtmWebserviceProperties.IsHttps);
 
         try
         {
-          if (bytesList.Count != 0)
+          if (xtmJobList.Count != 0)
           {
-            List<XmlDocument> translatedXmlDocs = ConvertTranslatedBytesToXML(projectId, bytesList);
-            foreach (XmlDocument xmlDoc in translatedXmlDocs)
+            List<ImportProps> translatedXmlDocs = ConvertTranslatedBytesToXML(xtmJobList);
+            bool totalSuccess = true;
+            foreach (ImportProps xmlDoc in translatedXmlDocs)
             {
-              bool result = ReadFromXml(xmlDoc);
+              bool result = ReadFromXml(xmlDoc.TranslatedXmlDocument, xmlDoc.TargetLanguage);
               if (result)
+              {
+                //using (new SecurityDisabler())
+                //{
+                //  progressItem.Delete();
+                //}
+              }
+              else
+              {
+                totalSuccess = false;
+              }
+            }
+            success = true;
+            if (totalSuccess)
+            {
+              if (progressItem != null)
               {
                 using (new SecurityDisabler())
                 {
@@ -78,7 +95,10 @@ namespace LjungbergIt.Xtm.Connector.Import
                 }
               }
             }
-            success = true;
+            else
+            {
+              //TODO show which translated jobs that did not get imported
+            }
           }
           else
           {
@@ -95,20 +115,21 @@ namespace LjungbergIt.Xtm.Connector.Import
       return success;
     }
 
-    public List<XmlDocument> ConvertTranslatedBytesToXML(long projectId, List<byte[]> bytesList)
+    public List<ImportProps> ConvertTranslatedBytesToXML(List<XtmJob> xtmJobList)
     {
       List<XmlDocument> xmlDocuments = new List<XmlDocument>();
+      List<ImportProps> importPropsList = new List<ImportProps>();
       try
       {
         string filePath = System.Web.HttpContext.Current.Server.MapPath("~\\" + ScConstants.Misc.translationFolderName + "\\" + ScConstants.Misc.filesForImportFolderName + "\\");
         int count = 1;
 
-        foreach (byte[] bytes in bytesList)
+        foreach (XtmJob xtmJob in xtmJobList)
         {
           string zipFileName = filePath + "file" + count.ToString() + ".zip";
           string xmlFileName = filePath + "file" + count.ToString() + ".xml";
 
-          File.WriteAllBytes(zipFileName, bytes);
+          File.WriteAllBytes(zipFileName, xtmJob.TranslationFileInBytes);
           using (ZipArchive archive = ZipFile.OpenRead(zipFileName))
           {
             IReadOnlyCollection<ZipArchiveEntry> zipEntries = archive.Entries;
@@ -117,11 +138,21 @@ namespace LjungbergIt.Xtm.Connector.Import
               XmlDocument xmlDoc = new XmlDocument();
               entry.ExtractToFile(xmlFileName, true);
               xmlDoc.Load(xmlFileName);
-              xmlDocuments.Add(xmlDoc);
+              ImportProps importProps = new ImportProps()
+              {
+                TranslatedXmlDocument = xmlDoc,
+                TargetLanguage = xtmJob.TargetLanguage
+              };
+              //xmlDocuments.Add(xmlDoc);
+              importPropsList.Add(importProps);
             }
           }
-          File.Delete(zipFileName);
-          File.Delete(xmlFileName);
+          XtmSettingsItem xtmSettingsItem = new XtmSettingsItem();
+          if (!xtmSettingsItem.IsInDebugMode)
+          {
+            File.Delete(zipFileName);
+            File.Delete(xmlFileName);
+          }          
           count++;
         }
       }
@@ -130,10 +161,10 @@ namespace LjungbergIt.Xtm.Connector.Import
         scLogging.WriteError(e.Message);
       }
       
-      return xmlDocuments;
+      return importPropsList;
     }
 
-    public bool ReadFromXml(XmlDocument xmlDocument)
+    public bool ReadFromXml(XmlDocument xmlDocument, string targetLanguage)
     {
       ScLogging scLogging = new ScLogging();
       try
@@ -148,7 +179,7 @@ namespace LjungbergIt.Xtm.Connector.Import
           {
             if (node.Name.Equals(ScConstants.XmlNodes.XmlRootElement))
             {
-              Item translatedItem = CreateNewTranslatedVersion(node);
+              Item translatedItem = CreateNewTranslatedVersion(node, targetLanguage);
             }
           }
           else
@@ -163,25 +194,22 @@ namespace LjungbergIt.Xtm.Connector.Import
         return true;
       }
       catch (Exception ex)
-      {
-        
+      {        
         scLogging.WriteError(ex.Message);
         return false;
       }
     }
 
-    private Item CreateNewTranslatedVersion(XmlNode node)
+    private Item CreateNewTranslatedVersion(XmlNode node, string targetLanguage)
     {
       string sitecoreItemId = node.Attributes[ScConstants.XmlNodes.XmlAttributeId].Value;
-      string language = node.Attributes[ScConstants.XmlNodes.XmlAttributeLanguage].Value;
       string sourceLanguage = node.Attributes[ScConstants.XmlNodes.XmlAttributeSourceLanguage].Value;
       string addedBy = node.Attributes[ScConstants.XmlNodes.XmlAttributeAddedBy].Value;
+      
+      Mapping mapping = new Mapping();
+      targetLanguage = mapping.XtmLanguageToSitecoreLanguage(targetLanguage);
 
-      language = TransformLangauge(language);
-
-      language = language.Replace("_", "-");
-
-      Language SitecoreLanguage = Language.Parse(language);
+      Language SitecoreLanguage = Language.Parse(targetLanguage);
 
       Item translationItem = ScConstants.SitecoreDatabases.MasterDb.GetItem(sitecoreItemId, SitecoreLanguage);
       Item newVersion;
@@ -222,19 +250,19 @@ namespace LjungbergIt.Xtm.Connector.Import
       return (translationItem);
     }
 
-    private string TransformLangauge(string languageToTransform)
-    {
-      Item languageMappingFolder = masterDb.GetItem(ScConstants.SitecoreIDs.XtmSettingsLanguageMappingFolder);
+    //private string TransformLangauge(string languageToTransform)
+    //{
+    //  Item languageMappingFolder = masterDb.GetItem(ScConstants.SitecoreIDs.XtmSettingsLanguageMappingFolder);
 
-      foreach (Item langMapping in languageMappingFolder.GetChildren())
-      {
-        string xtmLang = ScConstants.SitecoreDatabases.MasterDb.GetItem(langMapping[ScConstants.SitecoreFieldIds.XtmLanguageName]).Name;
-        if (xtmLang.Equals(languageToTransform))
-        {
-          languageToTransform = langMapping[ScConstants.SitecoreFieldIds.SitecoreLanguageName];
-        }
-      }
-      return languageToTransform;
-    }
+    //  foreach (Item langMapping in languageMappingFolder.GetChildren())
+    //  {
+    //    string xtmLang = ScConstants.SitecoreDatabases.MasterDb.GetItem(langMapping[ScConstants.SitecoreFieldIds.XtmLanguageName]).Name;
+    //    if (xtmLang.Equals(languageToTransform))
+    //    {
+    //      languageToTransform = langMapping[ScConstants.SitecoreFieldIds.SitecoreLanguageName];
+    //    }
+    //  }
+    //  return languageToTransform;
+    //}
   }
 }

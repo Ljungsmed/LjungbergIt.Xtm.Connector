@@ -1,7 +1,7 @@
 ﻿using Sitecore.Data.Items;
 
 
-namespace LjungbergIt.Xtm.Connector.Helpers
+namespace LjungbergIt.Xtm.Connector.LanguageHandling
 {
    public class LoginProperties
     {
@@ -42,15 +42,5 @@ namespace LjungbergIt.Xtm.Connector.Helpers
                 return scCustomer = long.Parse(settingsItem[ScConstants.SitecoreFieldIds.XtmSettingsCustomer]);
             }
         }
-
-        //string scIntegrationKey;
-        //public string ScIntegrationKey
-        //{
-        //    get
-        //    {
-        //        return scIntegrationKey = settingsItem[ScConstants.XtmSettingsTemplate.IntegrationKey];
-        //    }
-        //}
-
     }
 }

@@ -9,6 +9,7 @@ namespace LjungbergIt.Xtm.Webservice
   {
     public long ProjectId { get; set; }
     public string ProjectName { get; set; }
+    //public string ProjectDescription { get; set; }
     public long Customer { get; set; }
     public string SourceLanguage { get; set; }
     public string TargetLanguage { get; set; }

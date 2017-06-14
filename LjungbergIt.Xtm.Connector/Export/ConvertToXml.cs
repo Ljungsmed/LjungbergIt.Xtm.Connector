@@ -1,5 +1,5 @@
 ﻿using LjungbergIt.Xtm.Connector.AddForTranslation;
-using LjungbergIt.Xtm.Connector.Helpers;
+using LjungbergIt.Xtm.Connector.LanguageHandling;
 using LjungbergIt.Xtm.Connector.LanguageHandling;
 using LjungbergIt.Xtm.Webservice;
 using Sitecore.Collections;
@@ -132,12 +132,12 @@ namespace LjungbergIt.Xtm.Connector.Export
             //Set the project name according to number of pages/items in the translation job
             StringBuilder projectName = new StringBuilder(masterDb.GetItem(ScConstants.SitecoreIDs.XtmSettingsItem)[ScConstants.XtmSettingsTemplate.ProjectNamePrefix]);
             projectName.Append(" ");
-            projectName.Append(queuedItemsFolder[ScConstants.XtmQueueProjectTemplateFolder.XTMProjectName]);
-            if (count != 1)
+            projectName.Append(translationProjectItem[ScConstants.XtmQueueProjectTemplateFolder.XTMProjectName]);
+            if (count != 0)
             {
               projectName.Append(" (with a total of ");
-              projectName.Append((count - 1).ToString());
-              if (count == 2)
+              projectName.Append((count).ToString());
+              if (count == 1)
               {
                 projectName.Append(" page)");
               }

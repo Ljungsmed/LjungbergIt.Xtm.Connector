@@ -1,6 +1,6 @@
 ﻿using LjungbergIt.Xtm.Connector.Commands;
 using LjungbergIt.Xtm.Connector.Export;
-using LjungbergIt.Xtm.Connector.Helpers;
+using LjungbergIt.Xtm.Connector.LanguageHandling;
 using Sitecore.Jobs;
 using Sitecore.Shell.Framework.Commands;
 using Sitecore.Web.UI.Sheer;

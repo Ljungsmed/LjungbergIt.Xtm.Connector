@@ -1,6 +1,6 @@
 ﻿
 using LjungbergIt.Xtm.Connector.Export;
-using LjungbergIt.Xtm.Connector.Helpers;
+using LjungbergIt.Xtm.Connector.LanguageHandling;
 using Sitecore.Data;
 using Sitecore.Data.Fields;
 using Sitecore.Data.Items;
