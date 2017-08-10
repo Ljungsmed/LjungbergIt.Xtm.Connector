@@ -64,15 +64,18 @@ namespace LjungbergIt.Xtm.Connector.Export
     private void SetNewAttributeValue(HtmlNode rootNode, string xPath, string attributeName, string preFixValue)
     {
       HtmlNodeCollection linkNodes = rootNode.SelectNodes(xPath);
-      foreach (HtmlNode node in linkNodes)
+      if (linkNodes != null)
       {
-        bool AttributeFound = node.GetAttributeValue(attributeName, false);
-        //TODO check if attr. exists
-        string href = node.GetAttributeValue(attributeName, "");
-        if (!href.Contains("http"))
+        foreach (HtmlNode node in linkNodes)
         {
-          node.SetAttributeValue(attributeName, preFixValue + href);
-        }        
+          bool AttributeFound = node.GetAttributeValue(attributeName, false);
+          //TODO check if attr. exists
+          string href = node.GetAttributeValue(attributeName, "");
+          if (!href.Contains("http"))
+          {
+            node.SetAttributeValue(attributeName, preFixValue + href);
+          }
+        }
       }      
     }
   }

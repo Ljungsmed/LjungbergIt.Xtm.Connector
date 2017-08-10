@@ -10,7 +10,7 @@ namespace LjungbergIt.Xtm.Webservice
   public class XtmCreateProject
   {
     public List<string> Create(List<XtmTranslationFile> translationFiles, string fileName, string sourceLanguage, List<string> translationLanguages, string xtmTemplate, string xtmClient, long userId, string password, long customer, string webServiceEndPoint, bool https, string callbackUrl)
-    {
+    { 
       List<string> resultList = new List<string>();
       bool success = false;
       StringBuilder info = new StringBuilder();
@@ -123,7 +123,7 @@ namespace LjungbergIt.Xtm.Webservice
 
                 //archive.CreateEntryFromFile(translationFile.HtmlFilePath, translationFile.FileName + ".html");
 
-                File.Delete(translationFile.HtmlFilePath);
+                //File.Delete(translationFile.HtmlFilePath);
               }
             //}
           }

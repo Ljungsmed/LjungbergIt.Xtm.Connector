@@ -142,6 +142,7 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
       {
         //Get the item that needs to be added for translation
         Item contextItem = masterDb.GetItem(Request.QueryString["id"]);
+        labelErrorMessage.Text = "test" + contextItem.Name;
         //Create an item list of items to translate, if sub items needs to be added there will be more than one item
         ItemList ItemsToTranslate = new ItemList();
         //Check if item has the XtmBaseTemplate. If not the item is not added for translation
