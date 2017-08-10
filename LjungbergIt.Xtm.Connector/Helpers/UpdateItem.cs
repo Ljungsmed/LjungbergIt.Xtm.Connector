@@ -4,7 +4,7 @@ using Sitecore.SecurityModel;
 using System.Collections.Generic;
 
 
-namespace LjungbergIt.Xtm.Connector.LanguageHandling
+namespace LjungbergIt.Xtm.Connector.Helpers
 {
   public class UpdateItem
   {
@@ -35,29 +35,29 @@ namespace LjungbergIt.Xtm.Connector.LanguageHandling
       return true;
     }
 
-
-    //TODO change return type to the item that gets created
-    public bool CreateItem(string itemName, Item parentItem, TemplateID templateId, List<UpdateItem> updateProps)
+    public Item CreateItem(string itemName, Item parentItem, TemplateID templateId, List<UpdateItem> updateProps)
     {
       Sitecore.Diagnostics.Log.Info("XTMConnector: Trying to add item with name: " + itemName, this);
+      Item createdItem = null;
       using (new SecurityDisabler())
       {
-        Item createdItem = parentItem.Add(itemName, templateId);
+        createdItem = parentItem.Add(itemName, templateId);
         if (createdItem != null)
         {
           Update(createdItem, updateProps);
         }
       }
-      return true;
+      return createdItem;
     }
 
-    public string CheckItemName(string itemName)
-    {
-      itemName.Replace("{", "");
-      itemName.Replace("}", "");
+    //TODO Remove?
+    //public string CheckItemName(string itemName)
+    //{
+    //  itemName.Replace("{", "");
+    //  itemName.Replace("}", "");
 
-      return itemName;
-    }
+    //  return itemName;
+    //}
   }
 
 

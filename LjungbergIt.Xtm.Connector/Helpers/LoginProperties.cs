@@ -1,7 +1,7 @@
 ﻿using Sitecore.Data.Items;
 
 
-namespace LjungbergIt.Xtm.Connector.LanguageHandling
+namespace LjungbergIt.Xtm.Connector.Helpers
 {
    public class LoginProperties
     {

@@ -1,6 +1,6 @@
 ﻿using Sitecore.Diagnostics;
 
-namespace LjungbergIt.Xtm.Connector.LanguageHandling
+namespace LjungbergIt.Xtm.Connector.Helpers
 {
     class ScLogging
     {

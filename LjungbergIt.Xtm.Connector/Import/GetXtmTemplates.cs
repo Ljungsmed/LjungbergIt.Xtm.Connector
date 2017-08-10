@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using LjungbergIt.Xtm.Webservice;
-using LjungbergIt.Xtm.Connector.LanguageHandling;
+using LjungbergIt.Xtm.Connector.Helpers;
 using Sitecore.Data.Items;
 using Sitecore.Data;
 using Sitecore.Collections;

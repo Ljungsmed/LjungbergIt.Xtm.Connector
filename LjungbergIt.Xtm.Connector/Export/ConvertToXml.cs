@@ -1,6 +1,6 @@
 ﻿using LjungbergIt.Xtm.Connector.AddForTranslation;
-using LjungbergIt.Xtm.Connector.LanguageHandling;
-using LjungbergIt.Xtm.Connector.LanguageHandling;
+using LjungbergIt.Xtm.Connector.Helpers;
+using LjungbergIt.Xtm.Connector.Helpers;
 using LjungbergIt.Xtm.Webservice;
 using Sitecore.Collections;
 using Sitecore.Data;

@@ -1,5 +1,5 @@
-﻿using LjungbergIt.Xtm.Connector.LanguageHandling;
-using LjungbergIt.Xtm.Connector.LanguageHandling;
+﻿using LjungbergIt.Xtm.Connector.Helpers;
+using LjungbergIt.Xtm.Connector.Helpers;
 using LjungbergIt.Xtm.Webservice;
 using Sitecore.Data;
 using Sitecore.Data.Items;
@@ -62,7 +62,7 @@ namespace LjungbergIt.Xtm.Connector.Import
       {
         XtmHandleTranslatedContent Xtm = new XtmHandleTranslatedContent();
         List<XtmJob> xtmJobList = Xtm.GetTranslatedJobs(projectId, client, userId, password, xtmWebserviceProperties.WebserviceEndpoint, xtmWebserviceProperties.IsHttps);
-
+        
         try
         {
           if (xtmJobList.Count != 0)
@@ -71,13 +71,10 @@ namespace LjungbergIt.Xtm.Connector.Import
             bool totalSuccess = true;
             foreach (ImportProps xmlDoc in translatedXmlDocs)
             {
-              bool result = ReadFromXml(xmlDoc.TranslatedXmlDocument, xmlDoc.TargetLanguage);
+              bool result = ReadFromXml(xmlDoc.TranslatedXmlDocument, xmlDoc.TargetLanguage, xtmProject.SourceLanguage, projectId.ToString());
               if (result)
               {
-                //using (new SecurityDisabler())
-                //{
-                //  progressItem.Delete();
-                //}
+                
               }
               else
               {
@@ -164,7 +161,7 @@ namespace LjungbergIt.Xtm.Connector.Import
       return importPropsList;
     }
 
-    public bool ReadFromXml(XmlDocument xmlDocument, string targetLanguage)
+    public bool ReadFromXml(XmlDocument xmlDocument, string targetLanguage, string sourceLanguage, string xtmProjectId)
     {
       ScLogging scLogging = new ScLogging();
       try
@@ -180,6 +177,10 @@ namespace LjungbergIt.Xtm.Connector.Import
             if (node.Name.Equals(ScConstants.XmlNodes.XmlRootElement))
             {
               Item translatedItem = CreateNewTranslatedVersion(node, targetLanguage);
+
+              //Create metatranslationitem + version
+              MetaTranslationVersion metaTranslationVersion = new MetaTranslationVersion();
+              metaTranslationVersion.CreateMetaTranslationVersion(translatedItem, sourceLanguage, xtmProjectId);
             }
           }
           else

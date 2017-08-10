@@ -1,6 +1,6 @@
 ﻿using LjungbergIt.Xtm.Connector.AddForTranslation;
 using LjungbergIt.Xtm.Connector.Export;
-using LjungbergIt.Xtm.Connector.LanguageHandling;
+using LjungbergIt.Xtm.Connector.Helpers;
 using Sitecore.Collections;
 using Sitecore.Data;
 using Sitecore.Data.Items;
@@ -11,7 +11,6 @@ using System.Collections.Generic;
 using System.Text;
 using System.Web.UI.WebControls;
 using System.Linq;
-using LjungbergIt.Xtm.Connector.LanguageHandling;
 
 namespace LjungbergIt.Xtm.Connector.XtmFiles
 {

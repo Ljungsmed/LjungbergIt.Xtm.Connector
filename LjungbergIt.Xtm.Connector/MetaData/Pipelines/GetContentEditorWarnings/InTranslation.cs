@@ -1,5 +1,5 @@
 ﻿using LjungbergIt.Xtm.Connector.Export;
-using LjungbergIt.Xtm.Connector.LanguageHandling;
+using LjungbergIt.Xtm.Connector.Helpers;
 using Sitecore.Data.Items;
 using Sitecore.Pipelines.GetContentEditorWarnings;
 using System;

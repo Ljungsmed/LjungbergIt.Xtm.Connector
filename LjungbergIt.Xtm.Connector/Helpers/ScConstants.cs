@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LjungbergIt.Xtm.Connector.LanguageHandling
+namespace LjungbergIt.Xtm.Connector.Helpers
 {
   class ScConstants
   {
@@ -19,6 +19,7 @@ namespace LjungbergIt.Xtm.Connector.LanguageHandling
       public static readonly string XtmSettingsLanguageMappingFolder = "{7D96664A-4CB2-4847-9C41-479DF9AD43F5}";
       public static readonly string XtmSettingsLanguageFolder = "{D3B57D66-1FE4-43C6-8EC5-2D93A21E0471}";
       public static readonly string XtmSettingsDocumentationFolder = "{ECC6B7F8-69C6-4CE6-857A-BABDD68D2FC0}";
+      public static readonly string TranslationDataFolder = "{DF5AC8B4-9C6A-42EA-9E39-3D6C71C0C5EA}";
     }
 
     public struct SitecoreWorkflowIDs

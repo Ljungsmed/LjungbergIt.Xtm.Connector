@@ -1,4 +1,4 @@
-﻿using LjungbergIt.Xtm.Connector.LanguageHandling;
+﻿using LjungbergIt.Xtm.Connector.Helpers;
 using Sitecore.Collections;
 using Sitecore.Data.Items;
 using System;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Web;
 
-namespace LjungbergIt.Xtm.Connector.LanguageHandling
+namespace LjungbergIt.Xtm.Connector.Helpers
 {
   public class Mapping
   {

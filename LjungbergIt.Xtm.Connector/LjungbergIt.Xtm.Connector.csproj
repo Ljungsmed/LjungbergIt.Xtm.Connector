@@ -160,6 +160,7 @@
     <Compile Include="Helpers\ReturnMessage.cs" />
     <Compile Include="Helpers\ScQueueItem.cs" />
     <Compile Include="Import\ImportProps.cs" />
+    <Compile Include="Import\MetaTranslationItem.cs" />
     <Compile Include="LanguageHandling\LanguageMapping.cs" />
     <Compile Include="Helpers\LoginProperties.cs" />
     <Compile Include="Helpers\ScConstants.cs" />
@@ -171,7 +172,7 @@
     <Compile Include="Helpers\XtmWebserviceProperties.cs" />
     <Compile Include="Import\GetXtmTemplates.cs" />
     <Compile Include="Import\ImportFromXml.cs" />
-    <Compile Include="Import\MetaTranslationItem.cs" />
+    <Compile Include="Import\MetaTranslationVersion.cs" />
     <Compile Include="Import\ValidateXml.cs" />
     <Compile Include="Import\XtmLanguages.cs" />
     <Compile Include="LanguageHandling\LanguageProps.cs" />

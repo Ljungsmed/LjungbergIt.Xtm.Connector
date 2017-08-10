@@ -2,7 +2,7 @@
 using Sitecore.SecurityModel;
 using System.Collections.Generic;
 
-namespace LjungbergIt.Xtm.Connector.LanguageHandling
+namespace LjungbergIt.Xtm.Connector.Helpers
 {
   //TODO Move to LanguageHandling
 
