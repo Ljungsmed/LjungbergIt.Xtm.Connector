@@ -127,14 +127,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Global.asax" />
-    <Content Include="ReferencedAssemblies\Sitecore.Client.dll" />
-    <Content Include="ReferencedAssemblies\Sitecore.Kernel.dll" />
     <Content Include="TestSecurity.aspx" />
     <Content Include="Test\test.aspx" />
-    <Content Include="Web.config">
-      <SubType>Designer</SubType>
-    </Content>
     <Content Include="XtmFiles\AddItemForTranslation.aspx" />
     <Content Include="XtmFiles\TranslationDetailedView.aspx" />
     <Content Include="XtmFiles\ViewDocumentation.aspx" />
@@ -162,9 +156,6 @@
     <Compile Include="Export\Project.cs" />
     <Compile Include="Export\StartTranslation.cs" />
     <Compile Include="Export\XtmBaseTemplate.cs" />
-    <Compile Include="Global.asax.cs">
-      <DependentUpon>Global.asax</DependentUpon>
-    </Compile>
     <Compile Include="Helpers\Label.cs" />
     <Compile Include="Helpers\ReturnMessage.cs" />
     <Compile Include="Helpers\ScQueueItem.cs" />
@@ -247,12 +238,7 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="App_Config\Include\LjungbergIt.Xtm.ScWarnings.config" />
-    <None Include="Web.Debug.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </None>
-    <None Include="Web.Release.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </None>
+    <None Include="Properties\PublishProfiles\XtmConnector.pubxml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -294,11 +280,8 @@
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
   </Target>
   <PropertyGroup>
-    <PostBuildEvent>xcopy "$(ProjectDir)\bin\$(TargetFileName)" "C:\inetpub\wwwroot\Sitecore81Update1\Website\bin" /Y /I /D
-xcopy "$(ProjectDir)\App_Config" "C:\inetpub\wwwroot\Sitecore81Update1\Website\App_Config" /Y /I /S /D
-xcopy "$(ProjectDir)\Test" "C:\inetpub\wwwroot\Sitecore81Update1\Website\Test" /Y /I /S /D
-xcopy "$(ProjectDir)\XtmFiles" "C:\inetpub\wwwroot\Sitecore81Update1\Website\XtmFiles" /Y /I /S /D
-</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
