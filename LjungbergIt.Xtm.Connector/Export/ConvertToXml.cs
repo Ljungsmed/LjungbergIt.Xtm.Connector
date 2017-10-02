@@ -141,7 +141,7 @@ namespace LjungbergIt.Xtm.Connector.Export
                   {
                     AddElement(xw, relatedItem, translationProperties.SourceLanguage);
                     updateItem.Update(masterDb.GetItem(relatedItem.ID), updateList);
-                  }                  
+                  }
                 }
 
                 xw.WriteEndElement();
@@ -196,17 +196,17 @@ namespace LjungbergIt.Xtm.Connector.Export
 
             if (returnMessage.Success)
             {
-            //  //TODO use below instead when CreateItem is changed to return the item
-            UpdateItem updateItem = new UpdateItem();
+              //  //TODO use below instead when CreateItem is changed to return the item
+              UpdateItem updateItem = new UpdateItem();
               updateItem.DeleteItem(translationProjectItem);
-            //  //updateItem.CreateItem(DateTime.Now.ToString("yyyyMMdd-HHmmss"), masterDb.GetItem(ScConstants.SitecoreIDs.TranslationQueueArchiveFolder), ScConstants.SitecoreTemplates.TranslationQueueLanguageFolderTemplate, )
-            //  using (new SecurityDisabler())
-            //  {
-            //    Item archiveFolder = masterDb.GetItem(ScConstants.SitecoreIDs.TranslationQueueArchiveFolder);
-            //    string itemName = DateTime.Now.ToString("yyyyMMdd-HHmmss");
-            //    Item newArchive = archiveFolder.Add(itemName, ScConstants.SitecoreTemplates.TranslationQueueLanguageFolderTemplate);
-            //    translationProjectItem.MoveTo(newArchive);
-            //  }
+              //  //updateItem.CreateItem(DateTime.Now.ToString("yyyyMMdd-HHmmss"), masterDb.GetItem(ScConstants.SitecoreIDs.TranslationQueueArchiveFolder), ScConstants.SitecoreTemplates.TranslationQueueLanguageFolderTemplate, )
+              //  using (new SecurityDisabler())
+              //  {
+              //    Item archiveFolder = masterDb.GetItem(ScConstants.SitecoreIDs.TranslationQueueArchiveFolder);
+              //    string itemName = DateTime.Now.ToString("yyyyMMdd-HHmmss");
+              //    Item newArchive = archiveFolder.Add(itemName, ScConstants.SitecoreTemplates.TranslationQueueLanguageFolderTemplate);
+              //    translationProjectItem.MoveTo(newArchive);
+              //  }
             }
           }
           else
@@ -241,14 +241,14 @@ namespace LjungbergIt.Xtm.Connector.Export
       return queuedItemList;
     }
 
-    private void ArchiveItem(Item itemToArchive)
-    {
-      Item archiveFolder = masterDb.GetItem(ScConstants.SitecoreIDs.TranslationQueueArchiveFolder);
-      using (new SecurityDisabler())
-      {
-        itemToArchive.MoveTo(archiveFolder);
-      }
-    }
+    //private void ArchiveItem(Item itemToArchive)
+    //{
+    //  Item archiveFolder = masterDb.GetItem(ScConstants.SitecoreIDs.TranslationQueueArchiveFolder);
+    //  using (new SecurityDisabler())
+    //  {
+    //    itemToArchive.MoveTo(archiveFolder);
+    //  }
+    //}
 
     private XmlWriter AddElement(XmlWriter xw, Item ItemToAdd, string language)
     {
@@ -280,38 +280,69 @@ namespace LjungbergIt.Xtm.Connector.Export
           //if the field is shared, it should not be translated
           if (!field.Shared)
           {
-            //private static Regex _invalidXMLChars = new Regex(
-            //@"(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|[\x00-\x08\x0B\x0C\x0E-\x1F\x7F-\x9F\uFEFF\uFFFE\uFFFF]",
-            //RegexOptions.Compiled);
-            //XmlConvert.IsXmlChar
+            //Check if field should be excluded based on the Excluded Fields on the Settings item
 
-            //Check id field should be excluded based on the Excluded Fieds on the Settings item
             if (!excludeFields.ExcludeFieldIds.Contains(field.ID.ToString()))
             {
-
-
-              string fieldValue = string.Empty;
-              bool fieldValueOk = true;
-              try
+              bool isDateField = FieldTypeManager.GetField(field) is DateField;
+              if (!isDateField)
               {
-                fieldValue = XmlConvert.VerifyXmlChars(field.Value);
-              }
-              catch (XmlException e)
-              {
-                fieldValueOk = false;
-                string error = e.Message;
-                ExportInfo exportInfo = new ExportInfo();
-                exportInfo.UpdateValueField(error, ItemToTranslate.ID.ToString(), field.Name, false);
-                //string statusFieldValue = exportInfo.StatusField.Value;
-              }
 
-              if (fieldValueOk)
-              {
-                xw.WriteStartElement(ScConstants.XmlNodes.XmlElementField);
-                xw.WriteAttributeString(ScConstants.XmlNodes.XmlAttributeFieldName, field.Name);
-                xw.WriteAttributeString(ScConstants.XmlNodes.XmlAttributeFieldType, field.Type);
-                xw.WriteString(field.Value);
-                xw.WriteEndElement();
+                string fieldValue = string.Empty;
+                bool fieldValueOk = true;
+                try
+                {
+                  fieldValue = XmlConvert.VerifyXmlChars(field.Value);
+                }
+                catch (XmlException e)
+                {
+                  fieldValueOk = false;
+                  string error = e.Message;
+                  ExportInfo exportInfo = new ExportInfo();
+                  exportInfo.UpdateValueField(error, ItemToTranslate.ID.ToString(), field.Name, false);
+                  //string statusFieldValue = exportInfo.StatusField.Value;
+                }
+
+                if (fieldValueOk)
+                {
+                  bool isImageField = FieldTypeManager.GetField(field) is ImageField;
+                  bool isDefaultAltText = false;
+                  string altText = string.Empty;
+
+                  if (isImageField)
+                  {
+                    ImageField imageField = new ImageField(field);
+                    Item mediaItem = imageField.MediaItem;
+                    altText = imageField.Alt;
+                    string defaultAltText = mediaItem["alt"];
+                    if (altText.Equals(defaultAltText))
+                    {
+                      isDefaultAltText = true;
+                    }
+                  }
+
+                  if (!isImageField || altText != string.Empty)
+                  {
+                    xw.WriteStartElement(ScConstants.XmlNodes.XmlElementField);
+                    xw.WriteAttributeString(ScConstants.XmlNodes.XmlAttributeFieldName, field.Name);
+                    xw.WriteAttributeString(ScConstants.XmlNodes.XmlAttributeFieldType, field.Type);
+
+                    //If the field is an image, an extra attribute is added to the XML indicating if the alt text is from the default value of the image item or the image instance itself
+                    if (isImageField)
+                    {
+                      if (isDefaultAltText)
+                      {
+                        xw.WriteAttributeString(ScConstants.XmlNodes.XmlAttributeDefaultValue, bool.TrueString);
+                      }
+                      xw.WriteString(altText);
+                    }
+                    else
+                    {
+                      xw.WriteString(field.Value);
+                    }
+                    xw.WriteEndElement();
+                  }
+                }
               }
             }
             else

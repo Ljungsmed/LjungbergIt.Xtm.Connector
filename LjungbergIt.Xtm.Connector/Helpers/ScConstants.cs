@@ -162,6 +162,7 @@ namespace LjungbergIt.Xtm.Connector.Helpers
       public static readonly string XmlAttributeSourceLanguage = "sourcelangauge";
       public static readonly string XmlAttributeFieldName = "fieldName";
       public static readonly string XmlAttributeFieldType = "fieldType";
+      public static readonly string XmlAttributeDefaultValue = "defaultValue";
       public static readonly string XmlAttributeAddedBy = "addedBy";
 
     }
