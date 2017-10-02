@@ -1,4 +1,4 @@
-﻿using LjungbergIt.Xtm.Connector.AddForTranslation;
+﻿using LjungbergIt.Xtm.Connector.Export;
 using LjungbergIt.Xtm.Connector.Helpers;
 using LjungbergIt.Xtm.Webservice;
 using System.Collections.Generic;

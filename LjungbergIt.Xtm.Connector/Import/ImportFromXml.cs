@@ -1,5 +1,5 @@
 ﻿using LjungbergIt.Xtm.Connector.Helpers;
-using LjungbergIt.Xtm.Connector.Helpers;
+
 using LjungbergIt.Xtm.Webservice;
 using Sitecore.Data;
 using Sitecore.Data.Items;
@@ -220,12 +220,14 @@ namespace LjungbergIt.Xtm.Connector.Import
         newVersion = translationItem.Versions.AddVersion();
       }
 
+      XtmSettingsItem xtmSettings = new XtmSettingsItem();
+
       List<UpdateItem> fieldObjects = new List<UpdateItem>();
 
       string dateNow = DateTime.Now.ToString("yyyyMMddTHHmmssZ");
 
-      fieldObjects.Add(new UpdateItem { FieldIdOrName = ScConstants.SitecoreStandardFieldNames.Workflow, FieldValue = ScConstants.SitecoreWorkflowIDs.XtmWorkflow });
-      fieldObjects.Add(new UpdateItem { FieldIdOrName = ScConstants.SitecoreStandardFieldNames.WorkflowState, FieldValue = ScConstants.SitecoreWorkflowIDs.XtmWorkflowStateAwaiting });
+      fieldObjects.Add(new UpdateItem { FieldIdOrName = ScConstants.SitecoreStandardFieldNames.Workflow, FieldValue = xtmSettings.WorkflowId });
+      fieldObjects.Add(new UpdateItem { FieldIdOrName = ScConstants.SitecoreStandardFieldNames.WorkflowState, FieldValue = xtmSettings.InitialWorfklowStateId });
       fieldObjects.Add(new UpdateItem { FieldIdOrName = ScConstants.SitecoreXtmTemplateFieldIDs.Translated, FieldValue = "1" });
       fieldObjects.Add(new UpdateItem { FieldIdOrName = ScConstants.SitecoreXtmTemplateFieldIDs.TranslatedDate, FieldValue = DateTime.Now.ToString("yyyyMMddTHHmmss") });
       fieldObjects.Add(new UpdateItem { FieldIdOrName = ScConstants.SitecoreXtmTemplateFieldIDs.TranslatedFrom, FieldValue = sourceLanguage });

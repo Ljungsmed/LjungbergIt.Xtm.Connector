@@ -1,0 +1,80 @@
+----item----
+version: 1
+id: {50E6A2CE-82CE-4E2C-A0F9-F1A5812EBF18}
+database: master
+path: /sitecore/templates/XTM/XtmSettings/__Standard Values
+parent: {5B754969-4EA5-4108-9E65-9AD0950AB8B7}
+name: __Standard Values
+master: {00000000-0000-0000-0000-000000000000}
+template: {5B754969-4EA5-4108-9E65-9AD0950AB8B7}
+templatekey: XtmSettings
+created: 20160302T090657Z
+
+----field----
+field: {1172F251-DAD4-4EFB-A329-0C63500E4F1E}
+name: __Masters
+key: __masters
+content-length: 38
+
+{6F794F68-438D-4942-9EF2-4AAC5C965599}
+----version----
+language: en
+version: 1
+revision: b0e349e0-1e73-4fbf-a729-f2ef7f7e752c
+
+----field----
+field: {5FD31C49-7C69-406E-B221-12D3E2E9D74E}
+name: DefaultMasterLanguage
+key: defaultmasterlanguage
+content-length: 38
+
+{AF584191-45C9-4201-8740-5409F4CF8BDD}
+----field----
+field: {230BD66E-EB4A-471A-BC7A-936354E18C11}
+name: ProjectNamePrefix
+key: projectnameprefix
+content-length: 12
+
+FromSitecore
+----field----
+field: {52807595-0F8F-4B20-8D2A-CB71D28C6103}
+name: __Owner
+key: __owner
+content-length: 14
+
+sitecore\admin
+----field----
+field: {25BED78C-4957-4165-998A-CA1B52F67497}
+name: __Created
+key: __created
+content-length: 16
+
+20160302T090657Z
+----field----
+field: {5DD74568-4D4B-44C1-B513-0AF5F4CDA34F}
+name: __Created by
+key: __created by
+content-length: 14
+
+sitecore\admin
+----field----
+field: {8CDC337E-A112-42FB-BBB4-4143751E123F}
+name: __Revision
+key: __revision
+content-length: 36
+
+b0e349e0-1e73-4fbf-a729-f2ef7f7e752c
+----field----
+field: {D9CF14B1-FA16-4BA6-9288-E8A174D4D522}
+name: __Updated
+key: __updated
+content-length: 16
+
+20170420T174150Z
+----field----
+field: {BADD9CF9-53E0-4D0C-BCC0-2D784C282F6A}
+name: __Updated by
+key: __updated by
+content-length: 14
+
+sitecore\admin

@@ -24,9 +24,10 @@ h1 {
 h2 {
     color: #474747;
     font-weight: normal;
-    font-size: 18px;
+    font-size: 20px;
     margin:0;
     padding:0;
+    font-weight: bold;
 }
 
 th, td {
@@ -116,4 +117,14 @@ th, td {
 
 .errordiv {
 
+}
+
+.infoarea {
+    min-height: 30px;
+}
+
+/*Styling for the "Include Subitems" list when adding items for translation*/
+.addsubitemstd td {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
 }

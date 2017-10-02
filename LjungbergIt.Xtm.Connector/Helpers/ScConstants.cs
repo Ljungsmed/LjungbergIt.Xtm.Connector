@@ -68,7 +68,7 @@ namespace LjungbergIt.Xtm.Connector.Helpers
     {
       //public static readonly string MainTitle = "main title";
       //public static readonly string TranslationQueueItem_ItemId = "ItemId";
-      public static readonly string TranslationQueueItem_MasterLanguage = "{0E5B813D-C8AD-4C8B-80A8-5F85E2F981CA}";
+      //public static readonly string TranslationQueueItem_MasterLanguage = "{0E5B813D-C8AD-4C8B-80A8-5F85E2F981CA}";
       public static readonly string TranslationQueueItem_TranslateTo = "TranslateTo";
       public static readonly string TranslationQueueItem_Version = "Version";
       public static readonly string Settings_MasterLanguage = "DefaultMasterLanguage";
@@ -97,7 +97,7 @@ namespace LjungbergIt.Xtm.Connector.Helpers
       public static readonly string XtmTemplateId = "{D2B211E6-414F-48FB-836E-67A8A97B5B3C}";
       public static readonly string SitecoreLanguageName = "{471FDD58-5685-4BD4-934C-D82D6D37FDF8}";
       public static readonly string XtmLanguageName = "{C300CF84-9D5F-4E5C-9EFD-82812B15713F}";
-      public static readonly string TranslationQueueItem_AddedBy = "{5676881D-A27B-4536-8C53-A7C90E76AC26}";
+      //public static readonly string TranslationQueueItem_AddedBy = "{5676881D-A27B-4536-8C53-A7C90E76AC26}";
     }
 
     //TODO move all XtmSettings from above
@@ -134,12 +134,11 @@ namespace LjungbergIt.Xtm.Connector.Helpers
       public static readonly string SectionText = "{597C4989-17EF-4C52-BD1A-A1796A79BB2B}";
     }
 
-    public struct XtmTranslationQueueItemTemplate
-    {
-      public static readonly string ItemId = "{F226C914-A62E-4B58-A2FC-B59CBD4C00F8}";
-      public static readonly string AddedBy = "{5676881D-A27B-4536-8C53-A7C90E76AC26}";
-
-    }
+    //public struct XtmTranslationQueueItemTemplate
+    //{
+    //  public static readonly string ItemId = "{F226C914-A62E-4B58-A2FC-B59CBD4C00F8}";
+    //  public static readonly string AddedBy = "{5676881D-A27B-4536-8C53-A7C90E76AC26}";
+    //}
 
     public struct Misc
     {

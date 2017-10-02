@@ -1,0 +1,6 @@
+﻿<Project>
+  <FolderSync SynchronizeProjectOutputFolderOnBuild="False">
+    <Folder SourceFolder="XtmFiles\XtmStyles\" DestinationFolder="XtmFiles\XtmStyles\" Mode="Copy" Pattern="*.*" />
+    <Folder SourceFolder="XtmFiles\XtmJs\" DestinationFolder="XtmFiles\XtmJs\" Mode="Copy" Pattern="*.*" />
+  </FolderSync>
+</Project>

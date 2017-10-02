@@ -19,9 +19,9 @@
             </div>
         </div>
         <div style="clear: both;"></div>
-        
+        <br />
         <div class="container">
-            <div>
+            <div class="infoarea">
                 <asp:Literal ID="litTest" runat="server" Text="" />
             </div>
             <div>

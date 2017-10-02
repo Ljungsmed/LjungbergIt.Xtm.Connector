@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LjungbergIt.Xtm.Connector.AddForTranslation
+namespace LjungbergIt.Xtm.Connector.Export
 {
   public class TranslationProperties
   {

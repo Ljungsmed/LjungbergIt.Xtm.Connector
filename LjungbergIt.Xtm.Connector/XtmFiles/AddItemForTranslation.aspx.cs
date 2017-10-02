@@ -1,5 +1,4 @@
-﻿using LjungbergIt.Xtm.Connector.AddForTranslation;
-using LjungbergIt.Xtm.Connector.Export;
+﻿using LjungbergIt.Xtm.Connector.Export;
 using LjungbergIt.Xtm.Connector.Helpers;
 using Sitecore.Collections;
 using Sitecore.Data;
@@ -11,6 +10,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Web.UI.WebControls;
 using System.Linq;
+using Sitecore.Data.Managers;
 
 namespace LjungbergIt.Xtm.Connector.XtmFiles
 {
@@ -96,7 +96,6 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
           }
 
           //Build the dropdown list with available xtm templates
-
           using (new SecurityDisabler())
           {
             Item xtmTemplatesFolder = masterDb.GetItem(ScConstants.SitecoreIDs.XtmSettingsXtmTemplateFolder);
@@ -116,6 +115,15 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
               }
               ddXtmTemplate.Items.Add(listItem);
             }
+          }
+
+          //Build the list of related content items
+          TranslationItem relatedContent = new TranslationItem();
+          List<TranslationItem> relatedContentItems = relatedContent.GetRelatedContentItems(contextItem);
+          foreach (TranslationItem relatedItem in relatedContentItems)
+          {
+            ListItem listItem = GetListItem(relatedItem, 1, true, true);
+            cblIncludeRelatedContentItems.Items.Add(listItem);
           }
         }
         else
@@ -141,29 +149,46 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
       {
         //Get the item that needs to be added for translation
         Item contextItem = masterDb.GetItem(Request.QueryString["id"]);
-        labelErrorMessage.Text = "test" + contextItem.Name;
+        //labelErrorMessage.Text = "test" + contextItem.Name;
+
         //Create an item list of items to translate, if sub items needs to be added there will be more than one item
-        ItemList ItemsToTranslate = new ItemList();
+        //ItemList ItemsToTranslate = new ItemList();
+        List<TranslationItem> itemsToTranslate = new List<TranslationItem>();
+
         //Check if item has the XtmBaseTemplate. If not the item is not added for translation
-        XtmBaseTemplate xtmBaseTemplate = new XtmBaseTemplate(null);
+        XtmBaseTemplate xtmBaseTemplate = new XtmBaseTemplate(contextItem);
+
         //If selected item is available for translation (have the correct base template) add it to the Item list
-        if (xtmBaseTemplate.CheckForBaseTemplate(contextItem))
+        if (xtmBaseTemplate.HasXtmBaseTemplate)
         {
           //Add item that needs to be translated to the item list
-          ItemsToTranslate.Add(contextItem);
+          TranslationItem translationItem = new TranslationItem() { sitecoreItem = contextItem };
+          itemsToTranslate.Add(translationItem);
         }
-        //If "add subitems" have been checked, go through all subitems and add the ones which are available for translation
+
+        //If any items in "Include related content" have been checked, add the selected items
+        foreach (ListItem listItem in cblIncludeRelatedContentItems.Items)
+        {
+          itemsToTranslate = GetItemsToTranslate(cblIncludeRelatedContentItems, itemsToTranslate);
+        }
+
+        //If "add subitems" have been checked, add the ones that has been selected
         if (cbAllSubItems.Checked)
         {
-          ItemsToTranslate = GetChildrenToTranslate(ItemsToTranslate, contextItem);
+          itemsToTranslate = GetItemsToTranslate(cblIncludeAllSubitems, itemsToTranslate);
         }
-     
-        if (ItemsToTranslate.Count == 0)
+
+        //If any related items to subitems have been checked, add the selected items'
+        if (cblIncludeAllSubitemsRelatedItems.Items.Count > 0)
+        {
+          itemsToTranslate = GetItemsToTranslate(cblIncludeAllSubitemsRelatedItems, itemsToTranslate);
+        }
+
+        if (itemsToTranslate.Count == 0)
         {
           labelErrorMessage.Style.Add("color", "red");
           labelErrorMessage.Text = "No items were added. Both the chosen item and subitems were not eligable for translation";
         }
-
         else
         {
           StringBuilder info = new StringBuilder();
@@ -197,13 +222,12 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
             info.Append("Adding items for translation to existing project <strong>");
             info.Append(projectName);
             info.Append("</strong>");
-            
           }
           //Else create new project based on the value in the project name text box
           else
           {
             //TODO check if project name from text box matches existing project
-             
+
             //Display error message if no target language has been chosen AND no template has been choosen
             if (cbTargetLanguages.SelectedItem == null && ddXtmTemplate.SelectedValue == "")
             {
@@ -259,15 +283,15 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
                   info.Append("target languages: ");
                   info.Append(mapping.TargetLanguagesString(targetLanguagesList));
                 }
-              }              
-            }            
+              }
+            }
           }
 
           if (noErrors && validProjectName)
           {
             info.Append("<br //>");
             info.Append("<br //>");
-            foreach (Item itemToTranslate in ItemsToTranslate)
+            foreach (TranslationItem itemToTranslate in itemsToTranslate)
             {
               string result = translationQueue.AddToQueue(itemToTranslate, sourceLanguage, targetLanguagesList, xtmTemplate, addedBy, projectName);
               info.Append(result);
@@ -287,29 +311,42 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
             divChooseTranslationOptions.Visible = false;
 
             labelResult.Text = info.ToString();
-          }          
-        }       
-      }      
+          }
+        }
+      }
     }
 
-    private ItemList GetChildrenToTranslate(ItemList itemsToTranslate, Item parent)
+    private List<TranslationItem> GetItemsToTranslate(CheckBoxList checkBoxList, List<TranslationItem> itemsToTranslate)
     {
-      if (parent.GetChildren() != null)
+      CheckListHelper checkListHelper = new CheckListHelper();
+      foreach (ListItem listItem in checkBoxList.Items)
       {
-
-        foreach (Item child in parent.GetChildren())
+        if (listItem.Selected)
         {
-          XtmBaseTemplate xtmBaseTemplate = new XtmBaseTemplate(child);
-          if (xtmBaseTemplate.CheckForBaseTemplate(child))
+          TranslationItem translationItem = null;
+          if (listItem.Value.Contains("_"))
           {
-            if (!xtmBaseTemplate.Translated)
+            translationItem = checkListHelper.GetIds(listItem.Value);
+          }
+          else
+          {
+            Item itemToTranslate = masterDb.GetItem(listItem.Value);
+            if (itemToTranslate != null)
             {
-              itemsToTranslate.Add(child);
+              translationItem = new TranslationItem() { sitecoreItem = itemToTranslate };
             }
-            if (child.GetChildren() != null)
+          }
+          if (translationItem != null)
+          {
+            if (!itemsToTranslate.Any(n => n.sitecoreItem.ID == translationItem.sitecoreItem.ID))
             {
-              GetChildrenToTranslate(itemsToTranslate, child);
+              itemsToTranslate.Add(translationItem);
             }
+          }
+          else
+          {
+            ScLogging scLogging = new ScLogging();
+            scLogging.WriteError("Error adding subitem for translation, value of checkbox is: " + listItem.Value);
           }
         }
       }
@@ -351,5 +388,127 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
         return Language.Parse(defaultSourceLanguageItem.Name);
       }
     }
+
+    private ListItem GetListItem(TranslationItem translationItem, int indent, bool linkToItem, bool parentName)
+    {
+      string icon = ThemeManager.GetIconImage(translationItem.sitecoreItem, 16, 16, "", "");
+      string listItemName = icon + translationItem.sitecoreItem.Name;
+      string listItemValue = translationItem.sitecoreItem.ID.ToString();
+      if (parentName)
+      {
+        listItemName = listItemName + " (Relates to: " + translationItem.RelatesTo.Name + ")";
+        listItemValue = listItemValue + "_" + translationItem.RelatesTo.ID;
+
+      }
+      if (linkToItem)
+      {
+        listItemName = listItemName + " (<a href=\"/sitecore/shell/Applications/Content Editor.aspx?fo=" + translationItem.sitecoreItem.ID.ToString() + "\" target=\"_blank\">Link to item</a>)";
+      }
+      ListItem listItem = new ListItem(listItemName, listItemValue, translationItem.Translatable);
+      listItem.Attributes.CssStyle.Value = ("padding-left: " + indent * translationItem.SubItemLevel + "px");
+      listItem.Attributes["title"] = translationItem.HelpText;
+      if (translationItem.Translatable)
+      {
+        listItem.Selected = true;
+        listItem.Attributes.Add("onchange", "test(this)");
+      }
+      return listItem;
+    }
+
+    protected void cbAllSubItems_CheckedChanged(object sender, EventArgs e)
+    {
+      //New code
+      if (cbAllSubItems.Checked)
+      {
+        TranslationItem subItems = new TranslationItem();
+        string itemIdString = Request.QueryString["id"];
+        Item contextItem = masterDb.GetItem(itemIdString);
+        List<TranslationItem> subItemsList = subItems.GetListOfSubItems(contextItem, new List<TranslationItem>(), 1);
+
+        List<TranslationItem> allRelatedItems = new List<TranslationItem>();
+        TranslationItem relatedContent = new TranslationItem();
+
+        foreach (TranslationItem subItem in subItemsList)
+        {
+          ListItem listItem = GetListItem(subItem, 15, false, false);
+          cblIncludeAllSubitems.Items.Add(listItem);
+
+          //add related items
+          List<TranslationItem> relatedContentItems = relatedContent.GetRelatedContentItems(subItem.sitecoreItem);
+          foreach (TranslationItem relatedItem in relatedContentItems)
+          {
+            allRelatedItems.Add(relatedItem);
+          }
+        }
+
+        foreach (TranslationItem relatedItem in allRelatedItems)
+        {
+          ListItem listItem = GetListItem(relatedItem, 1, true, true);
+          cblIncludeAllSubitemsRelatedItems.Items.Add(listItem);
+        }
+      }
+      else
+      {
+        cblIncludeAllSubitems.Items.Clear();
+        cblIncludeAllSubitemsRelatedItems.Items.Clear();
+        //cbIncludeRelatedContentItemsFromSubItems.Checked = false;
+      }
+      //Old code
+
+      //if (cbAllSubItems.Checked)
+      //{
+      //  TranslationItem subItems = new TranslationItem();
+      //  string itemIdString = Request.QueryString["id"];
+      //  Item contextItem = masterDb.GetItem(itemIdString);
+      //  List<TranslationItem> subItemsList = subItems.GetListOfSubItems(contextItem, new List<TranslationItem>(), 1);
+
+      //  foreach (TranslationItem subItem in subItemsList)
+      //  {
+      //    ListItem listItem = GetListItem(subItem, 15, false, false);
+      //    cblIncludeAllSubitems.Items.Add(listItem);
+      //  }
+      //}
+      //else
+      //{
+      //  cblIncludeAllSubitems.Items.Clear();
+      //  cblIncludeAllSubitemsRelatedItems.Items.Clear();
+      //  cbIncludeRelatedContentItemsFromSubItems.Checked = false;
+      //}
+
+    }
+
+    //protected void cbIncludeRelatedContentItemsFromSubItems_CheckedChanged(object sender, EventArgs e)
+    //{
+    //  if (cbIncludeRelatedContentItemsFromSubItems.Checked)
+    //  {
+    //    List<TranslationItem> allRelatedItems = new List<TranslationItem>();
+    //    foreach (ListItem listItem in cblIncludeAllSubitems.Items)
+    //    {
+    //      if (listItem.Selected)
+    //      {
+    //        Item contextItem = masterDb.GetItem(listItem.Value);
+    //        if (contextItem != null)
+    //        {
+    //          TranslationItem relatedContent = new TranslationItem();
+    //          List<TranslationItem> relatedContentItems = relatedContent.GetRelatedContentItems(contextItem);
+    //          foreach (TranslationItem subItem in relatedContentItems)
+    //          {
+    //            allRelatedItems.Add(subItem);
+    //          }
+    //        }
+    //      }
+    //    }
+
+    //    foreach (TranslationItem subItem in allRelatedItems)
+    //    {
+    //      ListItem listItem = GetListItem(subItem, 1, true, true);
+    //      cblIncludeAllSubitemsRelatedItems.Items.Add(listItem);
+    //    }
+    //  }
+    //  else
+    //  {
+    //    cblIncludeAllSubitemsRelatedItems.Items.Clear();
+    //  }
+    //}
   }
 }

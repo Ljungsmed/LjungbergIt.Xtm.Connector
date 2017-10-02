@@ -1,4 +1,5 @@
 ﻿using LjungbergIt.Xtm.Connector.Helpers;
+using Sitecore;
 using Sitecore.Data;
 using Sitecore.Data.Items;
 using System;
@@ -34,8 +35,7 @@ namespace LjungbergIt.Xtm.Connector.Import
       fieldObjects.Add(new UpdateItem { FieldIdOrName = XtmMetaTranslationVersion.Field_TranslatedFrom, FieldValue = sourceLanguage });
       fieldObjects.Add(new UpdateItem { FieldIdOrName = XtmMetaTranslationVersion.Field_TranslatedTo, FieldValue = targetLanguage });
       fieldObjects.Add(new UpdateItem { FieldIdOrName = XtmMetaTranslationVersion.Field_VersionNumber, FieldValue = version });
-      //TODO change to proper date
-      fieldObjects.Add(new UpdateItem { FieldIdOrName = XtmMetaTranslationVersion.Field_ImportedDate, FieldValue = newVersionItem.Statistics.Updated.ToString() });
+      fieldObjects.Add(new UpdateItem { FieldIdOrName = XtmMetaTranslationVersion.Field_ImportedDate, FieldValue = DateUtil.ToIsoDate(newVersionItem.Statistics.Updated) });
       fieldObjects.Add(new UpdateItem { FieldIdOrName = XtmMetaTranslationVersion.Field_XtmProjectId, FieldValue = xtmProjectId });
 
       UpdateItem updateItem = new UpdateItem();

@@ -76,6 +76,14 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>ReferencedAssemblies\Sitecore.Client.dll</HintPath>
     </Reference>
+    <Reference Include="Sitecore.ContentSearch">
+      <HintPath>..\Assemblies\Sitecore.ContentSearch.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Sitecore.ContentSearch.Linq">
+      <HintPath>..\Assemblies\Sitecore.ContentSearch.Linq.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Sitecore.Kernel, Version=8.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>ReferencedAssemblies\Sitecore.Kernel.dll</HintPath>
@@ -127,6 +135,104 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Serialization\master\sitecore\content\XTM Translation.item" />
+    <Content Include="Serialization\master\sitecore\content\XTM Translation\Last Export.item" />
+    <Content Include="Serialization\master\sitecore\content\XTM Translation\Translation Data.item" />
+    <Content Include="Serialization\master\sitecore\content\XTM Translation\Translation In Progress.item" />
+    <Content Include="Serialization\master\sitecore\content\XTM Translation\Translation Queue.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmConnectorBaseTemplate.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmConnectorBaseTemplate\XTM Connector.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmConnectorBaseTemplate\XTM Connector\XTM_Added To TranslationBy.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmConnectorBaseTemplate\XTM Connector\XTM_In Translation.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmConnectorBaseTemplate\XTM Connector\XTM_Translated Date.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmConnectorBaseTemplate\XTM Connector\XTM_Translated From.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmConnectorBaseTemplate\XTM Connector\XTM_Translated.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmDocumentationSection.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmDocumentationSection\Documentation.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmDocumentationSection\Documentation\Section Heading.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmDocumentationSection\Documentation\Section Text.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmLabel.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmLabel\Label.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmLabel\Label\Label Format.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmLabel\Label\Label Text.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmLabel\Label\Label Title.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmLanguage.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmLanguageMapping.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmLanguageMapping\Mapping.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmLanguageMapping\Mapping\SitecoreLanguageName.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmLanguageMapping\Mapping\XtmLanguageName.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmLanguage\Xtm Language Info.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmLanguage\Xtm Language Info\LanguageName.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmMetaTranslationFolder.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmMetaTranslationItem.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmMetaTranslationItem\MetaData.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmMetaTranslationItem\MetaData\ItemId.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmMetaTranslationItem\__Standard Values.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmMetaTranslationVersion.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmMetaTranslationVersion\MetaData.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmMetaTranslationVersion\MetaData\ImportedDate.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmMetaTranslationVersion\MetaData\TranslatedFrom.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmMetaTranslationVersion\MetaData\TranslatedItemId.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmMetaTranslationVersion\MetaData\TranslatedTo.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmMetaTranslationVersion\MetaData\VersionNumber.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmMetaTranslationVersion\MetaData\XtmProjectId.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmMetaTranslationVersion\__Standard Values.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmQueueFolder.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmQueueProjectFolder.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmQueueProjectFolder\QueueInfo.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmQueueProjectFolder\QueueInfo\Source Language.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmQueueProjectFolder\QueueInfo\Target Languages.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmQueueProjectFolder\QueueInfo\XTM Project Name.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmQueueProjectFolder\QueueInfo\Xtm Template.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmQueueProjectFolder\__Standard Values.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmRoot.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmSendToTranslationStatus.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmSendToTranslationStatus\Error Messages.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmSendToTranslationStatus\Error Messages\Errors.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmSendToTranslationStatus\Log data.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmSendToTranslationStatus\Log data\End Time.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmSendToTranslationStatus\Log data\Initiated By.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmSendToTranslationStatus\Log data\Stat Time.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmSendToTranslationStatus\Log data\Status.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmSendToTranslationStatus\Log data\Total Time.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmSettings.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmSettingsLocal.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmSettingsLocal\SiteSettings.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmSettingsLocal\SiteSettings\BaseSiteUrl.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmSettingsLocal\SiteSettings\HomeItem.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmSettingsLocal\__Standard Values.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmSettings\Debug.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmSettings\Debug\DebugMode.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmSettings\Login Info.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmSettings\Login Info\Xtm Client.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmSettings\Login Info\Xtm Customer Id.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmSettings\Login Info\Xtm Password.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmSettings\Login Info\Xtm User Id.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmSettings\Settings.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmSettings\Settings\DefaultMasterLanguage.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmSettings\Settings\DefaultTemplate.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmSettings\Settings\MultiSiteTranslation.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmSettings\Settings\ProjectNamePrefix.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmSettings\Web Service Info.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmSettings\Web Service Info\CallBackUrl.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmSettings\Web Service Info\Endpoint.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmSettings\Web Service Info\https.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmSettings\__Standard Values.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmStandardFolder.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmTemplate.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmTemplate\Xtm Template Info.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmTemplate\Xtm Template Info\TemplateId.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmTemplate\Xtm Template Info\TemplateName.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmTranslationInProgress.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmTranslationInProgress\Translation Info.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmTranslationInProgress\Translation Info\Xtm Project ID.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmTranslationQueueItem.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmTranslationQueueItem\Info.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmTranslationQueueItem\Info\AddedBy.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmTranslationQueueItem\Info\ItemId.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmTranslationQueueItem\Info\RelatedItemId.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmTranslationQueueItem\Info\SourceLanguage.item" />
     <Content Include="TestSecurity.aspx" />
     <Content Include="Test\test.aspx" />
     <Content Include="XtmFiles\AddItemForTranslation.aspx" />
@@ -134,13 +240,18 @@
     <Content Include="XtmFiles\ViewDocumentation.aspx" />
     <Content Include="XtmFiles\ViewTranslationProgress.aspx" />
     <Content Include="XtmFiles\XtmCallback.aspx" />
+    <Content Include="XtmFiles\XtmJs\XtmJs.js" />
     <Content Include="XtmFiles\XtmStyles\HeadingBg.png" />
     <Content Include="XtmFiles\XtmStyles\Xtm.css" />
     <Content Include="XtmFiles\XtmStyles\xtmlogo.png" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddForTranslation\CheckListHelper.cs" />
+    <Compile Include="Export\ExcludeFields.cs" />
+    <Compile Include="AddForTranslation\TranslationItem.cs" />
     <Compile Include="AddForTranslation\TranslationProperties.cs" />
     <Compile Include="AddForTranslation\TranslationQueue.cs" />
+    <Compile Include="AddForTranslation\TranslationQueueItem.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Buttons\AddItemForTranslation.cs" />
     <Compile Include="Buttons\GetXtmLanguages.cs" />
@@ -155,6 +266,7 @@
     <Compile Include="Export\Html.cs" />
     <Compile Include="Export\Project.cs" />
     <Compile Include="Export\StartTranslation.cs" />
+    <Compile Include="Export\TranslationItemCollection.cs" />
     <Compile Include="Export\XtmBaseTemplate.cs" />
     <Compile Include="Helpers\Label.cs" />
     <Compile Include="Helpers\ReturnMessage.cs" />
@@ -178,9 +290,11 @@
     <Compile Include="LanguageHandling\LanguageProps.cs" />
     <Compile Include="LanguageHandling\Mapping.cs" />
     <Compile Include="MetaData\Pipelines\GetContentEditorWarnings\InTranslation.cs" />
+    <Compile Include="MetaData\Pipelines\GetContentEditorWarnings\VersionTranslated.cs" />
     <Compile Include="Pipelines\XtmPipelineArgs.cs" />
     <Compile Include="Pipelines\XtmProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Search\ItemSearch.cs" />
     <Compile Include="Tasks\GetTranslatedContent.cs" />
     <Compile Include="TestSecurity.aspx.cs">
       <DependentUpon>TestSecurity.aspx</DependentUpon>
@@ -239,7 +353,10 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="App_Config\Include\LjungbergIt.Xtm.ScWarnings.config" />
+    <None Include="App_Config\Include\LjungbergIt.SerializationFolderPath.config" />
     <None Include="Properties\PublishProfiles\XtmConnector.pubxml" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmSettingsLocal\SiteSettings\Excluded Fields.item" />
+    <Content Include="Serialization\master\sitecore\templates\XTM\XtmSettingsLocal\SiteSettings\InitialWorfklowState.item" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

@@ -1,4 +1,5 @@
-﻿using LjungbergIt.Xtm.Connector.Helpers;
+﻿using LjungbergIt.Xtm.Connector.Export;
+using LjungbergIt.Xtm.Connector.Helpers;
 using Sitecore.Collections;
 using Sitecore.Data;
 using Sitecore.Data.Items;
@@ -23,7 +24,7 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
             {
                 foreach (Item queueItem in queueCategoryItem.GetChildren())
                 {
-                    Item translateItem = masterDb.GetItem(queueItem[ScConstants.XtmTranslationQueueItemTemplate.ItemId]);
+                    Item translateItem = masterDb.GetItem(queueItem[TranslationQueueItem.XtmTranslationQueueItem.Field_ItemId]);
                     string xtmTemplateId = queueCategoryItem[ScConstants.XtmQueueProjectTemplateFolder.XtmTemplate];
                     string xtmTemplate = string.Empty;
                     if (xtmTemplateId != "")
@@ -37,7 +38,7 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
                     scQueueItem.XtmTemplate = xtmTemplate;
                     scQueueItem.QueueItemName = translateItem.Name;
                     scQueueItem.QueueItemPath = translateItem.Paths.ContentPath;
-                    scQueueItem.AddedBy = queueItem[ScConstants.XtmTranslationQueueItemTemplate.AddedBy];
+                    scQueueItem.AddedBy = queueItem[TranslationQueueItem.XtmTranslationQueueItem.Field_AddedBy];
 
                     queueItemList.Add(scQueueItem);
                 }

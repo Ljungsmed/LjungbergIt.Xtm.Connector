@@ -10,7 +10,7 @@ namespace LjungbergIt.Xtm.Webservice
   public class XtmCreateProject
   {
     public List<string> Create(List<XtmTranslationFile> translationFiles, string fileName, string sourceLanguage, List<string> translationLanguages, string xtmTemplate, string xtmClient, long userId, string password, long customer, string webServiceEndPoint, bool https, string callbackUrl)
-    { 
+    {
       List<string> resultList = new List<string>();
       bool success = false;
       StringBuilder info = new StringBuilder();
@@ -48,12 +48,12 @@ namespace LjungbergIt.Xtm.Webservice
 
       //Convert the target language strings to Xtm langauges and add them to the list of target languages
       languageCODE?[] targetLang = new languageCODE?[translationLanguages.Count];
-      for (int i = 0; i < translationLanguages.Count ; i++)
+      for (int i = 0; i < translationLanguages.Count; i++)
       {
         languageCODE parsedLanguage = new languageCODE();
         bool languageCodeParsed = languageCODE.TryParse(translationLanguages[i], true, out parsedLanguage);
         targetLang[i] = parsedLanguage;
-      }      
+      }
 
       //TODO move to configuration
       string sitecoreSourceLanguage = sourceLanguage.Replace("-", "_");
@@ -94,7 +94,7 @@ namespace LjungbergIt.Xtm.Webservice
           workflow.workflowSpecified = true;
           workflow.workflow = xtmWORKFLOWS.TRANSLATE;
           projectMTOM.workflow = workflow;
-        }        
+        }
 
         //xtmCreateProjectMTOMOptionsAPI projectOptions = new xtmCreateProjectMTOMOptionsAPI();
 
@@ -109,23 +109,17 @@ namespace LjungbergIt.Xtm.Webservice
 
           XtmProjectFiles xtmUpdateProject = new XtmProjectFiles();
 
-          //using (FileStream fileStream = new FileStream(@"C:\inetpub\wwwroot\Sitecore81Update1\Website\XTMData\TranslationFiles\xtm.zip", FileMode.Create))
-
-          //using (ZipArchive archive = new ZipArchive(fileStream, ZipArchiveMode.Create))
-          //{          
-            foreach (XtmTranslationFile translationFile in translationFiles)
+          foreach (XtmTranslationFile translationFile in translationFiles)
+          {
+            if (translationFile.HtmlFileAvailable)
             {
-              if (translationFile.HtmlFileAvailable)
-              {
-                xtmUploadProjectFileMTOMAPI previewFile = xtmUpdateProject.GetPreviewFile(translationFile.HtmlFilePath, translationFile.FileName);
-                previewFile.projectDescriptor = response.project.projectDescriptor;
-                client.uploadProjectFileMTOM(login, previewFile, null);
+              xtmUploadProjectFileMTOMAPI previewFile = xtmUpdateProject.GetPreviewFile(translationFile.HtmlFilePath, translationFile.FileName);
+              previewFile.projectDescriptor = response.project.projectDescriptor;
+              client.uploadProjectFileMTOM(login, previewFile, null);
 
-                //archive.CreateEntryFromFile(translationFile.HtmlFilePath, translationFile.FileName + ".html");
-
-                //File.Delete(translationFile.HtmlFilePath);
-              }
-            //}
+              //DEBUG comment the below line out to check the HTML files generated
+              File.Delete(translationFile.HtmlFilePath);
+            }
           }
         }
         catch (Exception e)

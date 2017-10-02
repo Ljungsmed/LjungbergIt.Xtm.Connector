@@ -1,0 +1,26 @@
+----item----
+version: 1
+id: {2A38CC02-5466-4A5E-95AE-E16E5D06D1EC}
+database: master
+path: /sitecore/content/XTM Translation/Translation Queue
+parent: {8F25BC6D-8CB6-48B1-B4A6-0BAC0670097C}
+name: Translation Queue
+master: {00000000-0000-0000-0000-000000000000}
+template: {E108A73B-F235-4C2D-A32F-C4F533C9D548}
+templatekey: XtmQueueFolder
+created: 20170629T091914Z
+
+----field----
+field: {9C6106EA-7A5A-48E2-8CAD-F0F693B1E2D4}
+name: __Read Only
+key: __read only
+content-length: 1
+
+1
+----field----
+field: {DEC8D2D5-E3CF-48B6-A653-8E69E2716641}
+name: __Security
+key: __security
+content-length: 48
+
+ar|sitecore\XtmUser|pe|+item:read|pd|+item:read|

@@ -9,11 +9,11 @@
 <body>
     <form id="form1" runat="server">
     <div>
-        <asp:Button ID="Button1" runat="server" Text="test get project" OnClick="Button1_Click" />
-        
+        <asp:Button ID="Button1" runat="server" Text="test search" OnClick="Button1_Click" />
+        <asp:Literal ID="Button1Lit" runat="server" />
     </div>
     <div>
-        <asp:Button ID="Button2" runat="server" Text="test import XML" OnClick="Button2_Click" />
+        <asp:Button ID="Button2" runat="server" Text="test related content" OnClick="Button2_Click" />
         <asp:Literal ID="Literal1" runat="server" />
     </div>
         <div>

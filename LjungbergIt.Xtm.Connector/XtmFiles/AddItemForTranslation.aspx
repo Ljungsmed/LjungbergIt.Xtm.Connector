@@ -8,6 +8,9 @@
     <link rel="stylesheet" type="text/css" href="/XtmFiles/XtmStyles/Xtm.css" />
 </head>
 <body>
+  <script type="text/javascript">
+    
+  </script>
     <form id="form1" runat="server">
         <div class="blueline"></div>
         <div class="identity">
@@ -50,7 +53,7 @@
             </div>
             <div class="divspace">
                 Choose the target languages (target languages will override any languages specified on an XTM Template)
-            </div>  
+            </div>
             <div>
                 <asp:CheckBoxList runat="server" ID="cbTargetLanguages"></asp:CheckBoxList>
             </div>
@@ -60,10 +63,33 @@
             <div class="divspace">
                 <asp:DropDownList ID="ddXtmTemplate" runat="server" CssClass="dropdown" />
             </div>
+
+            <div class="divspace">
+                Include related content:
+                <asp:CheckBoxList CssClass="addsubitemstd" runat="server" ID="cblIncludeRelatedContentItems"></asp:CheckBoxList>
+            </div>
+
             <div class="divspace">
                 Include all sub-items:
-                <asp:CheckBox runat="server" ID="cbAllSubItems" CssClass="checkbox"></asp:CheckBox>
+                <!--OnClick="showElement(this, 'includerelatedcontentfromsubitems')"-->
+                <asp:CheckBox  runat="server" ID="cbAllSubItems" CssClass="checkbox jsIncludeAllSubItems" OnCheckedChanged="cbAllSubItems_CheckedChanged" AutoPostBack="true"></asp:CheckBox>
             </div>
+
+            <div class="divspace">
+                <asp:CheckBoxList CssClass="addsubitemstd" ID="cblIncludeAllSubitems" runat="server"></asp:CheckBoxList>
+            </div>
+
+            <div class="divspace">
+                <span style="visibility: hidden" class="includerelatedcontentfromsubitems" id="spanIncludeRelatedContentItemsFromSubItems">Also include related content of sub-items:
+                    <%--<asp:CheckBox runat="server" ID="cbIncludeRelatedContentItemsFromSubItems" CssClass="checkbox cbIncludeRelatedContentItemsFromSubItems" />--%>
+                  <input type="checkbox" id="inputchbIncludeAllSubItemsRelatedItems" onchange="showElementById(this, 'divIncludeAllSubitemsRelatedItems')" />
+                </span>
+            </div>
+
+            <div class="divspace includeAllSubitemsRelatedItems" id="divIncludeAllSubitemsRelatedItems" style="display: none" >
+                <asp:CheckBoxList CssClass="addsubitemstd" ID="cblIncludeAllSubitemsRelatedItems" runat="server"></asp:CheckBoxList>                
+            </div>
+
             <div class="divspace">
                 <asp:Button runat="server" ID="btnAddForTranslation" Text="Add" OnClick="btnAddForTranslation_Click" CssClass="button" Width="40px" />
             </div>
@@ -73,4 +99,8 @@
         </div>
     </form>
 </body>
+    <script src="/XtmFiles/XtmJs/XtmJs.js"></script>
+    <script> 
+      showElementGlobal('cbAllSubItems', 'spanIncludeRelatedContentItemsFromSubItems');      
+    </script>
 </html>

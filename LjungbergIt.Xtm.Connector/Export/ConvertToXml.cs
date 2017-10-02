@@ -1,6 +1,6 @@
-﻿using LjungbergIt.Xtm.Connector.AddForTranslation;
+﻿using LjungbergIt.Xtm.Connector.Export;
 using LjungbergIt.Xtm.Connector.Helpers;
-using LjungbergIt.Xtm.Connector.Helpers;
+
 using LjungbergIt.Xtm.Webservice;
 using Sitecore.Collections;
 using Sitecore.Data;
@@ -49,7 +49,7 @@ namespace LjungbergIt.Xtm.Connector.Export
           //Get target languages and convert to XTM languages
           MultilistField targetLanguagesField = translationProjectItem.Fields[ScConstants.XtmQueueProjectTemplateFolder.TargetLanguages];
           Item[] targetLanguagesItems = targetLanguagesField.GetItems();
-          
+
           Mapping mapping = new Mapping();
           //List<string> xtmFormatedLanguagelist = mapping.SitecoreLanguageToXtmLanguage(targetLanguagesItems);
 
@@ -64,14 +64,41 @@ namespace LjungbergIt.Xtm.Connector.Export
           if (queuedItemList.Count != 0)
           {
             List<XtmTranslationFile> translationFileList = new List<XtmTranslationFile>();
-            //count is used to add the number of pages that is in a translation project
+            //count is used to add the number of pages/items that is in a translation project
             int count = 0;
             //TODO remove as the projects are now created with custom name?
             string firstItemName = string.Empty;
+
+            //Create two lists of translationItems, one with all items not added as related items and one for all the items added as related items
+            ItemList mainTranslationItemsList = new ItemList();
+            ItemList relatedTranslationItemsList = new ItemList();
             foreach (Item queuedItem in queuedItemList)
             {
+              //If the item is a related item (the field "RelatedItemId" have a value) the item is added to a list and prossesed later
+              string relatedItemId = queuedItem[TranslationQueueItem.XtmTranslationQueueItem.Field_RelatedItemId];
+              if (relatedItemId != "")
+              {
+                relatedTranslationItemsList.Add(queuedItem);
+              }
+              else
+              {
+                mainTranslationItemsList.Add(queuedItem);
+              }
+            }
+
+            List<TranslationItemCollection> translationItemCollection = new List<TranslationItemCollection>();
+
+            //For each main translation item, add the related translation items
+            foreach (Item mainTranslationItem in mainTranslationItemsList)
+            {
+              translationItemCollection.Add(new TranslationItemCollection(mainTranslationItem, relatedTranslationItemsList));
+            }
+
+            //TODO change to iterate through the translationItemCollection
+            foreach (TranslationItemCollection queuedItemCollection in translationItemCollection)
+            {
               //string filePath = "~\\" + ScConstants.Misc.translationFolderName + "\\" + ScConstants.Misc.filesFortranslationFolderName + "\\" + translationFolderItem.Name + "_" + queuedItem.Name;
-              string completeFilePath = filePath + translationProjectItem.Name + "_" + queuedItem.Name;
+              string completeFilePath = filePath + translationProjectItem.Name + "_" + queuedItemCollection.MainTranslationItem.Name;
               string xmlFilePath = completeFilePath + ".xml";
               string htmlFilePath = completeFilePath + ".html";
               //string xmlFilePath = System.Web.HttpContext.Current.Server.MapPath(filePath + ".xml");
@@ -79,7 +106,7 @@ namespace LjungbergIt.Xtm.Connector.Export
 
               XtmTranslationFile translationFile = new XtmTranslationFile();
               translationFile.FilePath = xmlFilePath;
-              string ItemId = queuedItem[ScConstants.XtmTranslationQueueItemTemplate.ItemId];
+              string ItemId = queuedItemCollection.MainTranslationItem[TranslationQueueItem.XtmTranslationQueueItem.Field_ItemId];
               //Find the actual item that needs to be translated from the ItemId field of the translationQueueItem
               Item translationItem = masterDb.GetItem(ItemId);
               translationFile.FileName = translationItem.Name;
@@ -94,16 +121,28 @@ namespace LjungbergIt.Xtm.Connector.Export
                 XmlWriterSettings settings = new XmlWriterSettings();
                 settings.Indent = true;
 
-                XmlWriter xw = XmlWriter.Create(fs, settings);                
+                XmlWriter xw = XmlWriter.Create(fs, settings);
                 List<UpdateItem> updateList = new List<UpdateItem>();
                 updateList.Add(new UpdateItem() { FieldIdOrName = ScConstants.SitecoreXtmTemplateFieldIDs.InTranslation, FieldValue = "1" });
 
+                //Add the root element "XtmSitecoreTranslation", to the xml file
                 xw.WriteStartElement(ScConstants.XmlNodes.XmlRoot);
 
-                //Item itemInTranslation = masterDb.GetItem(queuedItem[ScConstants.SitecoreFieldNames.TranslationQueueItem_ItemId]);
-                AddElement(xw, queuedItem, translationProperties.SourceLanguage);
+                AddElement(xw, queuedItemCollection.MainTranslationItem, translationProperties.SourceLanguage);
+
                 UpdateItem updateItem = new UpdateItem();
                 updateItem.Update(masterDb.GetItem(translationItem.ID), updateList);
+
+                //If there are any related items in the collection, add those to the XML file
+                //TODO if there are no related contents, the below gives an exception!
+                if (queuedItemCollection.RelatedItemsList != null)
+                {
+                  foreach (Item relatedItem in queuedItemCollection.RelatedItemsList)
+                  {
+                    AddElement(xw, relatedItem, translationProperties.SourceLanguage);
+                    updateItem.Update(masterDb.GetItem(relatedItem.ID), updateList);
+                  }                  
+                }
 
                 xw.WriteEndElement();
                 xw.Flush();
@@ -127,6 +166,7 @@ namespace LjungbergIt.Xtm.Connector.Export
 
               translationFileList.Add(translationFile);
               count++;
+
             }
 
             //Set the project name according to number of pages/items in the translation job
@@ -156,16 +196,17 @@ namespace LjungbergIt.Xtm.Connector.Export
 
             if (returnMessage.Success)
             {
-              //TODO use below instead when CreateItem is changed to return the item
-              //UpdateItem updateItem = new UpdateItem();
-              //updateItem.CreateItem(DateTime.Now.ToString("yyyyMMdd-HHmmss"), masterDb.GetItem(ScConstants.SitecoreIDs.TranslationQueueArchiveFolder), ScConstants.SitecoreTemplates.TranslationQueueLanguageFolderTemplate, )
-              using (new SecurityDisabler())
-              {
-                Item archiveFolder = masterDb.GetItem(ScConstants.SitecoreIDs.TranslationQueueArchiveFolder);
-                string itemName = DateTime.Now.ToString("yyyyMMdd-HHmmss");
-                Item newArchive = archiveFolder.Add(itemName, ScConstants.SitecoreTemplates.TranslationQueueLanguageFolderTemplate);
-                translationProjectItem.MoveTo(newArchive);
-              }
+            //  //TODO use below instead when CreateItem is changed to return the item
+            UpdateItem updateItem = new UpdateItem();
+              updateItem.DeleteItem(translationProjectItem);
+            //  //updateItem.CreateItem(DateTime.Now.ToString("yyyyMMdd-HHmmss"), masterDb.GetItem(ScConstants.SitecoreIDs.TranslationQueueArchiveFolder), ScConstants.SitecoreTemplates.TranslationQueueLanguageFolderTemplate, )
+            //  using (new SecurityDisabler())
+            //  {
+            //    Item archiveFolder = masterDb.GetItem(ScConstants.SitecoreIDs.TranslationQueueArchiveFolder);
+            //    string itemName = DateTime.Now.ToString("yyyyMMdd-HHmmss");
+            //    Item newArchive = archiveFolder.Add(itemName, ScConstants.SitecoreTemplates.TranslationQueueLanguageFolderTemplate);
+            //    translationProjectItem.MoveTo(newArchive);
+            //  }
             }
           }
           else
@@ -215,19 +256,22 @@ namespace LjungbergIt.Xtm.Connector.Export
       //TODO add a try catch 
       Language SourceLanguage = Language.Parse(language);
       //Sitecore.Data.Version version = Sitecore.Data.Version.Parse(ItemToAdd[ScConstants.SitecoreFieldNames.TranslationQueueItem_Version]);
-      ID ItemId = new ID(ItemToAdd[ScConstants.XtmTranslationQueueItemTemplate.ItemId]);
+      ID ItemId = new ID(ItemToAdd[TranslationQueueItem.XtmTranslationQueueItem.Field_ItemId]);
 
       Item ItemToTranslate = ScConstants.SitecoreDatabases.MasterDb.GetItem(ItemId, SourceLanguage);
 
       xw.WriteStartElement(ScConstants.XmlNodes.XmlRootElement);
-      xw.WriteAttributeString(ScConstants.XmlNodes.XmlAttributeId, ItemToAdd[ScConstants.XtmTranslationQueueItemTemplate.ItemId]);
+      xw.WriteAttributeString(ScConstants.XmlNodes.XmlAttributeId, ItemToAdd[TranslationQueueItem.XtmTranslationQueueItem.Field_ItemId]);
       //TODO change all constants to use XtmTranslationQueueItemTemplate
       xw.WriteAttributeString(ScConstants.XmlNodes.XmlAttributeLanguage, ItemToAdd[ScConstants.SitecoreFieldNames.TranslationQueueItem_TranslateTo]);
       xw.WriteAttributeString(ScConstants.XmlNodes.XmlAttributeVersion, ItemToAdd[ScConstants.SitecoreFieldNames.TranslationQueueItem_Version]);
       xw.WriteAttributeString(ScConstants.XmlNodes.XmlAttributeSourceLanguage, language);
-      xw.WriteAttributeString(ScConstants.XmlNodes.XmlAttributeAddedBy, ItemToAdd[ScConstants.SitecoreFieldIds.TranslationQueueItem_AddedBy]);
+      xw.WriteAttributeString(ScConstants.XmlNodes.XmlAttributeAddedBy, ItemToAdd[TranslationQueueItem.XtmTranslationQueueItem.Field_AddedBy]);
 
+      //Get list of field IDs that should be excluded from the Settings item
+      ExcludeFields excludeFields = new ExcludeFields();
       //one for each field
+
 
       foreach (Field field in ItemToTranslate.Fields)
       {
@@ -240,29 +284,41 @@ namespace LjungbergIt.Xtm.Connector.Export
             //@"(?<![\uD800-\uDBFF])[\uDC00-\uDFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|[\x00-\x08\x0B\x0C\x0E-\x1F\x7F-\x9F\uFEFF\uFFFE\uFFFF]",
             //RegexOptions.Compiled);
             //XmlConvert.IsXmlChar
-            string fieldValue = string.Empty;
-            bool fieldValueOk = true;
-            try
+
+            //Check id field should be excluded based on the Excluded Fieds on the Settings item
+            if (!excludeFields.ExcludeFieldIds.Contains(field.ID.ToString()))
             {
-              fieldValue = XmlConvert.VerifyXmlChars(field.Value);
+
+
+              string fieldValue = string.Empty;
+              bool fieldValueOk = true;
+              try
+              {
+                fieldValue = XmlConvert.VerifyXmlChars(field.Value);
+              }
+              catch (XmlException e)
+              {
+                fieldValueOk = false;
+                string error = e.Message;
+                ExportInfo exportInfo = new ExportInfo();
+                exportInfo.UpdateValueField(error, ItemToTranslate.ID.ToString(), field.Name, false);
+                //string statusFieldValue = exportInfo.StatusField.Value;
+              }
+
+              if (fieldValueOk)
+              {
+                xw.WriteStartElement(ScConstants.XmlNodes.XmlElementField);
+                xw.WriteAttributeString(ScConstants.XmlNodes.XmlAttributeFieldName, field.Name);
+                xw.WriteAttributeString(ScConstants.XmlNodes.XmlAttributeFieldType, field.Type);
+                xw.WriteString(field.Value);
+                xw.WriteEndElement();
+              }
             }
-            catch (XmlException e)
+            else
             {
-              fieldValueOk = false;
-              string error = e.Message;
-              ExportInfo exportInfo = new ExportInfo();
-              exportInfo.UpdateValueField(error,ItemToTranslate.ID.ToString(), field.Name, false);
-              //string statusFieldValue = exportInfo.StatusField.Value;
+              ScLogging scLogging = new ScLogging();
+              scLogging.WriteInfo("Field with ID: " + field.ID.ToString() + " was excluded as it is set to be excluded in the XTM settings");
             }
-            
-            if (fieldValueOk)
-            {
-              xw.WriteStartElement(ScConstants.XmlNodes.XmlElementField);
-              xw.WriteAttributeString(ScConstants.XmlNodes.XmlAttributeFieldName, field.Name);
-              xw.WriteAttributeString(ScConstants.XmlNodes.XmlAttributeFieldType, field.Type);
-              xw.WriteString(field.Value);
-              xw.WriteEndElement();
-            }            
           }
         }
       }

@@ -50,15 +50,13 @@ namespace LjungbergIt.Xtm.Connector.Helpers
       return createdItem;
     }
 
-    //TODO Remove?
-    //public string CheckItemName(string itemName)
-    //{
-    //  itemName.Replace("{", "");
-    //  itemName.Replace("}", "");
-
-    //  return itemName;
-    //}
+    public void DeleteItem(Item ItemToDelete)
+    {
+      using (new SecurityDisabler())
+      {
+        ItemToDelete.Delete();
+      }
+    }
   }
-
 
 }

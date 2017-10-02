@@ -1,5 +1,4 @@
 ﻿using LjungbergIt.Xtm.Connector.Helpers;
-using LjungbergIt.Xtm.Connector.Helpers;
 using Sitecore.Data;
 using Sitecore.Data.Items;
 using Sitecore.Security.Accounts;
@@ -7,13 +6,13 @@ using Sitecore.SecurityModel;
 using System.Collections.Generic;
 using System.Text;
 
-namespace LjungbergIt.Xtm.Connector.AddForTranslation
+namespace LjungbergIt.Xtm.Connector.Export
 {
   class TranslationQueue
   {
     Database masterDatabase = ScConstants.SitecoreDatabases.MasterDb;
 
-    public string AddToQueue(Item itemToTranslate, string sourceLangauge, List<string> targetLanguages, string xtmTemplate, string addedBy, string projectName)
+    public string AddToQueue(TranslationItem itemToTranslate, string sourceLangauge, List<string> targetLanguages, string xtmTemplate, string addedBy, string projectName)
     {
       string returnString = "";
       string xtmTemplateName = "NONE";
@@ -39,11 +38,11 @@ namespace LjungbergIt.Xtm.Connector.AddForTranslation
 
         Utils utils = new Utils();
         //string itemName = string.Format("{0}_{1}", utils.FormatItemName(itemToTranslate.ID.ToString()), targetLanguage);
-        string itemName = string.Format("{0}", utils.FormatItemName(itemToTranslate.ID.ToString()));
+        string itemName = string.Format("{0}", utils.FormatItemName(itemToTranslate.sitecoreItem.ID.ToString()));
 
         if (queueItemNames.Contains(itemName))
         {
-          returnString = string.Format("{0} have already been added to the project", itemToTranslate.Name);
+          returnString = string.Format("{0} have already been added to the project", itemToTranslate.sitecoreItem.Name);
         }
         else
         {
@@ -52,15 +51,18 @@ namespace LjungbergIt.Xtm.Connector.AddForTranslation
           Item translationQueueItem = langFolder.Add(itemName, ScConstants.SitecoreTemplates.TranslationQueueItemTemplate);
 
           translationQueueItem.Editing.BeginEdit();
-          translationQueueItem[ScConstants.XtmTranslationQueueItemTemplate.ItemId] = itemToTranslate.ID.ToString();
-          //translationQueueItem[ScConstants.SitecoreFieldNames.TranslationQueueItem_Version] = args.ItemVersion;
-          translationQueueItem[ScConstants.SitecoreFieldNames.TranslationQueueItem_MasterLanguage] = sourceLangauge;
-          translationQueueItem[ScConstants.SitecoreFieldIds.TranslationQueueItem_AddedBy] = addedBy;
+          translationQueueItem[TranslationQueueItem.XtmTranslationQueueItem.Field_ItemId] = itemToTranslate.sitecoreItem.ID.ToString();
+          translationQueueItem[TranslationQueueItem.XtmTranslationQueueItem.Field_MasterLanguage] = sourceLangauge;
+          translationQueueItem[TranslationQueueItem.XtmTranslationQueueItem.Field_AddedBy] = addedBy;
+          if (itemToTranslate.RelatesTo != null)
+          {
+            translationQueueItem[TranslationQueueItem.XtmTranslationQueueItem.Field_RelatedItemId] = itemToTranslate.RelatesTo.ID.ToString();
+          }
           translationQueueItem.Editing.EndEdit();
 
           Mapping mapping = new Mapping();
 
-          returnString = string.Format("{0} added for translation to the project", itemToTranslate.Name);
+          returnString = string.Format("{0} added for translation to the project", itemToTranslate.sitecoreItem.Name);
         }
       }
       return returnString;

@@ -19,6 +19,7 @@
             </div>
         </div>
         <div style="clear: both;"></div>
+        <br />
         <div class="container">
         <asp:Repeater ID="rptDocumentation" runat="server" ItemType="LjungbergIt.Xtm.Connector.XtmFiles.ViewDocumentation">
             <ItemTemplate>

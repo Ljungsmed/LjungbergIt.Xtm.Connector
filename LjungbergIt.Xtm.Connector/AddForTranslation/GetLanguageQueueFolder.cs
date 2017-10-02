@@ -1,12 +1,11 @@
 ﻿using LjungbergIt.Xtm.Connector.Helpers;
-using LjungbergIt.Xtm.Connector.Helpers;
 using Sitecore.Collections;
 using Sitecore.Data.Fields;
 using Sitecore.Data.Items;
 using Sitecore.Security.Accounts;
 using Sitecore.SecurityModel;
 
-namespace LjungbergIt.Xtm.Connector.AddForTranslation
+namespace LjungbergIt.Xtm.Connector.Export
 {
   class GetLanguageQueueFolder
   {

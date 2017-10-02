@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace LjungbergIt.Xtm.Connector.Import
 {
+  //TODO move to Language handling
     public class XtmLanguages
     {
         public void CreateAllXtmLanguages()

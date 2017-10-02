@@ -25,25 +25,16 @@ namespace LjungbergIt.Xtm.Connector.Buttons
         args
         );
 
+      //JobManager Calls StartJob method as a background job 
+
       JobManager.Start(jobOptions);
+
+      //Enable below for debugging
+      //
+      StartJob(filePath);
 
       Sitecore.Context.ClientPage.ClientResponse.Alert("Projects are being created in XTM, you can close this window and carry on ;)");
 
-      //List<ReturnMessage> info = convert.Transform();
-      //StringBuilder response = new StringBuilder();
-      //if (info.Count > 0)
-      //{
-      //  foreach (ReturnMessage message in info)
-      //  {
-      //    response.Append(message.Message);
-      //    response.Append("<br />");
-      //  }
-      //}  
-      //else
-      //{
-      //  response.Append("No return messages TODO FIX");
-      //}
-      //Sitecore.Context.ClientPage.ClientResponse.Alert(response.ToString());
     }
     private void StartJob(string filePath)
     {
@@ -55,6 +46,7 @@ namespace LjungbergIt.Xtm.Connector.Buttons
       updateProps.Add(new UpdateItem { FieldIdOrName = exportInfo.StartField, FieldValue = startTime.ToString("yyyyMMddThhmmss") });
       updateProps.Add(new UpdateItem { FieldIdOrName = exportInfo.ErrorsField, FieldValue = string.Empty });
       updateProps.Add(new UpdateItem { FieldIdOrName = exportInfo.InitiatedBy, FieldValue = Sitecore.Context.User.Name });
+      updateProps.Add(new UpdateItem { FieldIdOrName = exportInfo.ErrorsField, FieldValue = "No Errors" });
 
       UpdateItem updateItem = new UpdateItem();
       updateItem.Update(exportInfo.ExportInfoItem, updateProps);
@@ -68,6 +60,7 @@ namespace LjungbergIt.Xtm.Connector.Buttons
       updateProps.Add(new UpdateItem { FieldIdOrName = exportInfo.StatusField, FieldValue = "Finnished" });
       updateProps.Add(new UpdateItem { FieldIdOrName = exportInfo.EndField, FieldValue = endTime.ToString("yyyyMMddThhmmss") });
       updateProps.Add(new UpdateItem { FieldIdOrName = exportInfo.TotalTime, FieldValue = totalTime.Seconds.ToString() + " Seconds"});
+      updateProps.Add(new UpdateItem { FieldIdOrName = exportInfo.ErrorsField, FieldValue = returnMessages[0].Message });
 
       updateItem.Update(exportInfo.ExportInfoItem, updateProps);
     }
