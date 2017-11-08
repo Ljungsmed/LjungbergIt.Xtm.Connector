@@ -334,12 +334,10 @@ namespace LjungbergIt.Xtm.Connector.Export
                       {
                         xw.WriteAttributeString(ScConstants.XmlNodes.XmlAttributeDefaultValue, bool.TrueString);
                       }
-                      xw.WriteString(altText);
+                      //xw.WriteString(altText);
                     }
-                    else
-                    {
-                      xw.WriteString(field.Value);
-                    }
+                    
+                    xw.WriteString(field.Value);
                     xw.WriteEndElement();
                   }
                 }

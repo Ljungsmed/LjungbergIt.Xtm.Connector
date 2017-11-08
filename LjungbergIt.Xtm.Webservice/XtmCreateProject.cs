@@ -37,6 +37,7 @@ namespace LjungbergIt.Xtm.Webservice
         filesToTranslate[count] = fileToTranslate;
         count++;
         File.Delete(translationFile.FilePath);
+        File.Delete(translationFile.HtmlFilePath);
       }
 
       StringBuilder projectName = new StringBuilder();

@@ -26,12 +26,22 @@ namespace LjungbergIt.Xtm.Connector.Export
         XtmBaseTemplate xtmBaseTemplate = new XtmBaseTemplate(child);
         string helpText = "Check the box to include the item for translation";
         int numberOfChildren = child.GetChildren().Count;
+        bool eligableForTranslation = true;
         //string helpText = "Check the box to include the item for translation";
         if (!xtmBaseTemplate.HasXtmBaseTemplate)
         {
           helpText = "This item cannot be added, as it is not configured for translation. Please notify your XTM administrator if this is a mistake";
+          eligableForTranslation = false;
+        }
+        else
+        {
+          if (xtmBaseTemplate.InTranslation)
+          {
+            helpText = "This item is already in translation";
+            eligableForTranslation = false;
+          }
         }        
-        subItemsList.Add(new TranslationItem { sitecoreItem = child, SubItemLevel = level, Translatable=xtmBaseTemplate.HasXtmBaseTemplate, HelpText= helpText });
+        subItemsList.Add(new TranslationItem { sitecoreItem = child, SubItemLevel = level, Translatable=eligableForTranslation, HelpText= helpText });
         if (numberOfChildren != 0) 
         {
           GetListOfSubItems(child, subItemsList, level+1);
@@ -58,11 +68,21 @@ namespace LjungbergIt.Xtm.Connector.Export
           {
             XtmBaseTemplate xtmBaseTemplate = new XtmBaseTemplate(relatedItem);
             string helpText = "Check the box to include the item for translation";
+            bool eligableForTranslation = true;
             if (!xtmBaseTemplate.HasXtmBaseTemplate)
             {
               helpText = "This item cannot be added, as it is not configured for translation. Please notify your XTM administrator if this is a mistake";
+              eligableForTranslation = false;
             }
-            TranslationItem subItem = new TranslationItem { sitecoreItem = relatedItem, Translatable = xtmBaseTemplate.HasXtmBaseTemplate, HelpText = helpText, RelatesTo = item };
+            else
+            {
+              if (xtmBaseTemplate.InTranslation)
+              {
+                helpText = "This item is already in translation";
+                eligableForTranslation = false;
+              }
+            }
+            TranslationItem subItem = new TranslationItem { sitecoreItem = relatedItem, Translatable = eligableForTranslation, HelpText = helpText, RelatesTo = item };
             if (!relatedItems.Any(n => n.sitecoreItem.ID == relatedItem.ID))
             {
               relatedItems.Add(subItem);

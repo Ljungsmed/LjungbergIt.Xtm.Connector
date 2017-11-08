@@ -86,10 +86,8 @@ namespace LjungbergIt.Xtm.Connector.Import
             {
               if (progressItem != null)
               {
-                using (new SecurityDisabler())
-                {
-                  progressItem.Delete();
-                }
+                UpdateItem updateItem = new UpdateItem();
+                updateItem.DeleteItem(progressItem);
               }
             }
             else
@@ -237,14 +235,30 @@ namespace LjungbergIt.Xtm.Connector.Import
 
       foreach (XmlNode fieldNode in node)
       {
-        string fieldName = fieldNode.Attributes[ScConstants.XmlNodes.XmlAttributeFieldName].Value;
-        if (!fieldName.Equals(""))
+        string fieldType = fieldNode.Attributes[ScConstants.XmlNodes.XmlAttributeFieldType].Value;
+        if (fieldType.Equals("Image"))
         {
-          UpdateItem field = new UpdateItem();
-          field.FieldIdOrName = fieldName;
-          field.FieldValue = fieldNode.InnerText;
-          fieldObjects.Add(field);
-        }        
+          XmlNode defaultValue = fieldNode.Attributes[ScConstants.XmlNodes.XmlAttributeDefaultValue];
+          if (defaultValue != null)
+          {
+            string isDefaultText = fieldNode.Attributes[ScConstants.XmlNodes.XmlAttributeDefaultValue].Value;
+            if (bool.Parse(isDefaultText))
+            {
+              //TODO check the return value! find out how to extract the alt text and update on the media item instead of the instance of the image
+            }
+          }
+        }
+        else
+        {
+          string fieldName = fieldNode.Attributes[ScConstants.XmlNodes.XmlAttributeFieldName].Value;
+          if (!fieldName.Equals(""))
+          {
+            UpdateItem field = new UpdateItem();
+            field.FieldIdOrName = fieldName;
+            field.FieldValue = fieldNode.InnerText;
+            fieldObjects.Add(field);
+          }
+        }           
       }
 
       UpdateItem updateItem = new UpdateItem();

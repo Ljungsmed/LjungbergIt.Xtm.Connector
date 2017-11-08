@@ -122,7 +122,7 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
           List<TranslationItem> relatedContentItems = relatedContent.GetRelatedContentItems(contextItem);
           foreach (TranslationItem relatedItem in relatedContentItems)
           {
-            ListItem listItem = GetListItem(relatedItem, 1, true, true);
+            ListItem listItem = GetListItem(relatedItem, 1, true, true, null, true, "");
             cblIncludeRelatedContentItems.Items.Add(listItem);
           }
         }
@@ -389,7 +389,7 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
       }
     }
 
-    private ListItem GetListItem(TranslationItem translationItem, int indent, bool linkToItem, bool parentName)
+    private ListItem GetListItem(TranslationItem translationItem, int indent, bool linkToItem, bool parentName, string className, bool isChecked, string jsFunction)
     {
       string icon = ThemeManager.GetIconImage(translationItem.sitecoreItem, 16, 16, "", "");
       string listItemName = icon + translationItem.sitecoreItem.Name;
@@ -407,10 +407,18 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
       ListItem listItem = new ListItem(listItemName, listItemValue, translationItem.Translatable);
       listItem.Attributes.CssStyle.Value = ("padding-left: " + indent * translationItem.SubItemLevel + "px");
       listItem.Attributes["title"] = translationItem.HelpText;
+      if (className != null)
+      {
+        listItem.Attributes["class"] = className;
+      }
+      
       if (translationItem.Translatable)
       {
-        listItem.Selected = true;
-        listItem.Attributes.Add("onchange", "test(this)");
+        if (isChecked)
+        {
+          listItem.Selected = true;
+        }        
+        listItem.Attributes.Add("onchange", jsFunction);
       }
       return listItem;
     }
@@ -430,7 +438,7 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
 
         foreach (TranslationItem subItem in subItemsList)
         {
-          ListItem listItem = GetListItem(subItem, 15, false, false);
+          ListItem listItem = GetListItem(subItem, 15, false, false, null, true, "toggleRelatedItem(this)");
           cblIncludeAllSubitems.Items.Add(listItem);
 
           //add related items
@@ -443,7 +451,7 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
 
         foreach (TranslationItem relatedItem in allRelatedItems)
         {
-          ListItem listItem = GetListItem(relatedItem, 1, true, true);
+          ListItem listItem = GetListItem(relatedItem, 1, true, true, "classsubitemrelateditem", false, "");
           cblIncludeAllSubitemsRelatedItems.Items.Add(listItem);
         }
       }

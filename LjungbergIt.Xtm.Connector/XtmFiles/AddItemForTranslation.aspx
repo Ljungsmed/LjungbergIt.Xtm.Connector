@@ -82,7 +82,7 @@
             <div class="divspace">
                 <span style="visibility: hidden" class="includerelatedcontentfromsubitems" id="spanIncludeRelatedContentItemsFromSubItems">Also include related content of sub-items:
                     <%--<asp:CheckBox runat="server" ID="cbIncludeRelatedContentItemsFromSubItems" CssClass="checkbox cbIncludeRelatedContentItemsFromSubItems" />--%>
-                  <input type="checkbox" id="inputchbIncludeAllSubItemsRelatedItems" onchange="showElementById(this, 'divIncludeAllSubitemsRelatedItems')" />
+                  <input type="checkbox" id="inputchbIncludeAllSubItemsRelatedItems" onchange="showElementById(this, 'divIncludeAllSubitemsRelatedItems'); ToggleAllSubitemsRelatedItems(this)" />
                 </span>
             </div>
 

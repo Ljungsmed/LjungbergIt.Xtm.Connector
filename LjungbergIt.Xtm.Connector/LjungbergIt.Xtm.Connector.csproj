@@ -237,6 +237,7 @@
     <Content Include="Test\test.aspx" />
     <Content Include="XtmFiles\AddItemForTranslation.aspx" />
     <Content Include="XtmFiles\TranslationDetailedView.aspx" />
+    <Content Include="XtmFiles\TranslationReport.aspx" />
     <Content Include="XtmFiles\ViewDocumentation.aspx" />
     <Content Include="XtmFiles\ViewTranslationProgress.aspx" />
     <Content Include="XtmFiles\XtmCallback.aspx" />
@@ -247,6 +248,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddForTranslation\CheckListHelper.cs" />
+    <Compile Include="Buttons\TranslationReport.cs" />
     <Compile Include="Export\ExcludeFields.cs" />
     <Compile Include="AddForTranslation\TranslationItem.cs" />
     <Compile Include="AddForTranslation\TranslationProperties.cs" />
@@ -324,6 +326,13 @@
     </Compile>
     <Compile Include="XtmFiles\TranslationDetailedView.aspx.designer.cs">
       <DependentUpon>TranslationDetailedView.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="XtmFiles\TranslationReport.aspx.cs">
+      <DependentUpon>TranslationReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="XtmFiles\TranslationReport.aspx.designer.cs">
+      <DependentUpon>TranslationReport.aspx</DependentUpon>
     </Compile>
     <Compile Include="XtmFiles\ViewDocumentation.aspx.cs">
       <DependentUpon>ViewDocumentation.aspx</DependentUpon>
