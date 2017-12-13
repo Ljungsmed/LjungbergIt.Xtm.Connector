@@ -1,4 +1,4 @@
-﻿using LjungbergIt.Xtm.Connector.Export;
+﻿using LjungbergIt.Xtm.Connector.Helpers;
 using LjungbergIt.Xtm.Connector.Helpers;
 using Sitecore.Data.Items;
 using Sitecore.Layouts;
@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace LjungbergIt.Xtm.Connector.Export
+namespace LjungbergIt.Xtm.Connector.Helpers
 {
   public class TranslationItem
   {

@@ -6,7 +6,7 @@ using Sitecore.Data.Managers;
 using System.Collections.Generic;
 
 //TODO Move this class outside Export as it is used by the Metadata code as well
-namespace LjungbergIt.Xtm.Connector.Export
+namespace LjungbergIt.Xtm.Connector.Helpers
 {
   public class XtmBaseTemplate
   {

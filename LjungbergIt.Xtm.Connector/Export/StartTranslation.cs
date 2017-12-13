@@ -1,10 +1,10 @@
-﻿using LjungbergIt.Xtm.Connector.Export;
+﻿using LjungbergIt.Xtm.Connector.Helpers;
 using LjungbergIt.Xtm.Connector.Helpers;
 using LjungbergIt.Xtm.Webservice;
 using System.Collections.Generic;
 
 
-namespace LjungbergIt.Xtm.Connector.Export
+namespace LjungbergIt.Xtm.Connector.Helpers
 {
   public class StartTranslation
   {
@@ -21,7 +21,7 @@ namespace LjungbergIt.Xtm.Connector.Export
         XtmWebserviceProperties xtmWebserviceProperties = new XtmWebserviceProperties();
 
         //TODO move Translation Properties, Login Properties and XtmWebservice Properties to Separate project or Webservice Project and use inheritance to make super prop class
-        List<string> result = xtmCreateProject.Create(translationFiles, fileName, translationProperties.SourceLanguage, translationProperties.TargetLanguages, translationProperties.XtmTemplate, login.ScClient, login.ScUserId, login.ScPassword, login.ScCustomer, xtmWebserviceProperties.WebserviceEndpoint, xtmWebserviceProperties.IsHttps, xtmWebserviceProperties.callBackUrl);
+        List<string> result = xtmCreateProject.Create(translationFiles, fileName, translationProperties.SourceLanguage, translationProperties.TargetLanguages, translationProperties.XtmTemplate, login.ScClient, login.ScUserId, login.ScPassword, login.ScCustomer, xtmWebserviceProperties.WebserviceEndpoint, xtmWebserviceProperties.IsHttps, xtmWebserviceProperties.callBackUrl, translationProperties.DueDate);
 
         if (result[0].Equals("True"))
         {

@@ -6,7 +6,7 @@ using System.Net;
 using System.Text;
 using HtmlAgilityPack;
 
-namespace LjungbergIt.Xtm.Connector.Export
+namespace LjungbergIt.Xtm.Connector.Helpers
 {
   public class Html
   {
@@ -15,7 +15,7 @@ namespace LjungbergIt.Xtm.Connector.Export
       ScLogging scLogging = new ScLogging();
       ReturnMessage returnMessage = new ReturnMessage();
       XtmSettingsItem settings = new XtmSettingsItem();
-      string HomeItemPath = settings.HomeItem.Paths.FullPath;
+      //string HomeItemPath = settings.HomeItem.Paths.FullPath;
       StringBuilder fullUrl = new StringBuilder(settings.BaseSiteUrl);
       //fullUrl.Append(translationItem.Paths.Path.Replace(HomeItemPath, ""));
 

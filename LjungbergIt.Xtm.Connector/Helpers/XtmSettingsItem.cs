@@ -1,15 +1,18 @@
 ﻿using Sitecore.Data;
 using Sitecore.Data.Items;
 using Sitecore.Data.Fields;
+using Sitecore.Collections;
 
 namespace LjungbergIt.Xtm.Connector.Helpers
 {
   public class XtmSettingsItem
   {
+    public Item SettingsItem { get; set; }
     public string BaseSiteUrl { get; set; }
-    public Item HomeItem { get; set; }
+    //public Item HomeItem { get; set; }
     public bool IsInDebugMode { get; set; }
     public string ExcludedFieldsIds { get; set; }
+    public Item[] ExcludedFieldItems { get; set; }
     public string InitialWorfklowStateId { get; set; }
     public string WorkflowId { get; set; }
 
@@ -24,11 +27,11 @@ namespace LjungbergIt.Xtm.Connector.Helpers
     public XtmSettingsItem()
     {
       Database masteDb = ScConstants.SitecoreDatabases.MasterDb;
-      Item settingsItem = masteDb.GetItem(ScConstants.SitecoreIDs.XtmSettingsItem);
-      BaseSiteUrl = settingsItem[XtmSettingsItemFields.Field_BaseSiteUrlId];
-      HomeItem = masteDb.GetItem(settingsItem["{12078255-B2F0-4A71-822E-FDA1A75BC941}"]);
-      ExcludedFieldsIds = settingsItem[XtmSettingsItemFields.Field_ExcludedFieldsId];
-      CheckboxField DebugModeField = settingsItem.Fields[XtmSettingsItemFields.Field_DebugModeId];
+      SettingsItem = masteDb.GetItem(ScConstants.SitecoreIDs.XtmSettingsItem);
+      BaseSiteUrl = SettingsItem[XtmSettingsItemFields.Field_BaseSiteUrlId];
+      //HomeItem = masteDb.GetItem(settingsItem["{12078255-B2F0-4A71-822E-FDA1A75BC941}"]);
+      ExcludedFieldsIds = SettingsItem[XtmSettingsItemFields.Field_ExcludedFieldsId];
+      CheckboxField DebugModeField = SettingsItem.Fields[XtmSettingsItemFields.Field_DebugModeId];
       if (DebugModeField.Checked)
       {
         IsInDebugMode = true;
@@ -37,7 +40,7 @@ namespace LjungbergIt.Xtm.Connector.Helpers
       {
         IsInDebugMode = false;
       }
-      string initialWorkflowState = settingsItem[XtmSettingsItemFields.Field_InitialWorkflowState];
+      string initialWorkflowState = SettingsItem[XtmSettingsItemFields.Field_InitialWorkflowState];
       if (initialWorkflowState.Equals(""))
       {
         InitialWorfklowStateId = ScConstants.SitecoreWorkflowIDs.XtmWorkflowStateAwaiting;        
@@ -47,6 +50,13 @@ namespace LjungbergIt.Xtm.Connector.Helpers
         InitialWorfklowStateId = initialWorkflowState;       
       }
       WorkflowId = masteDb.GetItem(InitialWorfklowStateId).ParentID.ToString();
+    }
+
+    public Item[] GetExcludedFieldItems()
+    {
+      MultilistField ExcludedItemFields = SettingsItem.Fields[XtmSettingsItemFields.Field_ExcludedFieldsId];
+      //ItemList test = ExcludedItemFields.GetItems();
+      return ExcludedItemFields.GetItems();
     }
   }
 }

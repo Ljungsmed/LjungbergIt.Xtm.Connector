@@ -49,24 +49,6 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles {
         protected global::System.Web.UI.WebControls.Literal litHeading;
         
         /// <summary>
-        /// litSourceLanguage control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal litSourceLanguage;
-        
-        /// <summary>
-        /// ddSourceLanguage control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddSourceLanguage;
-        
-        /// <summary>
         /// txtProjectName control.
         /// </summary>
         /// <remarks>
@@ -94,6 +76,33 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles {
         protected global::System.Web.UI.WebControls.RadioButtonList rblExistingProjects;
         
         /// <summary>
+        /// DivProjectSettings control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl DivProjectSettings;
+        
+        /// <summary>
+        /// litSourceLanguage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Literal litSourceLanguage;
+        
+        /// <summary>
+        /// ddSourceLanguage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddSourceLanguage;
+        
+        /// <summary>
         /// cbTargetLanguages control.
         /// </summary>
         /// <remarks>
@@ -110,6 +119,15 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddXtmTemplate;
+        
+        /// <summary>
+        /// inputDueDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl inputDueDate;
         
         /// <summary>
         /// cblIncludeRelatedContentItems control.

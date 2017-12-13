@@ -1,5 +1,5 @@
 ﻿
-using LjungbergIt.Xtm.Connector.Export;
+using LjungbergIt.Xtm.Connector.Helpers;
 using LjungbergIt.Xtm.Connector.Helpers;
 using Sitecore.Data;
 using Sitecore.Data.Fields;
@@ -73,6 +73,10 @@ namespace LjungbergIt.Xtm.Connector.Pipelines
     public void TranslationReport(XtmPipelineArgs args)
     {
       SheerResponse.ShowModalDialog("/XtmFiles/TranslationReport.aspx", "1200", "800", "", false);
+    }
+    public void ExcludedFields(XtmPipelineArgs args)
+    {
+      SheerResponse.ShowModalDialog("/XtmFiles/ExcludedFields.aspx", "1200", "800", "", false);
     }
   }
 }

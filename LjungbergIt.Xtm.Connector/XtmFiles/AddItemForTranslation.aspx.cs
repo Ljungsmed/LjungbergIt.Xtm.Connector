@@ -1,4 +1,4 @@
-﻿using LjungbergIt.Xtm.Connector.Export;
+﻿using LjungbergIt.Xtm.Connector.Helpers;
 using LjungbergIt.Xtm.Connector.Helpers;
 using Sitecore.Collections;
 using Sitecore.Data;
@@ -203,6 +203,7 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
           string xtmTemplate = "NONE";
           string addedBy = Sitecore.Context.User.Name;
           string projectName = string.Empty;
+          string dueDate = string.Empty;
           bool noErrors = true;
           bool validProjectName = true;
 
@@ -254,6 +255,8 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
                   xtmTemplate = "NONE";
                 }
 
+                dueDate = inputDueDate.Value;
+
                 //Populate the list of target langauges
                 foreach (ListItem listItem in cbTargetLanguages.Items)
                 {
@@ -293,7 +296,7 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
             info.Append("<br //>");
             foreach (TranslationItem itemToTranslate in itemsToTranslate)
             {
-              string result = translationQueue.AddToQueue(itemToTranslate, sourceLanguage, targetLanguagesList, xtmTemplate, addedBy, projectName);
+              string result = translationQueue.AddToQueue(itemToTranslate, sourceLanguage, targetLanguagesList, xtmTemplate, addedBy, projectName, dueDate);
               info.Append(result);
               info.Append("<br //>");
             }
@@ -411,13 +414,13 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
       {
         listItem.Attributes["class"] = className;
       }
-      
+
       if (translationItem.Translatable)
       {
         if (isChecked)
         {
           listItem.Selected = true;
-        }        
+        }
         listItem.Attributes.Add("onchange", jsFunction);
       }
       return listItem;
@@ -454,6 +457,10 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
           ListItem listItem = GetListItem(relatedItem, 1, true, true, "classsubitemrelateditem", false, "");
           cblIncludeAllSubitemsRelatedItems.Items.Add(listItem);
         }
+
+        //NEW TREEVIEW CODE
+        //TreeNode
+        //NEW TREEVIEW CODE END
       }
       else
       {
@@ -519,4 +526,5 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
     //  }
     //}
   }
+
 }

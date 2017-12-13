@@ -1,5 +1,4 @@
 ﻿using LjungbergIt.Xtm.Connector.Commands;
-using LjungbergIt.Xtm.Connector.Export;
 using LjungbergIt.Xtm.Connector.Helpers;
 using Sitecore.Jobs;
 using Sitecore.Shell.Framework.Commands;
@@ -25,13 +24,11 @@ namespace LjungbergIt.Xtm.Connector.Buttons
         args
         );
 
-      //JobManager Calls StartJob method as a background job 
-
+      //JobManager Calls StartJob method as a background job       
       JobManager.Start(jobOptions);
 
-      //Enable below for debugging
-      //
-      StartJob(filePath);
+      //Enable below for debugging WARNING, disable above so the job does not run two times!
+      //StartJob(filePath);
 
       Sitecore.Context.ClientPage.ClientResponse.Alert("Projects are being created in XTM, you can close this window and carry on ;)");
 

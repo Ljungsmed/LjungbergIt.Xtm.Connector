@@ -236,6 +236,7 @@
     <Content Include="TestSecurity.aspx" />
     <Content Include="Test\test.aspx" />
     <Content Include="XtmFiles\AddItemForTranslation.aspx" />
+    <Content Include="XtmFiles\ExcludedFields.aspx" />
     <Content Include="XtmFiles\TranslationDetailedView.aspx" />
     <Content Include="XtmFiles\TranslationReport.aspx" />
     <Content Include="XtmFiles\ViewDocumentation.aspx" />
@@ -248,8 +249,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddForTranslation\CheckListHelper.cs" />
+    <Compile Include="Buttons\ExcludedFields.cs" />
     <Compile Include="Buttons\TranslationReport.cs" />
-    <Compile Include="Export\ExcludeFields.cs" />
+    <Compile Include="Helpers\ExcludedFieldObject.cs" />
     <Compile Include="AddForTranslation\TranslationItem.cs" />
     <Compile Include="AddForTranslation\TranslationProperties.cs" />
     <Compile Include="AddForTranslation\TranslationQueue.cs" />
@@ -319,6 +321,13 @@
     </Compile>
     <Compile Include="XtmFiles\AddItemForTranslation.aspx.designer.cs">
       <DependentUpon>AddItemForTranslation.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="XtmFiles\ExcludedFields.aspx.cs">
+      <DependentUpon>ExcludedFields.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="XtmFiles\ExcludedFields.aspx.designer.cs">
+      <DependentUpon>ExcludedFields.aspx</DependentUpon>
     </Compile>
     <Compile Include="XtmFiles\TranslationDetailedView.aspx.cs">
       <DependentUpon>TranslationDetailedView.aspx</DependentUpon>

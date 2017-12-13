@@ -1,5 +1,5 @@
 ﻿using LjungbergIt.Xtm.Connector.Helpers;
-using LjungbergIt.Xtm.Connector.Export;
+using LjungbergIt.Xtm.Connector.Helpers;
 using LjungbergIt.Xtm.Webservice;
 using System;
 using System.Collections.Generic;

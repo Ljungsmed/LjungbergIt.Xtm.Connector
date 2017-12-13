@@ -121,6 +121,7 @@ namespace LjungbergIt.Xtm.Connector.Helpers
       public static readonly string XTMProjectName = "{F0BB1E31-D56D-40A2-9008-862217657776}";
       public static readonly string SourceLanguage = "{49BB7FBD-0C7E-41BA-8E0B-0FCA7F8BB538}";
       public static readonly string XtmTemplate = "{00C42DB8-293A-41A2-9ED9-12244523EA9C}";
+      public static readonly string DueDate = "{5EC8EE2C-BE04-4E9A-8012-5504C5847FBC}";
     }
 
     public struct XtmConnectorBaseTemplate
@@ -143,7 +144,7 @@ namespace LjungbergIt.Xtm.Connector.Helpers
     public struct Misc
     {
       //public static readonly string EmailVaidationString = "\\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}\\b";
-      public static readonly string translationFolderName = "XTMData";
+      public static readonly string translationFolderName = "XtmData";
       public static readonly string filesFortranslationFolderName = "TranslationFiles";
       public static readonly string filesForImportFolderName = "TranslatedFiles";
       public static readonly string CallbackParameter = "xtmProjectId";

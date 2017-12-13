@@ -45,6 +45,9 @@ namespace LjungbergIt.Xtm.Connector.Import
     //CreateTranslatedContent is directly called by the import button manaully or by the XtmCallback.aspx
     public bool CreateTranslatedContent(long projectId, Item progressItem)
     {
+      ScLogging scLogging = new ScLogging();
+      scLogging.WriteInfo("Import: Beginning import of XTM project with id " + projectId.ToString());
+
       XtmProject xtmProject = new XtmProject(); 
       LoginProperties login = new LoginProperties();
       string client = login.ScClient;
@@ -57,56 +60,67 @@ namespace LjungbergIt.Xtm.Connector.Import
 
       //bool finished = xtmProject.IsTranslationFinished(projectId, client, userId, password, xtmWebserviceProperties.WebserviceEndpoint, xtmWebserviceProperties.IsHttps);
       xtmProject = xtmProject.GetXtmProject(projectId, xtmLoginProject, xtmWebserviceProperties.WebserviceEndpoint, xtmWebserviceProperties.IsHttps);
-
-      if (xtmProject.WorkflowStatus.Equals("FINISHED"))
+      if (xtmProject.ProjectStatus == null)
       {
-        XtmHandleTranslatedContent Xtm = new XtmHandleTranslatedContent();
-        List<XtmJob> xtmJobList = Xtm.GetTranslatedJobs(projectId, client, userId, password, xtmWebserviceProperties.WebserviceEndpoint, xtmWebserviceProperties.IsHttps);
-        
-        try
+        scLogging.WriteInfo("Import: XTM project not found. Please check if project exists in XTM");
+      }
+      else
+      {
+        if (xtmProject.WorkflowStatus.Equals("FINISHED"))
         {
-          if (xtmJobList.Count != 0)
+          XtmHandleTranslatedContent Xtm = new XtmHandleTranslatedContent();
+          List<XtmJob> xtmJobList = Xtm.GetTranslatedJobs(projectId, client, userId, password, xtmWebserviceProperties.WebserviceEndpoint, xtmWebserviceProperties.IsHttps);
+          scLogging.WriteInfo("Import: XTM project found, number of jobs in project; " + xtmJobList.Count.ToString());
+
+          try
           {
-            List<ImportProps> translatedXmlDocs = ConvertTranslatedBytesToXML(xtmJobList);
-            bool totalSuccess = true;
-            foreach (ImportProps xmlDoc in translatedXmlDocs)
+            if (xtmJobList.Count != 0)
             {
-              bool result = ReadFromXml(xmlDoc.TranslatedXmlDocument, xmlDoc.TargetLanguage, xtmProject.SourceLanguage, projectId.ToString());
-              if (result)
+              List<ImportProps> translatedXmlDocs = ConvertTranslatedBytesToXML(xtmJobList);
+              bool totalSuccess = true;
+              scLogging.WriteInfo("Import: All jobs converted to XML, starting reading the xml. Number of XML files to read; " + translatedXmlDocs.Count.ToString());
+              int xmlDocCount = 1;
+              foreach (ImportProps xmlDoc in translatedXmlDocs)
               {
-                
+                bool result = ReadFromXml(xmlDoc.TranslatedXmlDocument, xmlDoc.TargetLanguage, xtmProject.SourceLanguage, projectId.ToString());
+                if (result)
+                {
+                  scLogging.WriteInfo("Import: XML file OK for xmlDoc " + xmlDocCount.ToString());
+                }
+                else
+                {
+                  scLogging.WriteInfo("Import: XML file failed (method: ReadFromXml returned false) for xmlDoc " + xmlDocCount.ToString());
+                  totalSuccess = false;
+                }
+                xmlDocCount++;
+              }
+              success = true;
+              if (totalSuccess)
+              {
+                if (progressItem != null)
+                {
+                  UpdateItem updateItem = new UpdateItem();
+                  updateItem.DeleteItem(progressItem);
+                }
               }
               else
               {
-                totalSuccess = false;
-              }
-            }
-            success = true;
-            if (totalSuccess)
-            {
-              if (progressItem != null)
-              {
-                UpdateItem updateItem = new UpdateItem();
-                updateItem.DeleteItem(progressItem);
+                //TODO show which translated jobs that did not get imported
               }
             }
             else
             {
-              //TODO show which translated jobs that did not get imported
+              success = false;
             }
           }
-          else
+          catch (Exception e)
           {
             success = false;
+            scLogging.WriteError("Import: Something is wrong witht the returned byte array for project with id " + projectId.ToString() + ". following error occured: " + e.Message);
           }
         }
-        catch (Exception e)
-        {
-          success = false;
-          scLogging.WriteError("Something is wrong witht the returned byte array for project with id " + projectId.ToString() + ". following error occured: " + e.Message);
-        }
-        
       }
+      
       return success;
     }
 
@@ -121,6 +135,7 @@ namespace LjungbergIt.Xtm.Connector.Import
 
         foreach (XtmJob xtmJob in xtmJobList)
         {
+          scLogging.WriteInfo("Import: Starting conversion from bytes to xml for job number " + count.ToString());
           string zipFileName = filePath + "file" + count.ToString() + ".zip";
           string xmlFileName = filePath + "file" + count.ToString() + ".xml";
 
@@ -138,7 +153,6 @@ namespace LjungbergIt.Xtm.Connector.Import
                 TranslatedXmlDocument = xmlDoc,
                 TargetLanguage = xtmJob.TargetLanguage
               };
-              //xmlDocuments.Add(xmlDoc);
               importPropsList.Add(importProps);
             }
           }
@@ -153,7 +167,7 @@ namespace LjungbergIt.Xtm.Connector.Import
       }
       catch (Exception e)
       {
-        scLogging.WriteError(e.Message);
+        scLogging.WriteError("Import: Converting bytes to XML (method: ConvertTranslatedBytesToXML) failed with exception; " + e.Message);
       }
       
       return importPropsList;
@@ -183,7 +197,7 @@ namespace LjungbergIt.Xtm.Connector.Import
           }
           else
           {
-            scLogging.WriteWarn("Xml for the item with ID " + node.Attributes[ScConstants.XmlNodes.XmlAttributeId].Value + "was inconsistent and a new translated version was not created");
+            scLogging.WriteWarn("Import: Xml for the item with ID " + node.Attributes[ScConstants.XmlNodes.XmlAttributeId].Value + "was inconsistent and a new translated version was not created");
           }
           //if (node.Name.Equals(ScConstants.XmlNodes.XmlAttributeFieldName))
           //{
@@ -194,7 +208,7 @@ namespace LjungbergIt.Xtm.Connector.Import
       }
       catch (Exception ex)
       {        
-        scLogging.WriteError(ex.Message);
+        scLogging.WriteError("Import: Method ReadFromXml failed with exception; " + ex.Message);
         return false;
       }
     }

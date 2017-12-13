@@ -5,7 +5,7 @@ using Sitecore.Data.Items;
 using Sitecore.Security.Accounts;
 using Sitecore.SecurityModel;
 
-namespace LjungbergIt.Xtm.Connector.Export
+namespace LjungbergIt.Xtm.Connector.Helpers
 {
   class GetLanguageQueueFolder
   {
@@ -49,6 +49,7 @@ namespace LjungbergIt.Xtm.Connector.Export
         langFolderItem.Editing.BeginEdit();
         langFolderItem[ScConstants.XtmQueueProjectTemplateFolder.SourceLanguage] = translationProperties.SourceLanguage;
         langFolderItem[ScConstants.XtmQueueProjectTemplateFolder.XTMProjectName] = folderName;
+        langFolderItem[ScConstants.XtmQueueProjectTemplateFolder.DueDate] = translationProperties.DueDate;
 
         Mapping mapping = new Mapping();
         ItemList languageItems = mapping.LanguageNamesToItems(translationProperties.TargetLanguages);

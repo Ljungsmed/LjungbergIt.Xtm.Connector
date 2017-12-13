@@ -6,13 +6,13 @@ using Sitecore.SecurityModel;
 using System.Collections.Generic;
 using System.Text;
 
-namespace LjungbergIt.Xtm.Connector.Export
+namespace LjungbergIt.Xtm.Connector.Helpers
 {
   class TranslationQueue
   {
     Database masterDatabase = ScConstants.SitecoreDatabases.MasterDb;
 
-    public string AddToQueue(TranslationItem itemToTranslate, string sourceLangauge, List<string> targetLanguages, string xtmTemplate, string addedBy, string projectName)
+    public string AddToQueue(TranslationItem itemToTranslate, string sourceLangauge, List<string> targetLanguages, string xtmTemplate, string addedBy, string projectName, string dueDate)
     {
       string returnString = "";
       string xtmTemplateName = "NONE";
@@ -28,7 +28,7 @@ namespace LjungbergIt.Xtm.Connector.Export
         }
         
         GetLanguageQueueFolder getFolder = new GetLanguageQueueFolder();
-        TranslationProperties translationProperties = new TranslationProperties { SourceLanguage = sourceLangauge, TargetLanguages = targetLanguages, XtmTemplate = xtmTemplate };
+        TranslationProperties translationProperties = new TranslationProperties { SourceLanguage = sourceLangauge, TargetLanguages = targetLanguages, XtmTemplate = xtmTemplate, DueDate = dueDate };
         Item langFolder = getFolder.GetFolder(projectName, translationProperties);
         List<string> queueItemNames = new List<string>();
         foreach (Item queueItem in langFolder.GetChildren())

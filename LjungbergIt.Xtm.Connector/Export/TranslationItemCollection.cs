@@ -1,7 +1,7 @@
 ﻿using Sitecore.Collections;
 using Sitecore.Data.Items;
 
-namespace LjungbergIt.Xtm.Connector.Export
+namespace LjungbergIt.Xtm.Connector.Helpers
 {
     public class TranslationItemCollection
     {

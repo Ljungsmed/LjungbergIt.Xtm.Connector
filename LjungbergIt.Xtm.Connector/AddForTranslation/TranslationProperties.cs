@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LjungbergIt.Xtm.Connector.Export
+namespace LjungbergIt.Xtm.Connector.Helpers
 {
   public class TranslationProperties
   {
@@ -15,5 +15,6 @@ namespace LjungbergIt.Xtm.Connector.Export
     public string SourceLanguage { get; set; }
     public List<string> TargetLanguages { get; set; }
     public string XtmTemplate { get; set; }
+    public string DueDate { get; set; }
   }
 }

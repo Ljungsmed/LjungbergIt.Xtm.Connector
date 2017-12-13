@@ -1,4 +1,4 @@
-﻿using LjungbergIt.Xtm.Connector.Export;
+﻿using LjungbergIt.Xtm.Connector.Helpers;
 using LjungbergIt.Xtm.Connector.Helpers;
 using Sitecore.Data.Fields;
 using Sitecore.Data.Items;

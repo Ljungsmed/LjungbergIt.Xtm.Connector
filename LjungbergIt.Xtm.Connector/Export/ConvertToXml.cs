@@ -1,4 +1,4 @@
-﻿using LjungbergIt.Xtm.Connector.Export;
+﻿using LjungbergIt.Xtm.Connector.Helpers;
 using LjungbergIt.Xtm.Connector.Helpers;
 
 using LjungbergIt.Xtm.Webservice;
@@ -14,7 +14,7 @@ using System.IO;
 using System.Text;
 using System.Xml;
 
-namespace LjungbergIt.Xtm.Connector.Export
+namespace LjungbergIt.Xtm.Connector.Helpers
 {
   public class ConvertToXml
   {
@@ -44,11 +44,16 @@ namespace LjungbergIt.Xtm.Connector.Export
 
           //Set the properties needed for creating a translation project in Xtm
           TranslationProperties translationProperties = new TranslationProperties();
+          
+          //Get the source language
           translationProperties.SourceLanguage = translationProjectItem[ScConstants.XtmQueueProjectTemplateFolder.SourceLanguage];
 
           //Get target languages and convert to XTM languages
           MultilistField targetLanguagesField = translationProjectItem.Fields[ScConstants.XtmQueueProjectTemplateFolder.TargetLanguages];
           Item[] targetLanguagesItems = targetLanguagesField.GetItems();
+
+          //Set the due date if any
+          translationProperties.DueDate = translationProjectItem[ScConstants.XtmQueueProjectTemplateFolder.DueDate];
 
           Mapping mapping = new Mapping();
           //List<string> xtmFormatedLanguagelist = mapping.SitecoreLanguageToXtmLanguage(targetLanguagesItems);
@@ -116,38 +121,47 @@ namespace LjungbergIt.Xtm.Connector.Export
               }
               //TODO move to Files.cs
               //Create an XML file per page/item in the translation job
-              using (FileStream fs = new FileStream(xmlFilePath, FileMode.Create))
-              {
-                XmlWriterSettings settings = new XmlWriterSettings();
-                settings.Indent = true;
+              //using (FileStream fs = new FileStream(xmlFilePath, FileMode.Create, FileAccess.Write))
+              //{
+              //FileStream fs = new FileStream(xmlFilePath, FileMode.Create, FileAccess.Write);
+              //fs.Dispose();
+              XmlWriterSettings settings = new XmlWriterSettings();
+              settings.Indent = true;
+              settings.CloseOutput = true;
 
-                XmlWriter xw = XmlWriter.Create(fs, settings);
+              using (XmlWriter xw = XmlWriter.Create(xmlFilePath, settings))
+              {
                 List<UpdateItem> updateList = new List<UpdateItem>();
                 updateList.Add(new UpdateItem() { FieldIdOrName = ScConstants.SitecoreXtmTemplateFieldIDs.InTranslation, FieldValue = "1" });
+                UpdateItem updateItem = new UpdateItem();
+                updateItem.Update(masterDb.GetItem(translationItem.ID), updateList);
 
                 //Add the root element "XtmSitecoreTranslation", to the xml file
                 xw.WriteStartElement(ScConstants.XmlNodes.XmlRoot);
 
-                AddElement(xw, queuedItemCollection.MainTranslationItem, translationProperties.SourceLanguage);
-
-                UpdateItem updateItem = new UpdateItem();
-                updateItem.Update(masterDb.GetItem(translationItem.ID), updateList);
+                AddElement(xw, queuedItemCollection.MainTranslationItem, translationProperties.SourceLanguage);                
 
                 //If there are any related items in the collection, add those to the XML file
-                //TODO if there are no related contents, the below gives an exception!
                 if (queuedItemCollection.RelatedItemsList != null)
                 {
                   foreach (Item relatedItem in queuedItemCollection.RelatedItemsList)
                   {
                     AddElement(xw, relatedItem, translationProperties.SourceLanguage);
-                    updateItem.Update(masterDb.GetItem(relatedItem.ID), updateList);
+                    Item item = masterDb.GetItem(relatedItem[TranslationQueueItem.XtmTranslationQueueItem.Field_ItemId]);
+                    if (item != null)
+                    {
+                      updateItem.Update(item, updateList);
+                    }
+                    
                   }
                 }
 
                 xw.WriteEndElement();
-                xw.Flush();
-                xw.Close();
+                xw.WriteEndDocument();
+                //xw.Flush();                
               }
+              //}
+
 
               Html html = new Html();
               ReturnMessage htmlCreationReturnMessage = html.GenerateHtml(translationItem, htmlFilePath);
@@ -269,7 +283,7 @@ namespace LjungbergIt.Xtm.Connector.Export
       xw.WriteAttributeString(ScConstants.XmlNodes.XmlAttributeAddedBy, ItemToAdd[TranslationQueueItem.XtmTranslationQueueItem.Field_AddedBy]);
 
       //Get list of field IDs that should be excluded from the Settings item
-      ExcludeFields excludeFields = new ExcludeFields();
+      XtmSettingsItem xtmSettingsItem = new XtmSettingsItem();
       //one for each field
 
 
@@ -282,7 +296,7 @@ namespace LjungbergIt.Xtm.Connector.Export
           {
             //Check if field should be excluded based on the Excluded Fields on the Settings item
 
-            if (!excludeFields.ExcludeFieldIds.Contains(field.ID.ToString()))
+            if (!xtmSettingsItem.ExcludedFieldsIds.Contains(field.ID.ToString()))
             {
               bool isDateField = FieldTypeManager.GetField(field) is DateField;
               if (!isDateField)
@@ -336,7 +350,7 @@ namespace LjungbergIt.Xtm.Connector.Export
                       }
                       //xw.WriteString(altText);
                     }
-                    
+
                     xw.WriteString(field.Value);
                     xw.WriteEndElement();
                   }

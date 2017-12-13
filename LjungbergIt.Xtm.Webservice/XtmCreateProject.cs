@@ -9,7 +9,7 @@ namespace LjungbergIt.Xtm.Webservice
 {
   public class XtmCreateProject
   {
-    public List<string> Create(List<XtmTranslationFile> translationFiles, string fileName, string sourceLanguage, List<string> translationLanguages, string xtmTemplate, string xtmClient, long userId, string password, long customer, string webServiceEndPoint, bool https, string callbackUrl)
+    public List<string> Create(List<XtmTranslationFile> translationFiles, string fileName, string sourceLanguage, List<string> translationLanguages, string xtmTemplate, string xtmClient, long userId, string password, long customer, string webServiceEndPoint, bool https, string callbackUrl, string dueDate)
     {
       List<string> resultList = new List<string>();
       bool success = false;
@@ -21,7 +21,6 @@ namespace LjungbergIt.Xtm.Webservice
       project.UserId = userId;
       project.Password = password;
       project.Customer = customer;
-      //FIX
       //project.TargetLanguage = translationLanguage;
       project.SourceLanguage = sourceLanguage;
       project.Template = xtmTemplate;
@@ -36,8 +35,8 @@ namespace LjungbergIt.Xtm.Webservice
         fileToTranslate.fileMTOM = fileInBytes;
         filesToTranslate[count] = fileToTranslate;
         count++;
-        File.Delete(translationFile.FilePath);
-        File.Delete(translationFile.HtmlFilePath);
+        //File.Delete(translationFile.FilePath);
+        //File.Delete(translationFile.HtmlFilePath);
       }
 
       StringBuilder projectName = new StringBuilder();
@@ -97,6 +96,18 @@ namespace LjungbergIt.Xtm.Webservice
           projectMTOM.workflow = workflow;
         }
 
+        if (dueDate != null)
+        {
+          DateTime parsedDueDate;
+          
+          bool isParsed = DateTime.TryParse(dueDate, out parsedDueDate);
+          if (isParsed)
+          {
+            projectMTOM.dueDate = parsedDueDate;
+            projectMTOM.dueDateSpecified = true;
+          }
+        }          
+
         //xtmCreateProjectMTOMOptionsAPI projectOptions = new xtmCreateProjectMTOMOptionsAPI();
 
         try
@@ -119,7 +130,7 @@ namespace LjungbergIt.Xtm.Webservice
               client.uploadProjectFileMTOM(login, previewFile, null);
 
               //DEBUG comment the below line out to check the HTML files generated
-              File.Delete(translationFile.HtmlFilePath);
+              //File.Delete(translationFile.HtmlFilePath);
             }
           }
         }
