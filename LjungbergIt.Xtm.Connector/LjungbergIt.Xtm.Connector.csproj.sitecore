@@ -1,5 +1,5 @@
 ﻿<Project>
   <PropertyGroup>
-    <Site Server="SitecoreBase" UserName="sitecore\admin" IsRemoteSitecore="False" />
+    <Site Server="sitecorebase1.local" UserName="sitecore\admin" IsRemoteSitecore="False" />
   </PropertyGroup>
 </Project>

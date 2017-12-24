@@ -45,7 +45,9 @@ namespace LjungbergIt.Xtm.Connector.Helpers
         
         SetNewAttributeValue(rootNode, ".//link", "href", baseUrl); //finds all <link href="css styles" /> and sets the full url
         SetNewAttributeValue(rootNode, ".//img", "src", baseUrl); //finds all <img> and sets the full url
+        SetNewAttributeValue(rootNode, ".//img", "srcset", baseUrl); //finds all <img> with srcset and sets the full url
         SetNewAttributeValue(rootNode, ".//script", "src", baseUrl); //finds all <scripts> and sets the full url
+        //TODO create configuration for setting custom attributes
 
         htmlDoc.Save(htmlFilePath);
 

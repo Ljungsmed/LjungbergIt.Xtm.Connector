@@ -10,14 +10,15 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
   {
     protected void Page_Load(object sender, EventArgs e)
     {
-      ScLogging scLogging = new ScLogging();
-      string xtmProjectId = Request.QueryString[ScConstants.Misc.CallbackParameter];
+      ScLogging scLogging = new ScLogging();      
+      string xtmProjectId = Request.QueryString[ScConstants.Misc.CallbackParameter];      
       if (xtmProjectId == null)
       {
         Response.Redirect("/");
       }
       else
       {
+        scLogging.WriteInfo("Callback: Callback invoked, starting import of project with id " + xtmProjectId);
         Regex regex = new Regex(@"^[0-9]+$");
         if (regex.IsMatch(xtmProjectId))
         {
@@ -34,16 +35,16 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
               bool status = import.CreateTranslatedContent(xtmProjectIdLong, ProgressItem);
               if (status)
               {
-                scLogging.WriteInfo("Translated project with id " + xtmProjectId + " was automatically imported");
+                scLogging.WriteInfo("Callback: Translated project with id " + xtmProjectId + " was automatically imported");
               }
               else
               {
-                scLogging.WriteWarn("Translated project with id " + xtmProjectId + " was not correctly imported, see errors in log for info");
+                scLogging.WriteWarn("Callback: Translated project with id " + xtmProjectId + " was not correctly imported, see errors in log for info");
               }                            
             }
             else
             {
-              scLogging.WriteWarn("ProgessItem not found based on project id " + xtmProjectId);
+              scLogging.WriteWarn("Callback: ProgessItem not found based on project id " + xtmProjectId);
             }
           }
         }

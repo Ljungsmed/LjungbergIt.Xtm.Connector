@@ -75,6 +75,7 @@
     <Reference Include="Sitecore.Client, Version=8.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>ReferencedAssemblies\Sitecore.Client.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Sitecore.ContentSearch">
       <HintPath>..\Assemblies\Sitecore.ContentSearch.dll</HintPath>
@@ -87,6 +88,7 @@
     <Reference Include="Sitecore.Kernel, Version=8.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>ReferencedAssemblies\Sitecore.Kernel.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.IO.Compression.FileSystem" />
@@ -251,6 +253,7 @@
     <Compile Include="AddForTranslation\CheckListHelper.cs" />
     <Compile Include="Buttons\ExcludedFields.cs" />
     <Compile Include="Buttons\TranslationReport.cs" />
+    <Compile Include="Export\ExcludedFields.cs" />
     <Compile Include="Helpers\ExcludedFieldObject.cs" />
     <Compile Include="AddForTranslation\TranslationItem.cs" />
     <Compile Include="AddForTranslation\TranslationProperties.cs" />

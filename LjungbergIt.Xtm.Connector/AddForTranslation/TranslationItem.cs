@@ -92,5 +92,11 @@ namespace LjungbergIt.Xtm.Connector.Helpers
       }
       return relatedItems;
     }
+
+    public List<TranslationItem> CheckForDuplicates(List<TranslationItem> translationItems)
+    {
+
+      return translationItems;
+    }
   }
 }

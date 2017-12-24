@@ -27,9 +27,11 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
       }
       else
       {
+        //Get the current item that should be added for translation
         string itemIdString = Request.QueryString["id"];
         Item contextItem = masterDb.GetItem(itemIdString);
 
+        //
         StringBuilder heading = new StringBuilder();
 
         if (contextItem != null)
@@ -37,7 +39,6 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
           XtmBaseTemplate xtmBaseTemplate = new XtmBaseTemplate(null);
 
           //Display the current item being added for translation
-
           if (xtmBaseTemplate.CheckForBaseTemplate(contextItem))
           {
             heading.Append("Add \"");
@@ -52,8 +53,7 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
 
           litHeading.Text = heading.ToString();
 
-          //Display all existing projects in a RadioButtonList
-
+          //Display all existing projects in a RadioButtonList if any
           StringBuilder sbExistingProjects = new StringBuilder();
 
           Item queueFolder = ScConstants.SitecoreDatabases.MasterDb.GetItem(ScConstants.SitecoreIDs.TranslationQueueFolder);
@@ -155,7 +155,7 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
         //ItemList ItemsToTranslate = new ItemList();
         List<TranslationItem> itemsToTranslate = new List<TranslationItem>();
 
-        //Check if item has the XtmBaseTemplate. If not the item is not added for translation
+        //Check if item has the XtmBaseTemplate. If not the item should not be added for translation
         XtmBaseTemplate xtmBaseTemplate = new XtmBaseTemplate(contextItem);
 
         //If selected item is available for translation (have the correct base template) add it to the Item list
@@ -184,6 +184,9 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
           itemsToTranslate = GetItemsToTranslate(cblIncludeAllSubitemsRelatedItems, itemsToTranslate);
         }
 
+        
+        
+
         if (itemsToTranslate.Count == 0)
         {
           labelErrorMessage.Style.Add("color", "red");
@@ -191,6 +194,9 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
         }
         else
         {
+          TranslationItem translationItem = new TranslationItem();
+          //If an item has been added both as a "page" item and a related item, the page item entry is removed by CheckForDuplicates
+          itemsToTranslate = translationItem.CheckForDuplicates(itemsToTranslate);
           StringBuilder info = new StringBuilder();
           TranslationQueue translationQueue = new TranslationQueue();
           //Set the source language, if no source language chosen in the drop down, use the default source language
@@ -344,6 +350,21 @@ namespace LjungbergIt.Xtm.Connector.XtmFiles
             if (!itemsToTranslate.Any(n => n.sitecoreItem.ID == translationItem.sitecoreItem.ID))
             {
               itemsToTranslate.Add(translationItem);
+            }
+            else
+            {
+              if (translationItem.RelatesTo != null)
+              {
+                TranslationItem alreadyInList = itemsToTranslate.FirstOrDefault(n => n.sitecoreItem.ID == translationItem.sitecoreItem.ID);
+                if (alreadyInList != null)
+                {
+                  if (alreadyInList.RelatesTo == null)
+                  {
+                    itemsToTranslate.Remove(alreadyInList);
+                    itemsToTranslate.Add(translationItem);
+                  }
+                }
+              }
             }
           }
           else

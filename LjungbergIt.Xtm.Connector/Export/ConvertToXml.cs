@@ -44,7 +44,7 @@ namespace LjungbergIt.Xtm.Connector.Helpers
 
           //Set the properties needed for creating a translation project in Xtm
           TranslationProperties translationProperties = new TranslationProperties();
-          
+
           //Get the source language
           translationProperties.SourceLanguage = translationProjectItem[ScConstants.XtmQueueProjectTemplateFolder.SourceLanguage];
 
@@ -52,15 +52,14 @@ namespace LjungbergIt.Xtm.Connector.Helpers
           MultilistField targetLanguagesField = translationProjectItem.Fields[ScConstants.XtmQueueProjectTemplateFolder.TargetLanguages];
           Item[] targetLanguagesItems = targetLanguagesField.GetItems();
 
-          //Set the due date if any
-          translationProperties.DueDate = translationProjectItem[ScConstants.XtmQueueProjectTemplateFolder.DueDate];
-
           Mapping mapping = new Mapping();
-          //List<string> xtmFormatedLanguagelist = mapping.SitecoreLanguageToXtmLanguage(targetLanguagesItems);
 
           translationProperties.TargetLanguages = mapping.SitecoreLanguageToXtmLanguage(targetLanguagesItems);
           translationProperties.XtmTemplate = xtmTemplateId;
           translationProperties.ItemId = translationProjectItem.ID.ToString();
+
+          //Set the due date if any
+          translationProperties.DueDate = translationProjectItem[ScConstants.XtmQueueProjectTemplateFolder.DueDate];
 
           //Get an ItemList of all the pages/items for the translation job
           ItemList queuedItemList = buildQueuedItemList(translationProjectItem, translationProperties.SourceLanguage);
@@ -91,6 +90,7 @@ namespace LjungbergIt.Xtm.Connector.Helpers
               }
             }
 
+            //Create empty list for combined translationItems
             List<TranslationItemCollection> translationItemCollection = new List<TranslationItemCollection>();
 
             //For each main translation item, add the related translation items
@@ -99,7 +99,7 @@ namespace LjungbergIt.Xtm.Connector.Helpers
               translationItemCollection.Add(new TranslationItemCollection(mainTranslationItem, relatedTranslationItemsList));
             }
 
-            //TODO change to iterate through the translationItemCollection
+            //Iterate the the combined translation items list and create XML and HTML files where applicable
             foreach (TranslationItemCollection queuedItemCollection in translationItemCollection)
             {
               //string filePath = "~\\" + ScConstants.Misc.translationFolderName + "\\" + ScConstants.Misc.filesFortranslationFolderName + "\\" + translationFolderItem.Name + "_" + queuedItem.Name;
@@ -115,16 +115,13 @@ namespace LjungbergIt.Xtm.Connector.Helpers
               //Find the actual item that needs to be translated from the ItemId field of the translationQueueItem
               Item translationItem = masterDb.GetItem(ItemId);
               translationFile.FileName = translationItem.Name;
+
+              //TODO Remove as project name is now custom?
               if (count == 0)
               {
                 firstItemName = translationItem.Name;
               }
-              //TODO move to Files.cs
-              //Create an XML file per page/item in the translation job
-              //using (FileStream fs = new FileStream(xmlFilePath, FileMode.Create, FileAccess.Write))
-              //{
-              //FileStream fs = new FileStream(xmlFilePath, FileMode.Create, FileAccess.Write);
-              //fs.Dispose();
+
               XmlWriterSettings settings = new XmlWriterSettings();
               settings.Indent = true;
               settings.CloseOutput = true;
@@ -139,7 +136,7 @@ namespace LjungbergIt.Xtm.Connector.Helpers
                 //Add the root element "XtmSitecoreTranslation", to the xml file
                 xw.WriteStartElement(ScConstants.XmlNodes.XmlRoot);
 
-                AddElement(xw, queuedItemCollection.MainTranslationItem, translationProperties.SourceLanguage);                
+                AddElement(xw, queuedItemCollection.MainTranslationItem, translationProperties.SourceLanguage);
 
                 //If there are any related items in the collection, add those to the XML file
                 if (queuedItemCollection.RelatedItemsList != null)
@@ -152,7 +149,7 @@ namespace LjungbergIt.Xtm.Connector.Helpers
                     {
                       updateItem.Update(item, updateList);
                     }
-                    
+
                   }
                 }
 
@@ -295,64 +292,74 @@ namespace LjungbergIt.Xtm.Connector.Helpers
           if (!field.Shared)
           {
             //Check if field should be excluded based on the Excluded Fields on the Settings item
-
             if (!xtmSettingsItem.ExcludedFieldsIds.Contains(field.ID.ToString()))
             {
-              bool isDateField = FieldTypeManager.GetField(field) is DateField;
-              if (!isDateField)
+              //Check if the field type should be excluded based on the Excluded Field Types on the settings item
+              List<string> excludedFieldsTypes = xtmSettingsItem.GetExcludedFieldTypes();
+              bool excludeFieldType = false;
+              if (excludedFieldsTypes != null)
               {
+                excludeFieldType = excludedFieldsTypes.Contains(field.TypeKey);
+              }
 
-                string fieldValue = string.Empty;
-                bool fieldValueOk = true;
-                try
+              if (!excludeFieldType)
+              {
+                //Check if field is a date field and exclude field if it is
+                bool isDateField = FieldTypeManager.GetField(field) is DateField;
+                if (!isDateField)
                 {
-                  fieldValue = XmlConvert.VerifyXmlChars(field.Value);
-                }
-                catch (XmlException e)
-                {
-                  fieldValueOk = false;
-                  string error = e.Message;
-                  ExportInfo exportInfo = new ExportInfo();
-                  exportInfo.UpdateValueField(error, ItemToTranslate.ID.ToString(), field.Name, false);
-                  //string statusFieldValue = exportInfo.StatusField.Value;
-                }
-
-                if (fieldValueOk)
-                {
-                  bool isImageField = FieldTypeManager.GetField(field) is ImageField;
-                  bool isDefaultAltText = false;
-                  string altText = string.Empty;
-
-                  if (isImageField)
+                  string fieldValue = string.Empty;
+                  bool fieldValueOk = true;
+                  try
                   {
-                    ImageField imageField = new ImageField(field);
-                    Item mediaItem = imageField.MediaItem;
-                    altText = imageField.Alt;
-                    string defaultAltText = mediaItem["alt"];
-                    if (altText.Equals(defaultAltText))
-                    {
-                      isDefaultAltText = true;
-                    }
+                    fieldValue = XmlConvert.VerifyXmlChars(field.Value);
+                  }
+                  catch (XmlException e)
+                  {
+                    fieldValueOk = false;
+                    string error = e.Message;
+                    ExportInfo exportInfo = new ExportInfo();
+                    exportInfo.UpdateValueField(error, ItemToTranslate.ID.ToString(), field.Name, false);
+                    //string statusFieldValue = exportInfo.StatusField.Value;
                   }
 
-                  if (!isImageField || altText != string.Empty)
+                  if (fieldValueOk)
                   {
-                    xw.WriteStartElement(ScConstants.XmlNodes.XmlElementField);
-                    xw.WriteAttributeString(ScConstants.XmlNodes.XmlAttributeFieldName, field.Name);
-                    xw.WriteAttributeString(ScConstants.XmlNodes.XmlAttributeFieldType, field.Type);
+                    bool isImageField = FieldTypeManager.GetField(field) is ImageField;
+                    bool isDefaultAltText = false;
+                    string altText = string.Empty;
 
-                    //If the field is an image, an extra attribute is added to the XML indicating if the alt text is from the default value of the image item or the image instance itself
                     if (isImageField)
                     {
-                      if (isDefaultAltText)
+                      ImageField imageField = new ImageField(field);
+                      Item mediaItem = imageField.MediaItem;
+                      altText = imageField.Alt;
+                      string defaultAltText = mediaItem["alt"];
+                      if (altText.Equals(defaultAltText))
                       {
-                        xw.WriteAttributeString(ScConstants.XmlNodes.XmlAttributeDefaultValue, bool.TrueString);
+                        isDefaultAltText = true;
                       }
-                      //xw.WriteString(altText);
                     }
 
-                    xw.WriteString(field.Value);
-                    xw.WriteEndElement();
+                    if (!isImageField || altText != string.Empty)
+                    {
+                      xw.WriteStartElement(ScConstants.XmlNodes.XmlElementField);
+                      xw.WriteAttributeString(ScConstants.XmlNodes.XmlAttributeFieldName, field.Name);
+                      xw.WriteAttributeString(ScConstants.XmlNodes.XmlAttributeFieldType, field.Type);
+
+                      //If the field is an image, an extra attribute is added to the XML indicating if the alt text is from the default value of the image item or the image instance itself
+                      if (isImageField)
+                      {
+                        if (isDefaultAltText)
+                        {
+                          xw.WriteAttributeString(ScConstants.XmlNodes.XmlAttributeDefaultValue, bool.TrueString);
+                        }
+                        //xw.WriteString(altText);
+                      }
+
+                      xw.WriteString(field.Value);
+                      xw.WriteEndElement();
+                    }
                   }
                 }
               }
